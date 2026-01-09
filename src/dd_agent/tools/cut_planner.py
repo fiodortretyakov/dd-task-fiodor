@@ -5,7 +5,7 @@ from typing import Any, Optional
 from pydantic import BaseModel, Field
 
 from dd_agent.contracts.specs import CutSpec
-from dd_agent.contracts.tool_output import ToolMessage, ToolOutput, err
+from dd_agent.contracts.tool_output import ToolOutput, err
 from dd_agent.contracts.validate import validate_cut_spec
 from dd_agent.llm.structured import build_messages, chat_structured_pydantic
 from dd_agent.tools.base import Tool, ToolContext

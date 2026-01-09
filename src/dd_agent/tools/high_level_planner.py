@@ -1,10 +1,9 @@
 """High-level analysis planner tool."""
 
 from pathlib import Path
-from typing import Any
 
 from dd_agent.contracts.specs import HighLevelPlan
-from dd_agent.contracts.tool_output import ToolOutput, ToolMessage, err
+from dd_agent.contracts.tool_output import ToolMessage, ToolOutput, err
 from dd_agent.llm.structured import build_messages, chat_structured_pydantic
 from dd_agent.tools.base import Tool, ToolContext
 
@@ -59,8 +58,8 @@ class HighLevelPlanner(Tool):
                 for err_dict in llm_errors:
                     code = err_dict.get("code", "llm_error")
                     message = err_dict.get("message", "Unknown error")
-                    context = err_dict.get("context")
-                    errors.append(err(code, message, context))
+                    context = err_dict.get("context") or {}
+                    errors.append(err(code, message, **context))
 
         if errors:
             return ToolOutput.failure(errors=errors, trace=trace)
