@@ -59,10 +59,18 @@ def main():
     questions = [Question(**q) for q in json.load(open(demo_dir / "questions.json"))]
     questions_by_id = {q.question_id: q for q in questions}
     df = generate_dummy_data(questions)
-    
+
+    # Load segments if they exist
+    segments = []
+    segments_by_id = {}
+    segments_path = demo_dir / "segments.json"
+    if segments_path.exists():
+        segments = [SegmentSpec(**s) for s in json.load(open(segments_path))]
+        segments_by_id = {s.segment_id: s for s in segments}
+
     planner = CutPlanner()
-    executor = Executor(df, questions_by_id)
-    
+    executor = Executor(df, questions_by_id, segments_by_id)
+
     # 2. Load Golden Rules
     with open(Path(__file__).parent / "golden_data/golden_validation.json", "r") as f:
         golden_cases = json.load(f)
@@ -78,9 +86,16 @@ def main():
         expected_ok = case["expected_ok"]
         expected_plan = case.get("expected_plan")
         expected_res = case.get("expected_results")
-        
-        ctx = ToolContext(questions=questions, questions_by_id=questions_by_id, prompt=prompt, responses_df=df)
-        
+
+        ctx = ToolContext(
+            questions=questions,
+            questions_by_id=questions_by_id,
+            segments=segments,
+            segments_by_id=segments_by_id,
+            prompt=prompt,
+            responses_df=df
+        )
+
         status = "FAIL"
         reason = ""
         try:

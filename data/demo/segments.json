@@ -1,0 +1,67 @@
+[
+  {
+    "segment_id": "SEG_YOUNG",
+    "name": "Young Respondents",
+    "definition": {
+      "kind": "range",
+      "question_id": "Q_AGE",
+      "min": 18,
+      "max": 35,
+      "inclusive": true
+    },
+    "intended_partition": false
+  },
+  {
+    "segment_id": "SEG_HIGH_INCOME",
+    "name": "High Income",
+    "definition": {
+      "kind": "eq",
+      "question_id": "Q_INCOME",
+      "value": "High"
+    },
+    "intended_partition": false
+  },
+  {
+    "segment_id": "SEG_TECH_ACTIVE",
+    "name": "Active Tech Users",
+    "definition": {
+      "kind": "contains_any",
+      "question_id": "Q_FEATURES_USED",
+      "values": ["API", "SDK", "CLI"]
+    },
+    "intended_partition": false
+  },
+  {
+    "segment_id": "SEG_NOT_LOW_INCOME",
+    "name": "Not Low Income",
+    "definition": {
+      "kind": "not",
+      "child": {
+        "kind": "eq",
+        "question_id": "Q_INCOME",
+        "value": "Low"
+      }
+    },
+    "intended_partition": false
+  },
+  {
+    "segment_id": "SEG_MALE_NORTH",
+    "name": "Males in the North",
+    "definition": {
+      "kind": "and",
+      "children": [
+        {
+          "kind": "eq",
+          "question_id": "Q_GENDER",
+          "value": "Male"
+        },
+        {
+          "kind": "eq",
+          "question_id": "Q_REGION",
+          "value": "North"
+        }
+      ]
+    },
+    "intended_partition": false
+  }
+]
