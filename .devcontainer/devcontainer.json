@@ -15,10 +15,15 @@
     "vscode": {
       "extensions": [
         "ms-python.python",
-        "ms-python.vscode-pylint",
+        "ms-python.vscode-pylance",
+        "ms-python.debugpy",
+        "ms-python.vscode-python-envs",
+        "ms-python.black-formatter",
         "github.copilot",
         "github.copilot-chat",
-        "ms-python.black-formatter"
+        "davidanson.vscode-markdownlint",
+        "mechatroner.rainbow-csv",
+        "ms-azuretools.vscode-containers"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/home/codespace/.python/current/bin/python3.12",
@@ -59,7 +64,14 @@
     }
   },
   "remoteEnv": {
-    "PYTHONPATH": "${containerWorkspaceFolder}:${containerWorkspaceFolder}/src"
+    "PYTHONPATH": "${containerWorkspaceFolder}:${containerWorkspaceFolder}/src",
+    "USE_AZURE_V1_API": "${localEnv:USE_AZURE_V1_API:true}",
+    "LLM_TEMPERATURE": "${localEnv:LLM_TEMPERATURE:0.0}",
+    "LLM_TIMEOUT_S": "${localEnv:LLM_TIMEOUT_S:60.0}",
+    "AZURE_OPENAI_API_KEY": "${localEnv:AZURE_OPENAI_API_KEY}",
+    "AZURE_OPENAI_ENDPOINT": "${localEnv:AZURE_OPENAI_ENDPOINT}",
+    "AZURE_OPENAI_API_VERSION": "${localEnv:AZURE_OPENAI_API_VERSION:2024-08-01-preview}",
+    "AZURE_OPENAI_DEPLOYMENT": "${localEnv:AZURE_OPENAI_DEPLOYMENT:gpt-4}"
   },
   "postCreateCommand": "bash .devcontainer/setup.sh",
   "mounts": [
