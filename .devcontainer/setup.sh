@@ -29,6 +29,11 @@ if [ ! -f .env ]; then
     echo "⚠️  Please update .env with your Azure OpenAI credentials"
 fi
 
+# Export default LLM settings (can be overridden by GitHub secrets or .env)
+export USE_AZURE_V1_API="${USE_AZURE_V1_API:-true}"
+export LLM_TEMPERATURE="${LLM_TEMPERATURE:-0.0}"
+export LLM_TIMEOUT_S="${LLM_TIMEOUT_S:-60.0}"
+
 # Set up Python path
 export PYTHONPATH="${PYTHONPATH}:${PWD}:${PWD}/src"
 
