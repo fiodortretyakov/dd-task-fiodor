@@ -116,8 +116,7 @@ def prompt_for_filter_confirmation(
     """
     console.print(
         Panel(
-            f"Filter: [bold]{filter_spec}[/bold]\n"
-            f"Matches: [cyan]{matches}[/cyan] responses",
+            f"Filter: [bold]{filter_spec}[/bold]\n" f"Matches: [cyan]{matches}[/cyan] responses",
             title="Confirm filter",
             border_style="blue",
         )
@@ -143,8 +142,7 @@ def prompt_for_metric_confirmation(
     """
     console.print(
         Panel(
-            f"Metric: [bold cyan]{metric}[/bold cyan]\n"
-            f"Question: [bold]{question}[/bold]",
+            f"Metric: [bold cyan]{metric}[/bold cyan]\n" f"Question: [bold]{question}[/bold]",
             title="Confirm metric",
             border_style="blue",
         )

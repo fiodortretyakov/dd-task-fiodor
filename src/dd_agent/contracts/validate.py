@@ -21,7 +21,6 @@ from dd_agent.contracts.questions import Question, QuestionType
 from dd_agent.contracts.specs import CutSpec, MetricSpec, SegmentSpec
 from dd_agent.contracts.tool_output import ToolMessage, err
 
-
 # ============================================================================
 # Metric/Question Type Compatibility
 # ============================================================================

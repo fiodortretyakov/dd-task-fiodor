@@ -23,9 +23,7 @@ from dd_agent.engine.tables import TableResult, add_base_size_warnings
 class ExecutionResult(BaseModel):
     """Result of executing all cuts."""
 
-    tables: list[TableResult] = Field(
-        default_factory=list, description="Results for each cut"
-    )
+    tables: list[TableResult] = Field(default_factory=list, description="Results for each cut")
     errors: list[dict[str, Any]] = Field(
         default_factory=list, description="Errors encountered during execution"
     )
@@ -108,11 +106,13 @@ class Executor:
                 table_result = self._execute_single_cut(cut)
                 result.tables.append(table_result)
             except Exception as e:
-                result.errors.append({
-                    "cut_id": cut.cut_id,
-                    "error": str(e),
-                    "type": type(e).__name__,
-                })
+                result.errors.append(
+                    {
+                        "cut_id": cut.cut_id,
+                        "error": str(e),
+                        "type": type(e).__name__,
+                    }
+                )
 
         return result
 
@@ -151,9 +151,7 @@ class Executor:
             return self._compute_metric_simple(cut, filtered_df, question, col_name)
         else:
             # Cross-tabulated metric
-            return self._compute_metric_with_dimensions(
-                cut, filtered_df, question, col_name
-            )
+            return self._compute_metric_with_dimensions(cut, filtered_df, question, col_name)
 
     def _compute_metric_simple(
         self,
@@ -217,7 +215,6 @@ class Executor:
 
         return result
 
-
     def _compute_metric_with_dimensions(
         self,
         cut: CutSpec,
@@ -274,9 +271,7 @@ class Executor:
                     base_n, self.min_base_size, self.warn_base_size
                 )
                 if group_warnings:
-                    warnings.extend(
-                        [f"[{group_val}] {w}" for w in group_warnings]
-                    )
+                    warnings.extend([f"[{group_val}] {w}" for w in group_warnings])
 
                 result_by_group[str(group_val)] = self._compute_metric_value(
                     cut.metric.type, series, question, cut.metric.params
@@ -323,14 +318,12 @@ class Executor:
                 "dimension": dim.id,
                 "value": dim_val,
                 "metric": val,
-                "base_n": base_sizes.get(dim_val, 0)
+                "base_n": base_sizes.get(dim_val, 0),
             }
             df_rows.append(row)
         result.set_dataframe(pd.DataFrame(df_rows))
 
         return result
-
-
 
     def _compute_metric_value(
         self,

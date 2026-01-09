@@ -2,20 +2,23 @@
 
 import json
 import random
-import pandas as pd
-from typing import Any
 from pathlib import Path
+from typing import Any
 
-from dd_agent.engine.executor import Executor
+import pandas as pd
+
 from dd_agent.contracts.questions import Question, QuestionType
 from dd_agent.contracts.specs import SegmentSpec
-from dd_agent.tools.cut_planner import CutPlanner
+from dd_agent.engine.executor import Executor
 from dd_agent.tools.base import ToolContext
+from dd_agent.tools.cut_planner import CutPlanner
+
 
 def load_questions(json_path: str) -> list[Question]:
-    with open(json_path, 'r') as f:
+    with open(json_path, "r") as f:
         data = json.load(f)
     return [Question(**q_data) for q_data in data]
+
 
 def generate_dummy_data(questions: list[Question], n_rows=100) -> pd.DataFrame:
     data = []
@@ -44,6 +47,7 @@ def generate_dummy_data(questions: list[Question], n_rows=100) -> pd.DataFrame:
         data.append(row)
     return pd.DataFrame(data)
 
+
 def main():
     questions_path = "data/demo/questions.json"
     print(f"Loading questions from {questions_path}...")
@@ -57,12 +61,12 @@ def main():
         SegmentSpec(
             segment_id="SEG_YOUNG",
             name="Young Respondents",
-            definition={"kind": "range", "question_id": "Q_AGE", "min": 18, "max": 35}
+            definition={"kind": "range", "question_id": "Q_AGE", "min": 18, "max": 35},
         ),
         SegmentSpec(
             segment_id="SEG_HIGH_INCOME",
             name="High Income",
-            definition={"kind": "in", "question_id": "Q_INCOME", "values": ["HIGH", "VHIGH"]}
+            definition={"kind": "in", "question_id": "Q_INCOME", "values": ["HIGH", "VHIGH"]},
         ),
         SegmentSpec(
             segment_id="SEG_MALE_NORTH",
@@ -71,9 +75,9 @@ def main():
                 "kind": "and",
                 "children": [
                     {"kind": "eq", "question_id": "Q_GENDER", "value": "M"},
-                    {"kind": "eq", "question_id": "Q_REGION", "value": "NORTH"}
-                ]
-            }
+                    {"kind": "eq", "question_id": "Q_REGION", "value": "NORTH"},
+                ],
+            },
         ),
         SegmentSpec(
             segment_id="SEG_TECH_ACTIVE",
@@ -81,17 +85,17 @@ def main():
             definition={
                 "kind": "contains_any",
                 "question_id": "Q_FEATURES_USED",
-                "values": ["API", "MOBILE"]
-            }
+                "values": ["API", "MOBILE"],
+            },
         ),
         SegmentSpec(
             segment_id="SEG_NOT_LOW_INCOME",
             name="Excluded Low Income",
             definition={
                 "kind": "not",
-                "child": {"kind": "eq", "question_id": "Q_INCOME", "value": "LOW"}
-            }
-        )
+                "child": {"kind": "eq", "question_id": "Q_INCOME", "value": "LOW"},
+            },
+        ),
     ]
     segments_by_id = {s.segment_id: s for s in segments}
 
@@ -109,52 +113,43 @@ def main():
         "Frequency of features used by gender",
         "Top 2 box for support satisfaction by plan type",
         "Bottom 2 box for ease of use by region",
-
         # --- Segment Dimensions (The 'Split by' Case) ---
         "Compare overall satisfaction for regular 'Young Respondents' vs others",
         "Break down purchase intent by the 'High Income' segment",
-
         # --- Filter Logic: Range, In, Eq ---
         "Average NPS for respondents aged 18 to 30",
         "Overall satisfaction for people in the North or South regions",
         "Mean age for Female respondents",
-
         # --- Filter Logic: Logical Operators (And, Or, Not) ---
         "NPS for 'Males in the North'",
         "Frequency of plans for people who are NOT in the 'High Income' segment",
         "Mean satisfaction for users who are either Young Respondents OR have High Income",
-
         # --- Multi-Choice Logic (ContainsAny) ---
         "Average support satisfaction for people who use the API feature",
-        "Show the income distribution for 'Active Tech Users'"
+        "Show the income distribution for 'Active Tech Users'",
     ]
     # Edge Case Requests
     edge_cases = [
         # --- Ambiguity ---
         "Show satisfaction",  # Ambiguous between Overall and Support
-        "Breakdown by region", # No metric specified
-
+        "Breakdown by region",  # No metric specified
         # --- Nonsensical / Out of Scope ---
         "What is the capital of France?",
         "Show the stock price of Microsoft",
         "How is the weather?",
-
         # --- Invalid Analyses (Math errors) ---
-        "Calculate the mean of Region",      # Categorical cannot have mean
-        "What is the average Gender?",       # Categorical cannot have mean
-        "NPS score for Age",                 # Age is numeric, not NPS
-
+        "Calculate the mean of Region",  # Categorical cannot have mean
+        "What is the average Gender?",  # Categorical cannot have mean
+        "NPS score for Age",  # Age is numeric, not NPS
         # --- Empty Results / Out of Bounds ---
-        "NPS for people older than 200",     # No respondents match
-        "Satisfaction for respondents who live on Mars", # Invalid option value
-
+        "NPS for people older than 200",  # No respondents match
+        "Satisfaction for respondents who live on Mars",  # Invalid option value
         # --- Multi-Choice Invalid ---
-        "Average of features used"           # Mean on multi-choice
+        "Average of features used",  # Mean on multi-choice
     ]
 
     # Combined list for processing
     all_tests = [("Standard", requests), ("Edge Case", edge_cases)]
-
 
     md_output_path = "agentic_analysis_results.md"
     print(f"Executing agentic tests and exporting to {md_output_path}...")
@@ -166,8 +161,8 @@ def main():
         for section_name, test_requests in all_tests:
             f.write(f"# Section: {section_name}\n\n")
             for nl_request in test_requests:
-                print(f"Processing ({section_name}): \"{nl_request}\"")
-                f.write(f"## Request: \"{nl_request}\"\n")
+                print(f'Processing ({section_name}): "{nl_request}"')
+                f.write(f'## Request: "{nl_request}"\n')
 
                 # 1. Plan the cut
                 ctx = ToolContext(
@@ -176,7 +171,7 @@ def main():
                     segments=segments,
                     segments_by_id=segments_by_id,
                     prompt=nl_request,
-                    responses_df=df
+                    responses_df=df,
                 )
 
                 plan_output = planner.run(ctx)
@@ -196,14 +191,18 @@ def main():
                 f.write(f"### ✅ Planning Succeeded\n")
 
                 f.write(f"- **Planned Cut ID**: `{cut_spec.cut_id}`\n")
-                f.write(f"- **Metric**: `{cut_spec.metric.type}` on `{cut_spec.metric.question_id}`\n")
+                f.write(
+                    f"- **Metric**: `{cut_spec.metric.type}` on `{cut_spec.metric.question_id}`\n"
+                )
 
                 if cut_spec.dimensions:
                     dims = [f"{d.kind}: {d.id}" for d in cut_spec.dimensions]
                     f.write(f"- **Dimensions**: {', '.join(dims)}\n")
 
                 if cut_spec.filter:
-                    f.write(f"- **Filter Applied**: `{cut_spec.filter['kind'] if isinstance(cut_spec.filter, dict) else 'Complex'}`\n")
+                    f.write(
+                        f"- **Filter Applied**: `{cut_spec.filter['kind'] if isinstance(cut_spec.filter, dict) else 'Complex'}`\n"
+                    )
 
                 # 2. Execute the cut
                 print(f"Executing planned cut: {cut_spec.cut_id}")
@@ -232,6 +231,7 @@ def main():
                 f.write("\n---\n\n")
 
     print(f"Agentic tests completed. Results in {md_output_path}")
+
 
 if __name__ == "__main__":
     main()

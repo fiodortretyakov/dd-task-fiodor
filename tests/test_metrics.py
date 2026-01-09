@@ -4,12 +4,12 @@ import pandas as pd
 
 from dd_agent.contracts.questions import Option, Question, QuestionType
 from dd_agent.engine.metrics import (
+    compute_bottom2box,
     compute_frequency,
     compute_mean,
     compute_multi_choice_frequency,
     compute_nps,
     compute_top2box,
-    compute_bottom2box,
 )
 
 

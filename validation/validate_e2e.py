@@ -1,6 +1,6 @@
-
 import sys
 from pathlib import Path
+
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
@@ -12,12 +12,15 @@ from dd_agent.orchestrator.pipeline import Pipeline
 
 console = Console()
 
+
 def main():
-    console.print(Panel.fit(
-        "[bold blue]DD Analytics Agent - E2E Validation Suite[/bold blue]\n"
-        "Testing full pipeline logic (run_single and run_autoplan)",
-        border_style="blue",
-    ))
+    console.print(
+        Panel.fit(
+            "[bold blue]DD Analytics Agent - E2E Validation Suite[/bold blue]\n"
+            "Testing full pipeline logic (run_single and run_autoplan)",
+            border_style="blue",
+        )
+    )
 
     demo_dir = Path(__file__).parent.parent / "data/demo"
     if not demo_dir.exists():
@@ -38,12 +41,12 @@ def main():
         "NPS distribution for high income respondents",
         "Top 2 box for value for money by product usage frequency",
         "Average purchase intent for new customers",
-        "Compare NPS between promoters and detractors (Wait, this is nonsensical as a cut, but good to test handling)"
+        "Compare NPS between promoters and detractors (Wait, this is nonsensical as a cut, but good to test handling)",
     ]
 
     single_results = []
     for prompt in test_prompts:
-        console.print(f"Testing: \"{prompt}\"")
+        console.print(f'Testing: "{prompt}"')
         try:
             result = pipeline.run_single(prompt, save_run=False)
             if result.success and result.execution_result:
@@ -70,7 +73,9 @@ def main():
             auto_details = f"Intents: {len(auto_result.plan.intents) if auto_result.plan else 0}, Cuts: {len(auto_result.cuts_planned)}"
         else:
             auto_status = "[red]FAIL[/red]"
-            auto_details = ", ".join(auto_result.errors) if auto_result.errors else "Execution failed"
+            auto_details = (
+                ", ".join(auto_result.errors) if auto_result.errors else "Execution failed"
+            )
     except NotImplementedError:
         auto_status = "[yellow]CRASH[/yellow]"
         auto_details = "Not implemented"
@@ -92,8 +97,14 @@ def main():
     console.print("\n")
     console.print(table)
 
-    if "[yellow]CRASH[/yellow]" in [r[1] for r in single_results] or auto_status == "[yellow]CRASH[/yellow]":
-        console.print("\n[yellow]💡 Candidates need to implement the pipeline methods in src/dd_agent/orchestrator/pipeline.py[/yellow]")
+    if (
+        "[yellow]CRASH[/yellow]" in [r[1] for r in single_results]
+        or auto_status == "[yellow]CRASH[/yellow]"
+    ):
+        console.print(
+            "\n[yellow]💡 Candidates need to implement the pipeline methods in src/dd_agent/orchestrator/pipeline.py[/yellow]"
+        )
+
 
 if __name__ == "__main__":
     main()

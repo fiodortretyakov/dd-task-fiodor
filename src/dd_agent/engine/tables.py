@@ -70,17 +70,11 @@ class CrossTabResult(BaseModel):
     data: dict[str, Any] = Field(..., description="Cross-tabulated results")
 
     # Base sizes by group
-    base_sizes: dict[str, int] = Field(
-        default_factory=dict, description="Base size for each group"
-    )
+    base_sizes: dict[str, int] = Field(default_factory=dict, description="Base size for each group")
 
     # Dimension info
-    row_dimension: Optional[str] = Field(
-        default=None, description="Row dimension ID"
-    )
-    col_dimension: Optional[str] = Field(
-        default=None, description="Column dimension ID"
-    )
+    row_dimension: Optional[str] = Field(default=None, description="Row dimension ID")
+    col_dimension: Optional[str] = Field(default=None, description="Column dimension ID")
 
     warnings: list[str] = Field(default_factory=list)
 

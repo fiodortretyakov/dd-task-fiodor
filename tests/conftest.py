@@ -6,9 +6,9 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
+from dd_agent.contracts.filters import PredicateRange
 from dd_agent.contracts.questions import Option, Question, QuestionType
 from dd_agent.contracts.specs import CutSpec, MetricSpec, SegmentSpec
-from dd_agent.contracts.filters import PredicateRange
 
 
 @pytest.fixture
@@ -70,17 +70,47 @@ def questions_by_id(sample_questions: list[Question]) -> dict[str, Question]:
 @pytest.fixture
 def sample_responses_df() -> pd.DataFrame:
     """Create sample responses DataFrame."""
-    return pd.DataFrame({
-        "Q_NPS": [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 9, 10, 8, 7],
-        "Q_SATISFACTION": [5, 4, 4, 3, 3, 2, 1, 2, 1, 2, 1, 5, 5, 4, 3],
-        "Q_REGION": ["NORTH", "SOUTH", "EAST", "WEST", "NORTH",
-                     "SOUTH", "EAST", "WEST", "NORTH", "SOUTH",
-                     "EAST", "WEST", "NORTH", "SOUTH", "EAST"],
-        "Q_AGE": [25, 35, 45, 28, 32, 41, 55, 23, 38, 47, 29, 33, 42, 27, 36],
-        "Q_FEATURES": ["A;B", "B;C", "A", "A;B;C", "B",
-                       "C", "A;C", "B", "A;B", "C",
-                       "A;B;C", "B;C", "A", "A;B", "C"],
-    })
+    return pd.DataFrame(
+        {
+            "Q_NPS": [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 9, 10, 8, 7],
+            "Q_SATISFACTION": [5, 4, 4, 3, 3, 2, 1, 2, 1, 2, 1, 5, 5, 4, 3],
+            "Q_REGION": [
+                "NORTH",
+                "SOUTH",
+                "EAST",
+                "WEST",
+                "NORTH",
+                "SOUTH",
+                "EAST",
+                "WEST",
+                "NORTH",
+                "SOUTH",
+                "EAST",
+                "WEST",
+                "NORTH",
+                "SOUTH",
+                "EAST",
+            ],
+            "Q_AGE": [25, 35, 45, 28, 32, 41, 55, 23, 38, 47, 29, 33, 42, 27, 36],
+            "Q_FEATURES": [
+                "A;B",
+                "B;C",
+                "A",
+                "A;B;C",
+                "B",
+                "C",
+                "A;C",
+                "B",
+                "A;B",
+                "C",
+                "A;B;C",
+                "B;C",
+                "A",
+                "A;B",
+                "C",
+            ],
+        }
+    )
 
 
 @pytest.fixture
@@ -124,15 +154,26 @@ def demo_data_dir(tmp_path: Path, sample_questions: list[Question]) -> Path:
         json.dump(questions_data, f)
 
     # Write responses
-    df = pd.DataFrame({
-        "Q_NPS": [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
-        "Q_SATISFACTION": [5, 4, 4, 3, 3, 2, 1, 2, 1, 2],
-        "Q_REGION": ["NORTH", "SOUTH", "EAST", "WEST", "NORTH",
-                     "SOUTH", "EAST", "WEST", "NORTH", "SOUTH"],
-        "Q_AGE": [25, 35, 45, 28, 32, 41, 55, 23, 38, 47],
-        "Q_FEATURES": ["A;B", "B;C", "A", "A;B;C", "B",
-                       "C", "A;C", "B", "A;B", "C"],
-    })
+    df = pd.DataFrame(
+        {
+            "Q_NPS": [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+            "Q_SATISFACTION": [5, 4, 4, 3, 3, 2, 1, 2, 1, 2],
+            "Q_REGION": [
+                "NORTH",
+                "SOUTH",
+                "EAST",
+                "WEST",
+                "NORTH",
+                "SOUTH",
+                "EAST",
+                "WEST",
+                "NORTH",
+                "SOUTH",
+            ],
+            "Q_AGE": [25, 35, 45, 28, 32, 41, 55, 23, 38, 47],
+            "Q_FEATURES": ["A;B", "B;C", "A", "A;B;C", "B", "C", "A;C", "B", "A;B", "C"],
+        }
+    )
     df.to_csv(data_dir / "responses.csv", index=False)
 
     # Write scope

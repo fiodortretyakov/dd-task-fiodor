@@ -37,12 +37,14 @@ def compute_frequency(
 
         percentage = (count / total * 100) if total > 0 else 0.0
 
-        data.append({
-            "value": value,
-            "label": label,
-            "count": int(count),
-            "percentage": round(percentage, 2),
-        })
+        data.append(
+            {
+                "value": value,
+                "label": label,
+                "count": int(count),
+                "percentage": round(percentage, 2),
+            }
+        )
 
     result = pd.DataFrame(data)
 
@@ -324,12 +326,14 @@ def compute_multi_choice_frequency(
         # Percentage is of respondents who answered, not total selections
         percentage = (count / total_respondents * 100) if total_respondents > 0 else 0.0
 
-        data.append({
-            "value": value,
-            "label": label,
-            "count": int(count),
-            "percentage": round(percentage, 2),
-        })
+        data.append(
+            {
+                "value": value,
+                "label": label,
+                "count": int(count),
+                "percentage": round(percentage, 2),
+            }
+        )
 
     result = pd.DataFrame(data)
     return result.sort_values("count", ascending=False).reset_index(drop=True)

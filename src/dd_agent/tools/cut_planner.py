@@ -15,9 +15,7 @@ class CutPlanResult(BaseModel):
     """Result of the cut planner tool."""
 
     ok: bool = Field(..., description="Whether planning succeeded")
-    cut: Optional[CutSpec] = Field(
-        default=None, description="The planned cut specification"
-    )
+    cut: Optional[CutSpec] = Field(default=None, description="The planned cut specification")
     resolution_map: dict[str, str] = Field(
         default_factory=dict,
         description="Mapping of NL terms to question/segment IDs",
@@ -65,6 +63,7 @@ class CutPlanner(Tool):
 
         # Load the system prompt
         from pathlib import Path
+
         prompt_path = Path(__file__).parent.parent / "llm" / "prompts" / "cut_plan.md"
         system_prompt = prompt_path.read_text()
 
@@ -73,14 +72,9 @@ class CutPlanner(Tool):
 
         # Call LLM with structured output
         try:
-            result, llm_trace = chat_structured_pydantic(
-                messages=messages,
-                model=CutPlanResult
-            )
+            result, llm_trace = chat_structured_pydantic(messages=messages, model=CutPlanResult)
         except Exception as e:
-            return ToolOutput.failure(
-                errors=[err("llm_error", f"LLM call failed: {str(e)}")]
-            )
+            return ToolOutput.failure(errors=[err("llm_error", f"LLM call failed: {str(e)}")])
 
         # If the LLM indicated ambiguity or failure
         if not result.ok:
@@ -89,11 +83,13 @@ class CutPlanner(Tool):
             if result.errors:
                 for error in result.errors:
                     if isinstance(error, dict):
-                        llm_errors.append(err(
-                            error.get("code", "llm_error"),
-                            error.get("message", "Unknown error"),
-                            **error.get("context", {})
-                        ))
+                        llm_errors.append(
+                            err(
+                                error.get("code", "llm_error"),
+                                error.get("message", "Unknown error"),
+                                **error.get("context", {}),
+                            )
+                        )
                     else:
                         llm_errors.append(error)
 
@@ -103,7 +99,7 @@ class CutPlanner(Tool):
                     "llm": llm_trace,
                     "ambiguity_options": result.ambiguity_options,
                     "resolution_map": result.resolution_map,
-                }
+                },
             )
 
         # Validate the cut spec
@@ -114,9 +110,7 @@ class CutPlanner(Tool):
 
         # Validate against the question catalog and segments
         validation_errors = validate_cut_spec(
-            cut=result.cut,
-            questions_by_id=ctx.questions_by_id,
-            segments_by_id=ctx.segments_by_id
+            cut=result.cut, questions_by_id=ctx.questions_by_id, segments_by_id=ctx.segments_by_id
         )
 
         if validation_errors:
@@ -125,7 +119,7 @@ class CutPlanner(Tool):
                 trace={
                     "llm": llm_trace,
                     "resolution_map": result.resolution_map,
-                }
+                },
             )
 
         # Success!
@@ -134,7 +128,7 @@ class CutPlanner(Tool):
             trace={
                 "llm": llm_trace,
                 "resolution_map": result.resolution_map,
-            }
+            },
         )
 
     def _build_user_content(self, ctx: ToolContext) -> str:

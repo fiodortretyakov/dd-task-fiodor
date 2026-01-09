@@ -4,7 +4,6 @@ from typing import Annotated, Literal, Union
 
 from pydantic import BaseModel, Field
 
-
 # ============================================================================
 # Predicates (leaf nodes)
 # ============================================================================
@@ -48,9 +47,7 @@ class PredicateContainsAny(BaseModel):
 
     kind: Literal["contains_any"] = "contains_any"
     question_id: str = Field(..., description="The question to filter on")
-    values: list[str | int] = Field(
-        ..., description="At least one of these values must be present"
-    )
+    values: list[str | int] = Field(..., description="At least one of these values must be present")
 
 
 # Union of all predicate types
@@ -66,9 +63,7 @@ class And(BaseModel):
     """Logical AND: all children must be true."""
 
     kind: Literal["and"] = "and"
-    children: list["FilterExpr"] = Field(
-        ..., description="Child expressions (all must be true)"
-    )
+    children: list["FilterExpr"] = Field(..., description="Child expressions (all must be true)")
 
 
 class Or(BaseModel):

@@ -10,8 +10,8 @@ import numpy as np
 import pandas as pd
 from rich.console import Console
 from rich.panel import Panel
-from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.table import Table
 
 # Add src to path relative to this script
 sys.path.append(str(Path(__file__).parent.parent / "src"))
@@ -30,9 +30,11 @@ from dd_agent.tools.segment_builder import SegmentBuilder
 RANDOM_SEED = 42
 console = Console()
 
+
 def set_seed(seed=RANDOM_SEED):
     random.seed(seed)
     np.random.seed(seed)
+
 
 def generate_dummy_data(questions: list[Question], n_rows=100) -> pd.DataFrame:
     set_seed()
@@ -41,19 +43,27 @@ def generate_dummy_data(questions: list[Question], n_rows=100) -> pd.DataFrame:
         row: dict[str, Any] = {}
         for q in questions:
             if q.type == QuestionType.numeric:
-                if q.question_id == "Q_RESP_ID": row[q.effective_column_name] = i + 1
-                elif q.question_id == "Q_AGE": row[q.effective_column_name] = random.randint(18, 90)
-                else: row[q.effective_column_name] = random.randint(0, 100)
+                if q.question_id == "Q_RESP_ID":
+                    row[q.effective_column_name] = i + 1
+                elif q.question_id == "Q_AGE":
+                    row[q.effective_column_name] = random.randint(18, 90)
+                else:
+                    row[q.effective_column_name] = random.randint(0, 100)
             elif q.options:
                 codes = [opt.code for opt in q.options]
                 if q.type == QuestionType.multi_choice:
-                    k = random.randint(1, min(3, len(codes))); selected = random.sample(codes, k)
+                    k = random.randint(1, min(3, len(codes)))
+                    selected = random.sample(codes, k)
                     row[q.effective_column_name] = ";".join(str(c) for c in selected)
-                else: row[q.effective_column_name] = random.choice(codes)
-            elif q.type == QuestionType.nps_0_10: row[q.effective_column_name] = random.randint(0, 10)
-            else: row[q.effective_column_name] = None
+                else:
+                    row[q.effective_column_name] = random.choice(codes)
+            elif q.type == QuestionType.nps_0_10:
+                row[q.effective_column_name] = random.randint(0, 10)
+            else:
+                row[q.effective_column_name] = None
         data.append(row)
     return pd.DataFrame(data)
+
 
 def run_cut_planning_tests(questions, questions_by_id, df, planner, executor):
     with open(Path(__file__).parent / "golden_data/golden_validation.json", "r") as f:
@@ -68,7 +78,9 @@ def run_cut_planning_tests(questions, questions_by_id, df, planner, executor):
         expected_plan = case.get("expected_plan")
         expected_res = case.get("expected_results")
 
-        ctx = ToolContext(questions=questions, questions_by_id=questions_by_id, prompt=prompt, responses_df=df)
+        ctx = ToolContext(
+            questions=questions, questions_by_id=questions_by_id, prompt=prompt, responses_df=df
+        )
         status, reason = "FAIL", ""
 
         try:
@@ -80,8 +92,8 @@ def run_cut_planning_tests(questions, questions_by_id, df, planner, executor):
             else:
                 cut_spec = res.data
                 plan_match = (
-                    cut_spec.metric.type == expected_plan["metric_type"] and
-                    cut_spec.metric.question_id == expected_plan["question_id"]
+                    cut_spec.metric.type == expected_plan["metric_type"]
+                    and cut_spec.metric.question_id == expected_plan["question_id"]
                 )
                 if not plan_match:
                     reason = f"Plan mismatch (Got {cut_spec.metric.type} on {cut_spec.metric.question_id})"
@@ -100,10 +112,12 @@ def run_cut_planning_tests(questions, questions_by_id, df, planner, executor):
         except Exception as e:
             status, reason = "CRASH", str(e)
 
-        if status == "PASS": passed += 1
+        if status == "PASS":
+            passed += 1
         results.append((prompt, status, reason))
 
     return passed, len(cases), results
+
 
 def run_segment_builder_tests(questions, questions_by_id, df, builder):
     with open(Path(__file__).parent / "golden_data/golden_segments.json", "r") as f:
@@ -117,7 +131,9 @@ def run_segment_builder_tests(questions, questions_by_id, df, builder):
         expected_ok = case["expected_ok"]
         expected_base_n = case.get("expected_base_n")
 
-        ctx = ToolContext(questions=questions, questions_by_id=questions_by_id, prompt=prompt, responses_df=df)
+        ctx = ToolContext(
+            questions=questions, questions_by_id=questions_by_id, prompt=prompt, responses_df=df
+        )
         status, reason = "FAIL", ""
 
         try:
@@ -138,10 +154,12 @@ def run_segment_builder_tests(questions, questions_by_id, df, builder):
         except Exception as e:
             status, reason = "CRASH", str(e)
 
-        if status == "PASS": passed += 1
+        if status == "PASS":
+            passed += 1
         results.append((prompt, status, reason))
 
     return passed, len(cases), results
+
 
 def run_hlp_tests(questions, questions_by_id, planner):
     # Load scenarios from golden data
@@ -161,24 +179,30 @@ def run_hlp_tests(questions, questions_by_id, planner):
             if res.ok:
                 plan = res.data
                 intent_texts = " ".join([i.description.lower() for i in plan.intents])
-                if len(plan.intents) >= 5: sc_passed += 1
-                else: details.append("Low intent count")
+                if len(plan.intents) >= 5:
+                    sc_passed += 1
+                else:
+                    details.append("Low intent count")
 
                 obs = 0
                 for k in sc["expectations"]:
-                    if k.lower() in intent_texts: obs += 1
+                    if k.lower() in intent_texts:
+                        obs += 1
                 sc_passed += obs
                 details.append(f"{obs}/{len(sc['expectations'])} keywords")
             else:
                 details.append("Planning failed")
-        except NotImplementedError: details.append("Not implemented")
-        except Exception as e: details.append(str(e))
+        except NotImplementedError:
+            details.append("Not implemented")
+        except Exception as e:
+            details.append(str(e))
 
         results.append((sc["name"], sc_passed, len(sc["expectations"]) + 1, ", ".join(details)))
         passed_checks += sc_passed
-        total_checks += (len(sc["expectations"]) + 1)
+        total_checks += len(sc["expectations"]) + 1
 
     return passed_checks, total_checks, results
+
 
 def run_e2e_tests():
     demo_dir = Path(__file__).parent.parent / "data/demo"
@@ -194,7 +218,7 @@ def run_e2e_tests():
         "NPS distribution for high income respondents",
         "Top 2 box for value for money by product usage frequency",
         "Average purchase intent for new customers",
-        "Compare NPS between promoters and detractors"
+        "Compare NPS between promoters and detractors",
     ]
 
     passed = 0
@@ -207,9 +231,12 @@ def run_e2e_tests():
                 status, details = "PASS", f"Base N: {result.execution_result.tables[0].base_n}"
             else:
                 status, details = "FAIL", ", ".join(result.errors) if result.errors else "Failure"
-        except NotImplementedError: status, details = "CRASH", "Not implemented"
-        except Exception as e: status, details = "CRASH", str(e)
-        if status == "PASS": passed += 1
+        except NotImplementedError:
+            status, details = "CRASH", "Not implemented"
+        except Exception as e:
+            status, details = "CRASH", str(e)
+        if status == "PASS":
+            passed += 1
         results.append((f"single: {prompt}", status, details))
 
     # Autoplan
@@ -219,45 +246,119 @@ def run_e2e_tests():
             status, details = "PASS", f"Cuts: {len(res.cuts_planned)}"
         else:
             status, details = "FAIL", "Autoplan failed"
-    except NotImplementedError: status, details = "CRASH", "Not implemented"
-    except Exception as e: status, details = "CRASH", str(e)
-    if status == "PASS": passed += 1
+    except NotImplementedError:
+        status, details = "CRASH", "Not implemented"
+    except Exception as e:
+        status, details = "CRASH", str(e)
+    if status == "PASS":
+        passed += 1
     results.append(("autoplan", status, details))
 
     return passed, len(test_prompts) + 1, results
+
 
 def run_engine_stress_tests(questions, questions_by_id, df):
     sys.path.append(str(Path(__file__).parent))
     import validate_engine
 
     segments_by_id = {
-        "SEG_YOUNG": SegmentSpec(segment_id="SEG_YOUNG", name="Young Respondents", definition={"kind": "range", "question_id": "Q_AGE", "min": 18, "max": 35}),
-        "SEG_HIGH_INCOME": SegmentSpec(segment_id="SEG_HIGH_INCOME", name="High Income", definition={"kind": "in", "question_id": "Q_INCOME", "values": ["HIGH", "VHIGH"]}),
-        "SEG_MALE_NORTH": SegmentSpec(segment_id="SEG_MALE_NORTH", name="Males in the North", definition={"kind": "and", "children": [{"kind": "eq", "question_id": "Q_GENDER", "value": "M"}, {"kind": "eq", "question_id": "Q_REGION", "value": "NORTH"}]}),
-        "SEG_TECH_ACTIVE": SegmentSpec(segment_id="SEG_TECH_ACTIVE", name="Active Tech Users", definition={"kind": "contains_any", "question_id": "Q_FEATURES_USED", "values": ["API", "MOBILE"]}),
-        "SEG_NOT_LOW_INCOME": SegmentSpec(segment_id="SEG_NOT_LOW_INCOME", name="Excluded Low Income", definition={"kind": "not", "child": {"kind": "eq", "question_id": "Q_INCOME", "value": "LOW"}}),
-        "SEG_OR_CONDITION": SegmentSpec(segment_id="SEG_OR_CONDITION", name="Young OR High Income", definition={"kind": "or", "children": [{"kind": "range", "question_id": "Q_AGE", "min": 18, "max": 25}, {"kind": "in", "question_id": "Q_INCOME", "values": ["VHIGH"]}]})
+        "SEG_YOUNG": SegmentSpec(
+            segment_id="SEG_YOUNG",
+            name="Young Respondents",
+            definition={"kind": "range", "question_id": "Q_AGE", "min": 18, "max": 35},
+        ),
+        "SEG_HIGH_INCOME": SegmentSpec(
+            segment_id="SEG_HIGH_INCOME",
+            name="High Income",
+            definition={"kind": "in", "question_id": "Q_INCOME", "values": ["HIGH", "VHIGH"]},
+        ),
+        "SEG_MALE_NORTH": SegmentSpec(
+            segment_id="SEG_MALE_NORTH",
+            name="Males in the North",
+            definition={
+                "kind": "and",
+                "children": [
+                    {"kind": "eq", "question_id": "Q_GENDER", "value": "M"},
+                    {"kind": "eq", "question_id": "Q_REGION", "value": "NORTH"},
+                ],
+            },
+        ),
+        "SEG_TECH_ACTIVE": SegmentSpec(
+            segment_id="SEG_TECH_ACTIVE",
+            name="Active Tech Users",
+            definition={
+                "kind": "contains_any",
+                "question_id": "Q_FEATURES_USED",
+                "values": ["API", "MOBILE"],
+            },
+        ),
+        "SEG_NOT_LOW_INCOME": SegmentSpec(
+            segment_id="SEG_NOT_LOW_INCOME",
+            name="Excluded Low Income",
+            definition={
+                "kind": "not",
+                "child": {"kind": "eq", "question_id": "Q_INCOME", "value": "LOW"},
+            },
+        ),
+        "SEG_OR_CONDITION": SegmentSpec(
+            segment_id="SEG_OR_CONDITION",
+            name="Young OR High Income",
+            definition={
+                "kind": "or",
+                "children": [
+                    {"kind": "range", "question_id": "Q_AGE", "min": 18, "max": 25},
+                    {"kind": "in", "question_id": "Q_INCOME", "values": ["VHIGH"]},
+                ],
+            },
+        ),
     }
 
     executor = Executor(df, questions_by_id, segments_by_id=segments_by_id)
     cuts = []
-    dim_candidates = [q.question_id for q in questions if q.type == QuestionType.single_choice and q.question_id != "Q_RESP_ID"]
+    dim_candidates = [
+        q.question_id
+        for q in questions
+        if q.type == QuestionType.single_choice and q.question_id != "Q_RESP_ID"
+    ]
 
     cut_counter = 0
     for q in questions:
         metrics = validate_engine.get_valid_metrics(q)
         for m in metrics:
             cut_counter += 1
-            cuts.append(CutSpec(cut_id=f"STRESS_{cut_counter}_{q.question_id}_{m}", metric={"type": m, "question_id": q.question_id}))
+            cuts.append(
+                CutSpec(
+                    cut_id=f"STRESS_{cut_counter}_{q.question_id}_{m}",
+                    metric={"type": m, "question_id": q.question_id},
+                )
+            )
             dimension_id = dim_candidates[cut_counter % len(dim_candidates)]
             if dimension_id != q.question_id:
-                cuts.append(CutSpec(cut_id=f"STRESS_{cut_counter}_{q.question_id}_{m}_BY_{dimension_id}", metric={"type": m, "question_id": q.question_id}, dimensions=[{"kind": "question", "id": dimension_id}]))
+                cuts.append(
+                    CutSpec(
+                        cut_id=f"STRESS_{cut_counter}_{q.question_id}_{m}_BY_{dimension_id}",
+                        metric={"type": m, "question_id": q.question_id},
+                        dimensions=[{"kind": "question", "id": dimension_id}],
+                    )
+                )
 
             # Segment & Filtered (Comprehensive matches)
             segment_id = list(segments_by_id.keys())[cut_counter % len(segments_by_id)]
-            cuts.append(CutSpec(cut_id=f"STRESS_{cut_counter}_{q.question_id}_{m}_BY_{segment_id}", metric={"type": m, "question_id": q.question_id}, dimensions=[{"kind": "segment", "id": segment_id}]))
+            cuts.append(
+                CutSpec(
+                    cut_id=f"STRESS_{cut_counter}_{q.question_id}_{m}_BY_{segment_id}",
+                    metric={"type": m, "question_id": q.question_id},
+                    dimensions=[{"kind": "segment", "id": segment_id}],
+                )
+            )
             filter_seg_id = list(segments_by_id.keys())[(cut_counter + 1) % len(segments_by_id)]
-            cuts.append(CutSpec(cut_id=f"STRESS_{cut_counter}_{q.question_id}_{m}_FILTERED_{filter_seg_id}", metric={"type": m, "question_id": q.question_id}, filter=segments_by_id[filter_seg_id].definition))
+            cuts.append(
+                CutSpec(
+                    cut_id=f"STRESS_{cut_counter}_{q.question_id}_{m}_FILTERED_{filter_seg_id}",
+                    metric={"type": m, "question_id": q.question_id},
+                    filter=segments_by_id[filter_seg_id].definition,
+                )
+            )
 
     result = executor.execute_cuts(cuts)
     golden_map = validate_engine.load_golden_data()
@@ -276,28 +377,39 @@ def run_engine_stress_tests(questions, questions_by_id, df):
                 if best_match:
                     total_comparisons += 1
                     expected = best_match["expected_results"]
-                    base_match = (t.base_n == expected["base_n"])
+                    base_match = t.base_n == expected["base_n"]
                     actual_val = validate_engine.get_primary_value(t)
                     expected_val = expected["primary_value"]
                     val_match = True
                     if expected_val is not None:
-                        if actual_val is None: val_match = False
-                        else: val_match = abs(actual_val - expected_val) < 0.01
+                        if actual_val is None:
+                            val_match = False
+                        else:
+                            val_match = abs(actual_val - expected_val) < 0.01
 
                     if base_match and val_match:
                         passed += 1
                         results.append((f"stress: {key}", "PASS", ""))
                     else:
-                        results.append((f"stress: {key}", "FAIL", f"Base: {t.base_n} vs {expected['base_n']}, Val: {actual_val} vs {expected_val}"))
+                        results.append(
+                            (
+                                f"stress: {key}",
+                                "FAIL",
+                                f"Base: {t.base_n} vs {expected['base_n']}, Val: {actual_val} vs {expected_val}",
+                            )
+                        )
 
     return passed, total_comparisons, results
 
+
 def main():
-    console.print(Panel(
-        "[bold blue]DD Analytics Agent: COMPREHENSIVE VALIDATION SUITE[/bold blue]\n"
-        "Executing all tool and integration tests...",
-        border_style="blue",
-    ))
+    console.print(
+        Panel(
+            "[bold blue]DD Analytics Agent: COMPREHENSIVE VALIDATION SUITE[/bold blue]\n"
+            "Executing all tool and integration tests...",
+            border_style="blue",
+        )
+    )
 
     # General Setup
     demo_dir = Path(__file__).parent.parent / "data/demo"
@@ -317,11 +429,15 @@ def main():
     ) as progress:
 
         t1 = progress.add_task("[cyan]Testing Cut Planner...", total=1)
-        cp_score, cp_total, cp_details = run_cut_planning_tests(questions, questions_by_id, df, cut_p, exec_e)
+        cp_score, cp_total, cp_details = run_cut_planning_tests(
+            questions, questions_by_id, df, cut_p, exec_e
+        )
         progress.update(t1, advance=1)
 
         t2 = progress.add_task("[magenta]Testing Segment Builder...", total=1)
-        sb_score, sb_total, sb_details = run_segment_builder_tests(questions, questions_by_id, df, seg_b)
+        sb_score, sb_total, sb_details = run_segment_builder_tests(
+            questions, questions_by_id, df, seg_b
+        )
         progress.update(t2, advance=1)
 
         t3 = progress.add_task("[green]Testing High-Level Planner...", total=1)
@@ -384,12 +500,16 @@ def main():
     overall_passed = cp_score + sb_score + hlp_score + e2e_score + ee_score
     pct = (overall_passed / overall_total) * 100
 
-    console.print(Panel(
-        summary + f"\n[bold white]OVERALL ACCURACY: {pct:.1f}% ({overall_passed} / {overall_total})[/bold white]",
-        title="[bold green]FINAL VALIDATION SUMMARY[/bold green]",
-        border_style="green",
-        expand=False
-    ))
+    console.print(
+        Panel(
+            summary
+            + f"\n[bold white]OVERALL ACCURACY: {pct:.1f}% ({overall_passed} / {overall_total})[/bold white]",
+            title="[bold green]FINAL VALIDATION SUMMARY[/bold green]",
+            border_style="green",
+            expand=False,
+        )
+    )
+
 
 if __name__ == "__main__":
     main()

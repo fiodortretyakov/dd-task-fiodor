@@ -1,17 +1,17 @@
-
 import json
+import sys
 from pathlib import Path
+
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
-import sys
 
 # Add src to path relative to this script
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from dd_agent.contracts.questions import Question
-from dd_agent.tools.high_level_planner import HighLevelPlanner
 from dd_agent.tools.base import ToolContext
+from dd_agent.tools.high_level_planner import HighLevelPlanner
 
 console = Console()
 
@@ -19,11 +19,14 @@ console = Console()
 with open(Path(__file__).parent / "golden_data/golden_high_level.json", "r") as f:
     SCENARIOS = json.load(f)
 
+
 def main():
-    console.print(Panel.fit(
-        "[bold blue]DD Analytics Agent - High-Level Planner expanded Validation (50 Checks)[/bold blue]",
-        border_style="blue",
-    ))
+    console.print(
+        Panel.fit(
+            "[bold blue]DD Analytics Agent - High-Level Planner expanded Validation (50 Checks)[/bold blue]",
+            border_style="blue",
+        )
+    )
 
     # 1. Setup
     demo_dir = Path(__file__).parent.parent / "data/demo"
@@ -85,10 +88,11 @@ def main():
 
         table.add_row(name, f"{scenario_passed} / {len(expectations) + 1}", ", ".join(details))
         passed_count += scenario_passed
-        total_checks += (len(expectations) + 1)
+        total_checks += len(expectations) + 1
 
     console.print(table)
     console.print(f"\n[bold]FINAL SCORE: {passed_count} / {total_checks} checks passed[/bold]")
+
 
 if __name__ == "__main__":
     main()

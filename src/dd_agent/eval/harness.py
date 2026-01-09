@@ -222,9 +222,5 @@ class EvalHarness:
             "passed": passed,
             "failed": failed,
             "pass_rate": passed / len(results) if results else 0,
-            "failures": [
-                {"name": r.name, "message": r.message}
-                for r in results
-                if not r.passed
-            ],
+            "failures": [{"name": r.name, "message": r.message} for r in results if not r.passed],
         }

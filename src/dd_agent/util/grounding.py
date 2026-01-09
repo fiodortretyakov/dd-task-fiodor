@@ -28,24 +28,15 @@ def find_matching_questions(
     search_lower = search_term.lower().strip()
 
     # Exact ID match (highest priority)
-    candidates_exact = [
-        q for q in questions
-        if q.question_id.lower() == search_lower
-    ]
+    candidates_exact = [q for q in questions if q.question_id.lower() == search_lower]
     if candidates_exact:
         return candidates_exact[0]
 
     # Label prefix match
-    candidates_prefix = [
-        q for q in questions
-        if q.label.lower().startswith(search_lower)
-    ]
+    candidates_prefix = [q for q in questions if q.label.lower().startswith(search_lower)]
 
     # Label contains match
-    candidates_contains = [
-        q for q in questions
-        if search_lower in q.label.lower()
-    ]
+    candidates_contains = [q for q in questions if search_lower in q.label.lower()]
 
     # Combine with priority
     candidates = candidates_prefix or candidates_contains
@@ -57,10 +48,7 @@ def find_matching_questions(
         return candidates[0]
 
     # Multiple matches - need disambiguation
-    candidate_dicts = [
-        {"id": q.question_id, "label": q.label, "obj": q}
-        for q in candidates
-    ]
+    candidate_dicts = [{"id": q.question_id, "label": q.label, "obj": q} for q in candidates]
 
     selected = resolve_ambiguity(
         candidates=candidate_dicts,
@@ -97,26 +85,17 @@ def find_matching_option(
     search_lower = search_term.lower().strip()
 
     # Exact code match (convert to string for comparison)
-    candidates_code = [
-        o for o in question.options
-        if str(o.code).lower() == search_lower
-    ]
+    candidates_code = [o for o in question.options if str(o.code).lower() == search_lower]
     if candidates_code:
         return candidates_code[0].code
 
     # Label exact match
-    candidates_label = [
-        o for o in question.options
-        if o.label.lower() == search_lower
-    ]
+    candidates_label = [o for o in question.options if o.label.lower() == search_lower]
     if candidates_label:
         return candidates_label[0].code
 
     # Label contains match
-    candidates_contains = [
-        o for o in question.options
-        if search_lower in o.label.lower()
-    ]
+    candidates_contains = [o for o in question.options if search_lower in o.label.lower()]
 
     if not candidates_contains:
         return None
@@ -127,8 +106,7 @@ def find_matching_option(
 
     # Multiple matches
     candidate_dicts = [
-        {"id": str(o.code), "label": o.label, "obj": o.code}
-        for o in candidates_contains
+        {"id": str(o.code), "label": o.label, "obj": o.code} for o in candidates_contains
     ]
 
     selected = resolve_ambiguity(

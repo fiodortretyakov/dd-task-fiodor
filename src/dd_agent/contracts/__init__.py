@@ -1,6 +1,5 @@
 """Contracts package - Pydantic models for the DD Agent."""
 
-from dd_agent.contracts.questions import Option, Question, QuestionType
 from dd_agent.contracts.filters import (
     And,
     FilterExpr,
@@ -12,6 +11,7 @@ from dd_agent.contracts.filters import (
     PredicateIn,
     PredicateRange,
 )
+from dd_agent.contracts.questions import Option, Question, QuestionType
 from dd_agent.contracts.specs import (
     AnalysisIntent,
     CutSpec,

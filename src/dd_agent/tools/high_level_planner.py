@@ -79,9 +79,7 @@ class HighLevelPlanner(Tool):
 
         return "\n".join(lines)
 
-    def _validate_plan(
-        self, plan: HighLevelPlan, ctx: ToolContext
-    ) -> list[ToolMessage]:
+    def _validate_plan(self, plan: HighLevelPlan, ctx: ToolContext) -> list[ToolMessage]:
         """Validate the generated plan against available questions."""
         errors = []
 
@@ -104,6 +102,7 @@ class HighLevelPlanner(Tool):
         for segment in plan.suggested_segments:
             # Import here to avoid circular dependency
             from dd_agent.contracts.validate import validate_segment_spec
+
             segment_errors = validate_segment_spec(segment, ctx.questions_by_id)
             errors.extend(segment_errors)
 

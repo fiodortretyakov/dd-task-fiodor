@@ -149,10 +149,7 @@ class Pipeline:
             result.cuts_planned.append(cut_spec)
 
             # Save plan and trace
-            run_store.save_artifact(
-                "cut_spec.json",
-                cut_spec.model_dump(exclude_none=True)
-            )
+            run_store.save_artifact("cut_spec.json", cut_spec.model_dump(exclude_none=True))
             if cut_output.trace:
                 run_store.save_artifact("trace.json", cut_output.trace)
 
@@ -259,7 +256,7 @@ class Pipeline:
             if plan.suggested_segments:
                 run_store.save_artifact(
                     "segments.json",
-                    [s.model_dump(exclude_none=True) for s in plan.suggested_segments]
+                    [s.model_dump(exclude_none=True) for s in plan.suggested_segments],
                 )
 
             # Plan and execute cuts for each intent
@@ -269,11 +266,15 @@ class Pipeline:
                 cut_output = self.agent.plan_cut(intent.description)
 
                 if not cut_output.ok or cut_output.data is None:
-                    result.cuts_failed.append({
-                        "intent_id": intent.intent_id,
-                        "description": intent.description,
-                        "error": str(cut_output.errors[0]) if cut_output.errors else "Unknown error"
-                    })
+                    result.cuts_failed.append(
+                        {
+                            "intent_id": intent.intent_id,
+                            "description": intent.description,
+                            "error": (
+                                str(cut_output.errors[0]) if cut_output.errors else "Unknown error"
+                            ),
+                        }
+                    )
                     continue
 
                 cut_spec = cut_output.data
@@ -283,8 +284,7 @@ class Pipeline:
             # Save cuts
             if all_cuts:
                 run_store.save_artifact(
-                    "cuts.json",
-                    [c.model_dump(exclude_none=True) for c in all_cuts]
+                    "cuts.json", [c.model_dump(exclude_none=True) for c in all_cuts]
                 )
 
             # Execute all cuts

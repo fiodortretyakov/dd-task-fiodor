@@ -70,9 +70,7 @@ class SegmentBuilder(Tool):
                 model=SegmentBuilderResult,
             )
         except Exception as e:
-            return ToolOutput.failure(
-                errors=[err("llm_error", f"LLM call failed: {str(e)}")]
-            )
+            return ToolOutput.failure(errors=[err("llm_error", f"LLM call failed: {str(e)}")])
 
         # If the LLM indicated failure
         if not result.ok:
@@ -80,17 +78,20 @@ class SegmentBuilder(Tool):
             if result.errors:
                 for error in result.errors:
                     if isinstance(error, dict):
-                        llm_errors.append(err(
-                            error.get("code", "llm_error"),
-                            error.get("message", "Unknown error"),
-                            **error.get("context", {})
-                        ))
+                        llm_errors.append(
+                            err(
+                                error.get("code", "llm_error"),
+                                error.get("message", "Unknown error"),
+                                **error.get("context", {}),
+                            )
+                        )
                     else:
                         llm_errors.append(error)
 
             return ToolOutput.failure(
-                errors=llm_errors or [err("unmappable", "Request could not be mapped to available questions")],
-                trace=trace
+                errors=llm_errors
+                or [err("unmappable", "Request could not be mapped to available questions")],
+                trace=trace,
             )
 
         # Validate the segment spec

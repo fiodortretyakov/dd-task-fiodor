@@ -22,11 +22,13 @@ def demo():
     """Run the autoplan flow on the demo dataset."""
     init_default_logging()
 
-    console.print(Panel.fit(
-        "[bold blue]DD Analytics Agent Demo[/bold blue]\n"
-        "Running autoplan on demo dataset...",
-        border_style="blue",
-    ))
+    console.print(
+        Panel.fit(
+            "[bold blue]DD Analytics Agent Demo[/bold blue]\n"
+            "Running autoplan on demo dataset...",
+            border_style="blue",
+        )
+    )
 
     # Check for demo data
     demo_dir = Path("data/demo")
@@ -102,11 +104,13 @@ def interactive(
         console.print("See .env.example for required configuration.")
         raise typer.Exit(1)
 
-    console.print(Panel.fit(
-        "[bold blue]DD Analytics Agent - Interactive Mode[/bold blue]\n"
-        "Type your analysis requests. Type 'help' for guidance, 'quit' to exit.",
-        border_style="blue",
-    ))
+    console.print(
+        Panel.fit(
+            "[bold blue]DD Analytics Agent - Interactive Mode[/bold blue]\n"
+            "Type your analysis requests. Type 'help' for guidance, 'quit' to exit.",
+            border_style="blue",
+        )
+    )
 
     try:
         pipeline = Pipeline(data_dir=data, interactive=True)
@@ -124,6 +128,7 @@ def interactive(
 
                 # Check for off-scope input
                 from dd_agent.util.interaction import handle_off_scope_input
+
                 if handle_off_scope_input(prompt):
                     continue
 
@@ -181,11 +186,12 @@ def run(
     if handle_off_scope_input(prompt):
         raise typer.Exit(0)
 
-    console.print(Panel.fit(
-        f"[bold blue]DD Analytics Agent[/bold blue]\n"
-        f"Running: {prompt}",
-        border_style="blue",
-    ))
+    console.print(
+        Panel.fit(
+            f"[bold blue]DD Analytics Agent[/bold blue]\n" f"Running: {prompt}",
+            border_style="blue",
+        )
+    )
 
     from dd_agent.config import settings
 
@@ -223,9 +229,7 @@ def run(
 @app.command()
 def autoplan(
     data: Path = typer.Option(..., "--data", "-d", help="Path to data directory"),
-    scope: Optional[Path] = typer.Option(
-        None, "--scope", "-s", help="Path to scope.md file"
-    ),
+    scope: Optional[Path] = typer.Option(None, "--scope", "-s", help="Path to scope.md file"),
     max_cuts: int = typer.Option(20, "--max-cuts", "-m", help="Maximum cuts to execute"),
     no_interactive: bool = typer.Option(
         False, "--no-interactive", help="Disable interactive ambiguity resolution"
@@ -234,11 +238,12 @@ def autoplan(
     """Generate and execute a full analysis plan."""
     init_default_logging()
 
-    console.print(Panel.fit(
-        "[bold blue]DD Analytics Agent - Autoplan[/bold blue]\n"
-        f"Data: {data}",
-        border_style="blue",
-    ))
+    console.print(
+        Panel.fit(
+            "[bold blue]DD Analytics Agent - Autoplan[/bold blue]\n" f"Data: {data}",
+            border_style="blue",
+        )
+    )
 
     from dd_agent.config import settings
 
@@ -289,6 +294,7 @@ def validate(
     if questions_path.exists():
         try:
             import json
+
             from dd_agent.contracts.questions import Question
 
             with open(questions_path) as f:
@@ -346,10 +352,12 @@ def eval(
     """Run evaluation cases against the pipeline."""
     init_default_logging()
 
-    console.print(Panel.fit(
-        "[bold blue]DD Analytics Agent - Evaluation[/bold blue]",
-        border_style="blue",
-    ))
+    console.print(
+        Panel.fit(
+            "[bold blue]DD Analytics Agent - Evaluation[/bold blue]",
+            border_style="blue",
+        )
+    )
 
     console.print("[yellow]Evaluation harness not yet implemented.[/yellow]")
     console.print("See eval/ directory for the evaluation framework.")

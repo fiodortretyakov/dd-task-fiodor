@@ -12,16 +12,12 @@ class SegmentSpec(BaseModel):
 
     segment_id: str = Field(..., description="Unique identifier for this segment")
     name: str = Field(..., description="Human-readable name for the segment")
-    definition: FilterExpr = Field(
-        ..., description="Filter expression defining segment membership"
-    )
+    definition: FilterExpr = Field(..., description="Filter expression defining segment membership")
     intended_partition: bool = Field(
         default=False,
         description="If true, this segment is part of a mutually exclusive partition",
     )
-    notes: Optional[str] = Field(
-        default=None, description="Optional notes about the segment"
-    )
+    notes: Optional[str] = Field(default=None, description="Optional notes about the segment")
 
 
 class MetricSpec(BaseModel):
@@ -58,9 +54,7 @@ class CutSpec(BaseModel):
     filter: Optional[FilterExpr] = Field(
         default=None, description="Optional filter to apply before computation"
     )
-    weight_column: Optional[str] = Field(
-        default=None, description="Column name for weighting"
-    )
+    weight_column: Optional[str] = Field(default=None, description="Column name for weighting")
     output: dict = Field(
         default_factory=dict,
         description="Output configuration (e.g., format preferences)",
@@ -71,27 +65,19 @@ class AnalysisIntent(BaseModel):
     """A high-level analysis intent from the planner."""
 
     intent_id: str = Field(..., description="Unique identifier for this intent")
-    description: str = Field(
-        ..., description="Natural language description of the analysis"
-    )
+    description: str = Field(..., description="Natural language description of the analysis")
     segments_needed: list[str] = Field(
         default_factory=list,
         description="Hints about segments that might be needed",
     )
-    priority: int = Field(
-        default=1, description="Priority level (1=high, 3=low)"
-    )
+    priority: int = Field(default=1, description="Priority level (1=high, 3=low)")
 
 
 class HighLevelPlan(BaseModel):
     """The output of the high-level planner."""
 
-    intents: list[AnalysisIntent] = Field(
-        ..., description="List of analysis intents to execute"
-    )
-    rationale: str = Field(
-        ..., description="Explanation of the planning decisions"
-    )
+    intents: list[AnalysisIntent] = Field(..., description="List of analysis intents to execute")
+    rationale: str = Field(..., description="Explanation of the planning decisions")
     suggested_segments: list[SegmentSpec] = Field(
         default_factory=list,
         description="Segments suggested for use across multiple intents",

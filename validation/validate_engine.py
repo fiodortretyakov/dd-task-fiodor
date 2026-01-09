@@ -4,28 +4,32 @@ import json
 import random
 import sys
 from pathlib import Path
-import pandas as pd
-import numpy as np
 from typing import Any, Optional
+
+import numpy as np
+import pandas as pd
 
 # Add src to path relative to this script
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
-from dd_agent.engine.executor import Executor
 from dd_agent.contracts.questions import Question, QuestionType
-from dd_agent.contracts.specs import CutSpec, MetricSpec, DimensionSpec, SegmentSpec
+from dd_agent.contracts.specs import CutSpec, DimensionSpec, MetricSpec, SegmentSpec
+from dd_agent.engine.executor import Executor
+
 
 def load_questions(json_path: str) -> list[Question]:
-    with open(json_path, 'r') as f:
+    with open(json_path, "r") as f:
         data = json.load(f)
     questions = []
     for q_data in data:
         questions.append(Question(**q_data))
     return questions
 
+
 def set_seed(seed=42):
     random.seed(seed)
     np.random.seed(seed)
+
 
 def generate_dummy_data(questions: list[Question], n_rows=100) -> pd.DataFrame:
     set_seed()
@@ -55,9 +59,15 @@ def generate_dummy_data(questions: list[Question], n_rows=100) -> pd.DataFrame:
         data.append(row)
     return pd.DataFrame(data)
 
+
 def get_valid_metrics(q: Question) -> list[str]:
     valid = []
-    if q.type in [QuestionType.single_choice, QuestionType.multi_choice, QuestionType.likert_1_5, QuestionType.likert_1_7]:
+    if q.type in [
+        QuestionType.single_choice,
+        QuestionType.multi_choice,
+        QuestionType.likert_1_5,
+        QuestionType.likert_1_7,
+    ]:
         valid.append("frequency")
     if q.type in [QuestionType.numeric, QuestionType.nps_0_10]:
         valid.append("mean")
@@ -70,6 +80,7 @@ def get_valid_metrics(q: Question) -> list[str]:
     if q.type == QuestionType.nps_0_10:
         valid.append("nps")
     return valid
+
 
 def load_golden_data(path: Optional[str] = None) -> dict:
     if path is None:
@@ -87,7 +98,7 @@ def load_golden_data(path: Optional[str] = None) -> dict:
             key = (
                 plan["metric_type"],
                 plan["question_id"],
-                tuple(sorted(plan.get("dimension_ids", [])))
+                tuple(sorted(plan.get("dimension_ids", []))),
             )
             if key not in golden_map:
                 golden_map[key] = []
@@ -95,6 +106,7 @@ def load_golden_data(path: Optional[str] = None) -> dict:
         return golden_map
     except FileNotFoundError:
         return {}
+
 
 def find_best_golden_match(cut_spec, table, golden_entries):
     """
@@ -114,12 +126,14 @@ def find_best_golden_match(cut_spec, table, golden_entries):
 
         if is_filtered == expected_is_filtered:
             # Check if this specific entry matches the calculated data
-            base_match = (table.base_n == expected["base_n"])
+            base_match = table.base_n == expected["base_n"]
             expected_val = expected["primary_value"]
             val_match = True
             if expected_val is not None:
-                if actual_val is None: val_match = False
-                else: val_match = abs(actual_val - expected_val) < 0.01
+                if actual_val is None:
+                    val_match = False
+                else:
+                    val_match = abs(actual_val - expected_val) < 0.01
 
             if base_match and val_match:
                 return entry
@@ -135,6 +149,7 @@ def find_best_golden_match(cut_spec, table, golden_entries):
     # it's a different analytical request. Do not compare.
     return None
 
+
 def get_primary_value(table) -> Optional[float]:
     res_df = table.get_dataframe()
     if res_df is not None and not res_df.empty:
@@ -146,6 +161,7 @@ def get_primary_value(table) -> Optional[float]:
             val = res_df["metric"].iloc[0]
             return float(val) if isinstance(val, (int, float)) else None
     return None
+
 
 def main():
     base_dir = Path(__file__).parent.parent
@@ -162,12 +178,12 @@ def main():
         "SEG_YOUNG": SegmentSpec(
             segment_id="SEG_YOUNG",
             name="Young Respondents",
-            definition={"kind": "range", "question_id": "Q_AGE", "min": 18, "max": 35}
+            definition={"kind": "range", "question_id": "Q_AGE", "min": 18, "max": 35},
         ),
         "SEG_HIGH_INCOME": SegmentSpec(
             segment_id="SEG_HIGH_INCOME",
             name="High Income",
-            definition={"kind": "in", "question_id": "Q_INCOME", "values": ["HIGH", "VHIGH"]}
+            definition={"kind": "in", "question_id": "Q_INCOME", "values": ["HIGH", "VHIGH"]},
         ),
         "SEG_MALE_NORTH": SegmentSpec(
             segment_id="SEG_MALE_NORTH",
@@ -176,9 +192,9 @@ def main():
                 "kind": "and",
                 "children": [
                     {"kind": "eq", "question_id": "Q_GENDER", "value": "M"},
-                    {"kind": "eq", "question_id": "Q_REGION", "value": "NORTH"}
-                ]
-            }
+                    {"kind": "eq", "question_id": "Q_REGION", "value": "NORTH"},
+                ],
+            },
         ),
         "SEG_TECH_ACTIVE": SegmentSpec(
             segment_id="SEG_TECH_ACTIVE",
@@ -186,16 +202,16 @@ def main():
             definition={
                 "kind": "contains_any",
                 "question_id": "Q_FEATURES_USED",
-                "values": ["API", "MOBILE"]
-            }
+                "values": ["API", "MOBILE"],
+            },
         ),
         "SEG_NOT_LOW_INCOME": SegmentSpec(
             segment_id="SEG_NOT_LOW_INCOME",
             name="Excluded Low Income",
             definition={
                 "kind": "not",
-                "child": {"kind": "eq", "question_id": "Q_INCOME", "value": "LOW"}
-            }
+                "child": {"kind": "eq", "question_id": "Q_INCOME", "value": "LOW"},
+            },
         ),
         "SEG_OR_CONDITION": SegmentSpec(
             segment_id="SEG_OR_CONDITION",
@@ -204,56 +220,68 @@ def main():
                 "kind": "or",
                 "children": [
                     {"kind": "range", "question_id": "Q_AGE", "min": 18, "max": 25},
-                    {"kind": "in", "question_id": "Q_INCOME", "values": ["VHIGH"]}
-                ]
-            }
-        )
+                    {"kind": "in", "question_id": "Q_INCOME", "values": ["VHIGH"]},
+                ],
+            },
+        ),
     }
-
 
     executor = Executor(df, questions_by_id, segments_by_id=segments_by_id)
     cuts = []
-    dim_candidates = [q.question_id for q in questions if q.type == QuestionType.single_choice and q.question_id != "Q_RESP_ID"]
+    dim_candidates = [
+        q.question_id
+        for q in questions
+        if q.type == QuestionType.single_choice and q.question_id != "Q_RESP_ID"
+    ]
 
     # User requested example
-    cuts.append(CutSpec(
-        cut_id="USER_REQ_AGE_BY_INCOME",
-        metric=MetricSpec(type="mean", question_id="Q_AGE"),
-        dimensions=[DimensionSpec(kind="question", id="Q_INCOME")]
-    ))
+    cuts.append(
+        CutSpec(
+            cut_id="USER_REQ_AGE_BY_INCOME",
+            metric=MetricSpec(type="mean", question_id="Q_AGE"),
+            dimensions=[DimensionSpec(kind="question", id="Q_INCOME")],
+        )
+    )
 
     cut_counter = 0
     for q in questions:
         metrics = get_valid_metrics(q)
         for m in metrics:
             cut_counter += 1
-            cuts.append(CutSpec(
-                cut_id=f"CUT_{cut_counter}_{q.question_id}_{m}",
-                metric=MetricSpec(type=m, question_id=q.question_id)
-            ))
+            cuts.append(
+                CutSpec(
+                    cut_id=f"CUT_{cut_counter}_{q.question_id}_{m}",
+                    metric=MetricSpec(type=m, question_id=q.question_id),
+                )
+            )
             dimension_id = dim_candidates[cut_counter % len(dim_candidates)]
             if dimension_id != q.question_id:
-                cuts.append(CutSpec(
-                    cut_id=f"CUT_{cut_counter}_{q.question_id}_{m}_BY_{dimension_id}",
-                    metric=MetricSpec(type=m, question_id=q.question_id),
-                    dimensions=[DimensionSpec(kind="question", id=dimension_id)]
-                ))
+                cuts.append(
+                    CutSpec(
+                        cut_id=f"CUT_{cut_counter}_{q.question_id}_{m}_BY_{dimension_id}",
+                        metric=MetricSpec(type=m, question_id=q.question_id),
+                        dimensions=[DimensionSpec(kind="question", id=dimension_id)],
+                    )
+                )
             # Cross-tab by Segment (Cycle through all segments)
             segment_id = list(segments_by_id.keys())[cut_counter % len(segments_by_id)]
-            cuts.append(CutSpec(
-                cut_id=f"CUT_{cut_counter}_{q.question_id}_{m}_BY_{segment_id}",
-                metric=MetricSpec(type=m, question_id=q.question_id),
-                dimensions=[DimensionSpec(kind="segment", id=segment_id)]
-            ))
+            cuts.append(
+                CutSpec(
+                    cut_id=f"CUT_{cut_counter}_{q.question_id}_{m}_BY_{segment_id}",
+                    metric=MetricSpec(type=m, question_id=q.question_id),
+                    dimensions=[DimensionSpec(kind="segment", id=segment_id)],
+                )
+            )
 
             # Filtered Metric (Cycle through all segments)
             filter_seg_id = list(segments_by_id.keys())[(cut_counter + 1) % len(segments_by_id)]
-            cuts.append(CutSpec(
-                cut_id=f"CUT_{cut_counter}_{q.question_id}_{m}_FILTERED_{filter_seg_id}",
-                metric=MetricSpec(type=m, question_id=q.question_id),
-                filter=segments_by_id[filter_seg_id].definition
-            ))
-
+            cuts.append(
+                CutSpec(
+                    cut_id=f"CUT_{cut_counter}_{q.question_id}_{m}_FILTERED_{filter_seg_id}",
+                    metric=MetricSpec(type=m, question_id=q.question_id),
+                    filter=segments_by_id[filter_seg_id].definition,
+                )
+            )
 
     print(f"Generated {len(cuts)} cuts. Executing...")
     result = executor.execute_cuts(cuts)
@@ -280,7 +308,7 @@ def main():
                         golden_comparisons += 1
                         expected = best_match["expected_results"]
 
-                        base_match = (t.base_n == expected["base_n"])
+                        base_match = t.base_n == expected["base_n"]
                         actual_val = get_primary_value(t)
                         expected_val = expected["primary_value"]
 
@@ -301,14 +329,18 @@ def main():
     warning_free_rate = (passed_no_warnings / total_cuts) * 100 if total_cuts > 0 else 0
     golden_rate = (golden_matches / golden_comparisons) * 100 if golden_comparisons > 0 else 0
 
-    print("\n" + "="*50)
+    print("\n" + "=" * 50)
     print("ANALYSIS EXECUTION SUMMARY")
-    print("="*50)
+    print("=" * 50)
     print(f"Total Cuts Attempted:      {total_cuts}")
     print(f"Execution Success Rate:    {successful_runs}/{total_cuts} ({run_rate:.1f}%)")
-    print(f"Warning-Free Rate:         {passed_no_warnings}/{total_cuts} ({warning_free_rate:.1f}%)")
+    print(
+        f"Warning-Free Rate:         {passed_no_warnings}/{total_cuts} ({warning_free_rate:.1f}%)"
+    )
     if golden_comparisons > 0:
-        print(f"Golden Data Pass Rate:     {golden_matches}/{golden_comparisons} ({golden_rate:.1f}%)")
+        print(
+            f"Golden Data Pass Rate:     {golden_matches}/{golden_comparisons} ({golden_rate:.1f}%)"
+        )
         print(f"  (Compared {golden_comparisons} cuts against predefined golden data)")
     else:
         print("Golden Data Pass Rate:     N/A (No matching golden data found)")
@@ -322,7 +354,7 @@ def main():
         print(f"\nNote: {warning_count} cuts generated warnings (likely low base size).")
         print(f"Thresholds: min_base={executor.min_base_size}, warn_base={executor.warn_base_size}")
         print(f"Total rows in dummy data: 100 (Seed: 42)")
-    print("="*50 + "\n")
+    print("=" * 50 + "\n")
 
     md_output_path = str(base_dir / "analysis_results.md")
     print(f"Exporting results to {md_output_path}...")
@@ -351,21 +383,29 @@ def main():
                     best_match = find_best_golden_match(cut_spec, t, golden_map[key])
                     if best_match:
                         expected = best_match["expected_results"]
-                        base_match = (t.base_n == expected["base_n"])
+                        base_match = t.base_n == expected["base_n"]
                         actual_val = get_primary_value(t)
                         expected_val = expected["primary_value"]
 
                         val_match = True
                         if expected_val is not None:
-                            if actual_val is None: val_match = False
-                            else: val_match = abs(actual_val - expected_val) < 0.01
+                            if actual_val is None:
+                                val_match = False
+                            else:
+                                val_match = abs(actual_val - expected_val) < 0.01
 
                         match_status = "✅ PASS" if (base_match and val_match) else "❌ FAIL"
-                        f.write(f"- **Golden Comparison**: {match_status} (Prompt: '{best_match['prompt']}')\n")
+                        f.write(
+                            f"- **Golden Comparison**: {match_status} (Prompt: '{best_match['prompt']}')\n"
+                        )
                         if not base_match:
-                            f.write(f"  - Base N Mismatch: Expected {expected['base_n']}, Got {t.base_n}\n")
+                            f.write(
+                                f"  - Base N Mismatch: Expected {expected['base_n']}, Got {t.base_n}\n"
+                            )
                         if not val_match:
-                            f.write(f"  - Value Mismatch: Expected {expected_val}, Got {actual_val}\n")
+                            f.write(
+                                f"  - Value Mismatch: Expected {expected_val}, Got {actual_val}\n"
+                            )
 
             if t.warnings:
                 f.write("- **Warnings**:\n")
@@ -380,6 +420,7 @@ def main():
             f.write("\n---\n\n")
 
     print(f"Success! Results written to {md_output_path}")
+
 
 if __name__ == "__main__":
     main()

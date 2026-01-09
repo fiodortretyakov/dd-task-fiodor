@@ -5,9 +5,9 @@ from unittest.mock import patch
 
 import pandas as pd
 
+from dd_agent.contracts.filters import PredicateRange
 from dd_agent.contracts.questions import Question
 from dd_agent.contracts.specs import CutSpec, MetricSpec, SegmentSpec
-from dd_agent.contracts.filters import PredicateRange
 from dd_agent.engine.executor import Executor
 from dd_agent.tools.base import ToolContext
 
@@ -205,11 +205,7 @@ class TestMockLLMIntegration:
             definition=PredicateRange(question_id="Q_AGE", min=18, max=30),
         )
 
-        mock_result = SegmentBuilderResult(
-            ok=True,
-            segment=mock_segment,
-            errors=[]
-        )
+        mock_result = SegmentBuilderResult(ok=True, segment=mock_segment, errors=[])
 
         with patch("dd_agent.tools.segment_builder.chat_structured_pydantic") as mock_llm:
             mock_llm.return_value = (mock_result, {"model": "mock"})
