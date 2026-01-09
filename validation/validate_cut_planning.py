@@ -15,7 +15,7 @@ sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from dd_agent.engine.executor import Executor
 from dd_agent.contracts.questions import Question, QuestionType
-from dd_agent.contracts.specs import SegmentSpec, CutSpec
+from dd_agent.contracts.specs import SegmentSpec
 from dd_agent.tools.cut_planner import CutPlanner
 from dd_agent.tools.base import ToolContext
 
@@ -106,18 +106,21 @@ def main():
                 status = "PASS"
             else:
                 cut_spec = res.data
-                plan_match = (
-                    cut_spec.metric.type == expected_plan["metric_type"] and
-                    cut_spec.metric.question_id == expected_plan["question_id"]
-                )
-                if not plan_match:
-                    reason = f"Plan mismatch (Got {cut_spec.metric.type} on {cut_spec.metric.question_id})"
+                if cut_spec is None:
+                    reason = "Missing cut spec data"
                 else:
-                    exec_res = executor.execute_cuts([cut_spec])
-                    if exec_res.errors:
-                        reason = f"Execution error: {exec_res.errors[0]['error']}"
+                    plan_match = (
+                        cut_spec.metric.type == expected_plan["metric_type"] and
+                        cut_spec.metric.question_id == expected_plan["question_id"]
+                    )
+                    if not plan_match:
+                        reason = f"Plan mismatch (Got {cut_spec.metric.type} on {cut_spec.metric.question_id})"
                     else:
-                        table_res = exec_res.tables[0]
+                            exec_res = executor.execute_cuts([cut_spec])
+                        if exec_res.errors:
+                            reason = f"Execution error: {exec_res.errors[0]['error']}"
+                        else:
+                            table_res = exec_res.tables[0]
                         if table_res.base_n != expected_res["base_n"]:
                             reason = f"Data mismatch (Base N: {table_res.base_n}, Expected: {expected_res['base_n']})"
                         else:

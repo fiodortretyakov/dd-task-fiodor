@@ -1,7 +1,7 @@
 """Evaluation harness for running test cases."""
 
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import yaml
 
@@ -21,7 +21,7 @@ class EvalHarness:
     def __init__(
         self,
         questions: list[Question],
-        responses_df: "pd.DataFrame",
+        responses_df: pd.DataFrame,
     ):
         """Initialize the evaluation harness.
 

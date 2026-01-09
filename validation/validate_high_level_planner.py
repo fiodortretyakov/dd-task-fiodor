@@ -1,6 +1,5 @@
 
 import json
-import random
 from pathlib import Path
 from rich.console import Console
 from rich.panel import Panel
@@ -31,10 +30,10 @@ def main():
     questions = [Question(**q) for q in json.load(open(demo_dir / "questions.json"))]
     questions_by_id = {q.question_id: q for q in questions}
     planner = HighLevelPlanner()
-    
+
     passed_count = 0
     total_checks = 0
-    
+
     table = Table(title="HLP Multi-Scenario Results")
     table.add_column("Scenario")
     table.add_column("Passed Checks", justify="center")
@@ -44,38 +43,38 @@ def main():
         name = scenario["name"]
         scope_text = scenario["scope"]
         expectations = scenario["expectations"]
-        
+
         ctx = ToolContext(questions=questions, questions_by_id=questions_by_id, scope=scope_text)
-        
+
         scenario_passed = 0
         details = []
-        
+
         try:
             res = planner.run(ctx)
             if res.ok:
                 plan = res.data
                 intent_texts = " ".join([i.description.lower() for i in plan.intents])
-                
+
                 # Check 1: At least 5 intents
                 if len(plan.intents) >= 5:
                     scenario_passed += 1
                 else:
                     details.append("Too few intents")
-                
+
                 # Checks 2-5: Specific keyword mentions from expectations
                 observed_expectations = 0
                 for keyword in expectations:
                     if keyword.lower() in intent_texts:
                         observed_expectations += 1
-                
+
                 # We count each keyword check as an individual check to reach 50
                 # For reporting, let's group them or report them individually
                 # To get 50 checks: 10 scenarios * 5 keywords per scenario = 50 checks.
                 # Plus the "min intents" check makes it 60 checks total if we want.
-                
+
                 scenario_passed += observed_expectations
                 details.append(f"{observed_expectations}/{len(expectations)} keywords found")
-                
+
             else:
                 details.append("Planning failed")
         except Exception as e:

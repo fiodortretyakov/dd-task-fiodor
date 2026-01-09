@@ -48,7 +48,7 @@ def chat_structured(
 
     response = client.chat.completions.create(
         model=deployment,
-        messages=messages,
+        messages=messages,  # type: ignore
         temperature=temp,
         response_format={
             "type": "json_schema",
@@ -64,6 +64,8 @@ def chat_structured(
 
     # Parse the response
     content = response.choices[0].message.content
+    if content is None:
+        raise ValueError("Empty response from LLM")
     parsed = json.loads(content)
 
     # Build trace info

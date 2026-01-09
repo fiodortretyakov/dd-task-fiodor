@@ -8,8 +8,7 @@ from typing import Any, Optional
 import pandas as pd
 
 from dd_agent.contracts.questions import Question
-from dd_agent.contracts.specs import CutSpec, HighLevelPlan, SegmentSpec
-from dd_agent.contracts.tool_output import ToolOutput
+from dd_agent.contracts.specs import CutSpec, HighLevelPlan
 from dd_agent.engine.executor import ExecutionResult
 from dd_agent.orchestrator.agent import Agent
 from dd_agent.run_store import RunStore

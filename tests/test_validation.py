@@ -6,7 +6,6 @@ from dd_agent.contracts.filters import (
     And,
     PredicateContainsAny,
     PredicateEq,
-    PredicateIn,
     PredicateRange,
 )
 from dd_agent.contracts.questions import Option, Question, QuestionType
@@ -26,7 +25,7 @@ class TestMetricCompatibility:
         """NPS metric should only work with nps_0_10 questions."""
         # Valid
         assert check_metric_compatibility("nps", QuestionType.nps_0_10) is None
-        
+
         # Invalid
         result = check_metric_compatibility("nps", QuestionType.likert_1_5)
         assert result is not None
@@ -37,7 +36,7 @@ class TestMetricCompatibility:
         # Valid
         assert check_metric_compatibility("top2box", QuestionType.likert_1_5) is None
         assert check_metric_compatibility("top2box", QuestionType.likert_1_7) is None
-        
+
         # Invalid
         result = check_metric_compatibility("top2box", QuestionType.single_choice)
         assert result is not None

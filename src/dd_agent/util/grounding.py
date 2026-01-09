@@ -3,7 +3,7 @@
 from typing import Optional
 
 from dd_agent.contracts.questions import Question
-from dd_agent.util.interaction import resolve_ambiguity, AmbiguityError
+from dd_agent.util.interaction import resolve_ambiguity
 
 
 def find_matching_questions(

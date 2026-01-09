@@ -1,8 +1,6 @@
 
 import sys
 from pathlib import Path
-import json
-import pandas as pd
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
@@ -11,7 +9,6 @@ from rich.table import Table
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from dd_agent.orchestrator.pipeline import Pipeline
-from dd_agent.contracts.specs import CutSpec
 
 console = Console()
 
@@ -28,7 +25,7 @@ def main():
         return
 
     pipeline = Pipeline(data_dir=demo_dir)
-    
+
     # 1. Test run_single
     console.print("\n[bold]Checking run_single...[/bold]")
     test_prompts = [
@@ -43,7 +40,7 @@ def main():
         "Average purchase intent for new customers",
         "Compare NPS between promoters and detractors (Wait, this is nonsensical as a cut, but good to test handling)"
     ]
-    
+
     single_results = []
     for prompt in test_prompts:
         console.print(f"Testing: \"{prompt}\"")
@@ -61,7 +58,7 @@ def main():
         except Exception as e:
             status = "[red]CRASH[/red]"
             details = str(e)
-            
+
         single_results.append((prompt, status, details))
 
     # 2. Test run_autoplan
@@ -89,12 +86,12 @@ def main():
 
     for prompt, status, details in single_results:
         table.add_row(f"run_single: {prompt}", status, details)
-        
+
     table.add_row("run_autoplan", auto_status, auto_details)
 
     console.print("\n")
     console.print(table)
-    
+
     if "[yellow]CRASH[/yellow]" in [r[1] for r in single_results] or auto_status == "[yellow]CRASH[/yellow]":
         console.print("\n[yellow]💡 Candidates need to implement the pipeline methods in src/dd_agent/orchestrator/pipeline.py[/yellow]")
 

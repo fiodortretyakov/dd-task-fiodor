@@ -31,7 +31,7 @@ def compute_frequency(
     for value, count in counts.items():
         label = None
         if question is not None:
-            label = question.get_option_label(value)
+            label = question.get_option_label(value)  # type: ignore
         if label is None:
             label = str(value)
 

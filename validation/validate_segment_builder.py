@@ -13,9 +13,7 @@ from pathlib import Path
 # Add src to path relative to this script
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
-from dd_agent.engine.executor import Executor
 from dd_agent.contracts.questions import Question, QuestionType
-from dd_agent.contracts.specs import SegmentSpec
 from dd_agent.tools.segment_builder import SegmentBuilder
 from dd_agent.tools.base import ToolContext
 from dd_agent.engine.masks import build_mask
@@ -60,9 +58,9 @@ def main():
     questions = [Question(**q) for q in json.load(open(demo_dir / "questions.json"))]
     questions_by_id = {q.question_id: q for q in questions}
     df = generate_dummy_data(questions)
-    
+
     builder = SegmentBuilder()
-    
+
     # 2. Load Golden Rules
     # 2. Load Golden Rules
     with open(Path(__file__).parent / "golden_data/golden_segments.json", "r") as f:
@@ -78,9 +76,9 @@ def main():
         prompt = case["prompt"]
         expected_ok = case["expected_ok"]
         expected_base_n = case.get("expected_base_n")
-        
+
         ctx = ToolContext(questions=questions, questions_by_id=questions_by_id, prompt=prompt, responses_df=df)
-        
+
         status = "FAIL"
         reason = ""
         try:
@@ -91,7 +89,10 @@ def main():
                 status = "PASS"
             else:
                 # Execution check
-                mask = build_mask(df, res.data.definition, questions_by_id)
+                if res.data is None:
+                    reason = "Missing segment data"
+                else:
+                    mask = build_mask(df, res.data.definition, questions_by_id)
                 actual_base_n = int(mask.sum())
                 if actual_base_n != expected_base_n:
                     reason = f"Data mismatch (Base N: {actual_base_n}, Expected: {expected_base_n})"

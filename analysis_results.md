@@ -4,6 +4,7 @@ Total Cuts Executed: 125
 Errors Encountered: 0
 
 ## Q_AGE -> mean by Question: Q_INCOME
+
 - **Cut ID**: `USER_REQ_AGE_BY_INCOME`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Show the average age broken down by income')
@@ -24,6 +25,7 @@ Errors Encountered: 0
 ---
 
 ## Q_RESP_ID -> mean
+
 - **Cut ID**: `CUT_1_Q_RESP_ID_mean`
 - **Base N**: 100
 
@@ -35,6 +37,7 @@ Errors Encountered: 0
 ---
 
 ## Q_RESP_ID -> mean by Question: Q_REGION
+
 - **Cut ID**: `CUT_1_Q_RESP_ID_mean_BY_Q_REGION`
 - **Base N**: 100
 - **Warnings**:
@@ -56,6 +59,7 @@ Errors Encountered: 0
 ---
 
 ## Q_RESP_ID -> mean by Segment: SEG_HIGH_INCOME
+
 - **Cut ID**: `CUT_1_Q_RESP_ID_mean_BY_SEG_HIGH_INCOME`
 - **Base N**: 100
 - **Warnings**:
@@ -71,6 +75,7 @@ Errors Encountered: 0
 ---
 
 ## Q_RESP_ID -> mean (Filtered)
+
 - **Cut ID**: `CUT_1_Q_RESP_ID_mean_FILTERED_SEG_MALE_NORTH`
 - **Base N**: 2
 - **Warnings**:
@@ -84,6 +89,7 @@ Errors Encountered: 0
 ---
 
 ## Q_AGE -> mean
+
 - **Cut ID**: `CUT_2_Q_AGE_mean`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Average age')
@@ -96,6 +102,7 @@ Errors Encountered: 0
 ---
 
 ## Q_AGE -> mean by Question: Q_INCOME
+
 - **Cut ID**: `CUT_2_Q_AGE_mean_BY_Q_INCOME`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Show the average age broken down by income')
@@ -116,6 +123,7 @@ Errors Encountered: 0
 ---
 
 ## Q_AGE -> mean by Segment: SEG_MALE_NORTH
+
 - **Cut ID**: `CUT_2_Q_AGE_mean_BY_SEG_MALE_NORTH`
 - **Base N**: 100
 - **Warnings**:
@@ -131,6 +139,7 @@ Errors Encountered: 0
 ---
 
 ## Q_AGE -> mean (Filtered)
+
 - **Cut ID**: `CUT_2_Q_AGE_mean_FILTERED_SEG_TECH_ACTIVE`
 - **Base N**: 51
 - **Warnings**:
@@ -144,6 +153,7 @@ Errors Encountered: 0
 ---
 
 ## Q_GENDER -> frequency
+
 - **Cut ID**: `CUT_3_Q_GENDER_frequency`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Frequency of gender')
@@ -159,6 +169,7 @@ Errors Encountered: 0
 ---
 
 ## Q_GENDER -> frequency by Question: Q_USAGE_FREQ
+
 - **Cut ID**: `CUT_3_Q_GENDER_frequency_BY_Q_USAGE_FREQ`
 - **Base N**: 100
 - **Warnings**:
@@ -178,6 +189,7 @@ Errors Encountered: 0
 ---
 
 ## Q_GENDER -> frequency by Segment: SEG_TECH_ACTIVE
+
 - **Cut ID**: `CUT_3_Q_GENDER_frequency_BY_SEG_TECH_ACTIVE`
 - **Base N**: 100
 - **Warnings**:
@@ -193,6 +205,7 @@ Errors Encountered: 0
 ---
 
 ## Q_GENDER -> frequency (Filtered)
+
 - **Cut ID**: `CUT_3_Q_GENDER_frequency_FILTERED_SEG_NOT_LOW_INCOME`
 - **Base N**: 69
 - **Warnings**:
@@ -209,6 +222,7 @@ Errors Encountered: 0
 ---
 
 ## Q_REGION -> frequency
+
 - **Cut ID**: `CUT_4_Q_REGION_frequency`
 - **Base N**: 100
 
@@ -224,6 +238,7 @@ Errors Encountered: 0
 ---
 
 ## Q_REGION -> frequency by Question: Q_TENURE
+
 - **Cut ID**: `CUT_4_Q_REGION_frequency_BY_Q_TENURE`
 - **Base N**: 100
 - **Warnings**:
@@ -241,6 +256,7 @@ Errors Encountered: 0
 ---
 
 ## Q_REGION -> frequency by Segment: SEG_NOT_LOW_INCOME
+
 - **Cut ID**: `CUT_4_Q_REGION_frequency_BY_SEG_NOT_LOW_INCOME`
 - **Base N**: 100
 - **Warnings**:
@@ -256,6 +272,7 @@ Errors Encountered: 0
 ---
 
 ## Q_REGION -> frequency (Filtered)
+
 - **Cut ID**: `CUT_4_Q_REGION_frequency_FILTERED_SEG_OR_CONDITION`
 - **Base N**: 29
 - **Warnings**:
@@ -273,6 +290,7 @@ Errors Encountered: 0
 ---
 
 ## Q_INCOME -> frequency
+
 - **Cut ID**: `CUT_5_Q_INCOME_frequency`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Plan frequency for the 'Excluded Low Income' segment')
@@ -288,6 +306,7 @@ Errors Encountered: 0
 ---
 
 ## Q_INCOME -> frequency by Question: Q_PLAN
+
 - **Cut ID**: `CUT_5_Q_INCOME_frequency_BY_Q_PLAN`
 - **Base N**: 100
 - **Warnings**:
@@ -307,6 +326,7 @@ Errors Encountered: 0
 ---
 
 ## Q_INCOME -> frequency by Segment: SEG_OR_CONDITION
+
 - **Cut ID**: `CUT_5_Q_INCOME_frequency_BY_SEG_OR_CONDITION`
 - **Base N**: 100
 - **Warnings**:
@@ -322,6 +342,7 @@ Errors Encountered: 0
 ---
 
 ## Q_INCOME -> frequency (Filtered)
+
 - **Cut ID**: `CUT_5_Q_INCOME_frequency_FILTERED_SEG_YOUNG`
 - **Base N**: 29
 - **Warnings**:
@@ -338,6 +359,7 @@ Errors Encountered: 0
 ---
 
 ## Q_NPS -> mean
+
 - **Cut ID**: `CUT_6_Q_NPS_mean`
 - **Base N**: 100
 
@@ -349,6 +371,7 @@ Errors Encountered: 0
 ---
 
 ## Q_NPS -> mean by Question: Q_GENDER
+
 - **Cut ID**: `CUT_6_Q_NPS_mean_BY_Q_GENDER`
 - **Base N**: 100
 - **Warnings**:
@@ -368,6 +391,7 @@ Errors Encountered: 0
 ---
 
 ## Q_NPS -> mean by Segment: SEG_YOUNG
+
 - **Cut ID**: `CUT_6_Q_NPS_mean_BY_SEG_YOUNG`
 - **Base N**: 100
 - **Warnings**:
@@ -383,6 +407,7 @@ Errors Encountered: 0
 ---
 
 ## Q_NPS -> mean (Filtered)
+
 - **Cut ID**: `CUT_6_Q_NPS_mean_FILTERED_SEG_HIGH_INCOME`
 - **Base N**: 45
 - **Warnings**:
@@ -396,6 +421,7 @@ Errors Encountered: 0
 ---
 
 ## Q_NPS -> nps
+
 - **Cut ID**: `CUT_7_Q_NPS_nps`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'NPS score for the product')
@@ -408,6 +434,7 @@ Errors Encountered: 0
 ---
 
 ## Q_NPS -> nps by Question: Q_REGION
+
 - **Cut ID**: `CUT_7_Q_NPS_nps_BY_Q_REGION`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Performance of NPS by region')
@@ -430,6 +457,7 @@ Errors Encountered: 0
 ---
 
 ## Q_NPS -> nps by Segment: SEG_HIGH_INCOME
+
 - **Cut ID**: `CUT_7_Q_NPS_nps_BY_SEG_HIGH_INCOME`
 - **Base N**: 100
 - **Warnings**:
@@ -445,6 +473,7 @@ Errors Encountered: 0
 ---
 
 ## Q_NPS -> nps (Filtered)
+
 - **Cut ID**: `CUT_7_Q_NPS_nps_FILTERED_SEG_MALE_NORTH`
 - **Base N**: 2
 - **Warnings**:
@@ -458,6 +487,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> frequency
+
 - **Cut ID**: `CUT_8_Q_OVERALL_SAT_frequency`
 - **Base N**: 100
 
@@ -473,6 +503,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> frequency by Question: Q_INCOME
+
 - **Cut ID**: `CUT_8_Q_OVERALL_SAT_frequency_BY_Q_INCOME`
 - **Base N**: 100
 - **Warnings**:
@@ -492,6 +523,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> frequency by Segment: SEG_MALE_NORTH
+
 - **Cut ID**: `CUT_8_Q_OVERALL_SAT_frequency_BY_SEG_MALE_NORTH`
 - **Base N**: 100
 - **Warnings**:
@@ -507,6 +539,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> frequency (Filtered)
+
 - **Cut ID**: `CUT_8_Q_OVERALL_SAT_frequency_FILTERED_SEG_TECH_ACTIVE`
 - **Base N**: 51
 - **Warnings**:
@@ -524,6 +557,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> mean
+
 - **Cut ID**: `CUT_9_Q_OVERALL_SAT_mean`
 - **Base N**: 100
 
@@ -535,6 +569,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> mean by Question: Q_USAGE_FREQ
+
 - **Cut ID**: `CUT_9_Q_OVERALL_SAT_mean_BY_Q_USAGE_FREQ`
 - **Base N**: 100
 - **Warnings**:
@@ -554,6 +589,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> mean by Segment: SEG_TECH_ACTIVE
+
 - **Cut ID**: `CUT_9_Q_OVERALL_SAT_mean_BY_SEG_TECH_ACTIVE`
 - **Base N**: 100
 - **Warnings**:
@@ -569,6 +605,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> mean (Filtered)
+
 - **Cut ID**: `CUT_9_Q_OVERALL_SAT_mean_FILTERED_SEG_NOT_LOW_INCOME`
 - **Base N**: 69
 - **Warnings**:
@@ -582,6 +619,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> top2box
+
 - **Cut ID**: `CUT_10_Q_OVERALL_SAT_top2box`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Top 2 box for overall satisfaction')
@@ -594,6 +632,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> top2box by Question: Q_TENURE
+
 - **Cut ID**: `CUT_10_Q_OVERALL_SAT_top2box_BY_Q_TENURE`
 - **Base N**: 100
 - **Warnings**:
@@ -611,6 +650,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> top2box by Segment: SEG_NOT_LOW_INCOME
+
 - **Cut ID**: `CUT_10_Q_OVERALL_SAT_top2box_BY_SEG_NOT_LOW_INCOME`
 - **Base N**: 100
 - **Warnings**:
@@ -626,6 +666,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> top2box (Filtered)
+
 - **Cut ID**: `CUT_10_Q_OVERALL_SAT_top2box_FILTERED_SEG_OR_CONDITION`
 - **Base N**: 29
 - **Warnings**:
@@ -639,6 +680,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> bottom2box
+
 - **Cut ID**: `CUT_11_Q_OVERALL_SAT_bottom2box`
 - **Base N**: 100
 
@@ -650,6 +692,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> bottom2box by Question: Q_PLAN
+
 - **Cut ID**: `CUT_11_Q_OVERALL_SAT_bottom2box_BY_Q_PLAN`
 - **Base N**: 100
 - **Warnings**:
@@ -669,6 +712,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> bottom2box by Segment: SEG_OR_CONDITION
+
 - **Cut ID**: `CUT_11_Q_OVERALL_SAT_bottom2box_BY_SEG_OR_CONDITION`
 - **Base N**: 100
 - **Warnings**:
@@ -684,6 +728,7 @@ Errors Encountered: 0
 ---
 
 ## Q_OVERALL_SAT -> bottom2box (Filtered)
+
 - **Cut ID**: `CUT_11_Q_OVERALL_SAT_bottom2box_FILTERED_SEG_YOUNG`
 - **Base N**: 29
 - **Warnings**:
@@ -697,6 +742,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> frequency
+
 - **Cut ID**: `CUT_12_Q_EASE_OF_USE_frequency`
 - **Base N**: 100
 
@@ -712,6 +758,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> frequency by Question: Q_GENDER
+
 - **Cut ID**: `CUT_12_Q_EASE_OF_USE_frequency_BY_Q_GENDER`
 - **Base N**: 100
 - **Warnings**:
@@ -731,6 +778,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> frequency by Segment: SEG_YOUNG
+
 - **Cut ID**: `CUT_12_Q_EASE_OF_USE_frequency_BY_SEG_YOUNG`
 - **Base N**: 100
 - **Warnings**:
@@ -746,6 +794,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> frequency (Filtered)
+
 - **Cut ID**: `CUT_12_Q_EASE_OF_USE_frequency_FILTERED_SEG_HIGH_INCOME`
 - **Base N**: 45
 - **Warnings**:
@@ -763,6 +812,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> mean
+
 - **Cut ID**: `CUT_13_Q_EASE_OF_USE_mean`
 - **Base N**: 100
 
@@ -774,6 +824,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> mean by Question: Q_REGION
+
 - **Cut ID**: `CUT_13_Q_EASE_OF_USE_mean_BY_Q_REGION`
 - **Base N**: 100
 - **Warnings**:
@@ -795,6 +846,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> mean by Segment: SEG_HIGH_INCOME
+
 - **Cut ID**: `CUT_13_Q_EASE_OF_USE_mean_BY_SEG_HIGH_INCOME`
 - **Base N**: 100
 - **Warnings**:
@@ -810,6 +862,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> mean (Filtered)
+
 - **Cut ID**: `CUT_13_Q_EASE_OF_USE_mean_FILTERED_SEG_MALE_NORTH`
 - **Base N**: 2
 - **Warnings**:
@@ -823,6 +876,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> top2box
+
 - **Cut ID**: `CUT_14_Q_EASE_OF_USE_top2box`
 - **Base N**: 100
 
@@ -834,6 +888,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> top2box by Question: Q_INCOME
+
 - **Cut ID**: `CUT_14_Q_EASE_OF_USE_top2box_BY_Q_INCOME`
 - **Base N**: 100
 - **Warnings**:
@@ -853,6 +908,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> top2box by Segment: SEG_MALE_NORTH
+
 - **Cut ID**: `CUT_14_Q_EASE_OF_USE_top2box_BY_SEG_MALE_NORTH`
 - **Base N**: 100
 - **Warnings**:
@@ -868,6 +924,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> top2box (Filtered)
+
 - **Cut ID**: `CUT_14_Q_EASE_OF_USE_top2box_FILTERED_SEG_TECH_ACTIVE`
 - **Base N**: 51
 - **Warnings**:
@@ -881,6 +938,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> bottom2box
+
 - **Cut ID**: `CUT_15_Q_EASE_OF_USE_bottom2box`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Bottom 2 box for ease of use')
@@ -893,6 +951,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> bottom2box by Question: Q_USAGE_FREQ
+
 - **Cut ID**: `CUT_15_Q_EASE_OF_USE_bottom2box_BY_Q_USAGE_FREQ`
 - **Base N**: 100
 - **Warnings**:
@@ -912,6 +971,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> bottom2box by Segment: SEG_TECH_ACTIVE
+
 - **Cut ID**: `CUT_15_Q_EASE_OF_USE_bottom2box_BY_SEG_TECH_ACTIVE`
 - **Base N**: 100
 - **Warnings**:
@@ -927,6 +987,7 @@ Errors Encountered: 0
 ---
 
 ## Q_EASE_OF_USE -> bottom2box (Filtered)
+
 - **Cut ID**: `CUT_15_Q_EASE_OF_USE_bottom2box_FILTERED_SEG_NOT_LOW_INCOME`
 - **Base N**: 69
 - **Warnings**:
@@ -940,6 +1001,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> frequency
+
 - **Cut ID**: `CUT_16_Q_VALUE_frequency`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Value for money frequency')
@@ -956,6 +1018,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> frequency by Question: Q_TENURE
+
 - **Cut ID**: `CUT_16_Q_VALUE_frequency_BY_Q_TENURE`
 - **Base N**: 100
 - **Warnings**:
@@ -973,6 +1036,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> frequency by Segment: SEG_NOT_LOW_INCOME
+
 - **Cut ID**: `CUT_16_Q_VALUE_frequency_BY_SEG_NOT_LOW_INCOME`
 - **Base N**: 100
 - **Warnings**:
@@ -988,6 +1052,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> frequency (Filtered)
+
 - **Cut ID**: `CUT_16_Q_VALUE_frequency_FILTERED_SEG_OR_CONDITION`
 - **Base N**: 29
 - **Warnings**:
@@ -1005,6 +1070,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> mean
+
 - **Cut ID**: `CUT_17_Q_VALUE_mean`
 - **Base N**: 100
 
@@ -1016,6 +1082,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> mean by Question: Q_PLAN
+
 - **Cut ID**: `CUT_17_Q_VALUE_mean_BY_Q_PLAN`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Value for money by plan type')
@@ -1036,6 +1103,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> mean by Segment: SEG_OR_CONDITION
+
 - **Cut ID**: `CUT_17_Q_VALUE_mean_BY_SEG_OR_CONDITION`
 - **Base N**: 100
 - **Warnings**:
@@ -1051,6 +1119,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> mean (Filtered)
+
 - **Cut ID**: `CUT_17_Q_VALUE_mean_FILTERED_SEG_YOUNG`
 - **Base N**: 29
 - **Warnings**:
@@ -1064,6 +1133,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> top2box
+
 - **Cut ID**: `CUT_18_Q_VALUE_top2box`
 - **Base N**: 100
 
@@ -1075,6 +1145,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> top2box by Question: Q_GENDER
+
 - **Cut ID**: `CUT_18_Q_VALUE_top2box_BY_Q_GENDER`
 - **Base N**: 100
 - **Warnings**:
@@ -1094,6 +1165,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> top2box by Segment: SEG_YOUNG
+
 - **Cut ID**: `CUT_18_Q_VALUE_top2box_BY_SEG_YOUNG`
 - **Base N**: 100
 - **Warnings**:
@@ -1109,6 +1181,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> top2box (Filtered)
+
 - **Cut ID**: `CUT_18_Q_VALUE_top2box_FILTERED_SEG_HIGH_INCOME`
 - **Base N**: 45
 - **Warnings**:
@@ -1122,6 +1195,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> bottom2box
+
 - **Cut ID**: `CUT_19_Q_VALUE_bottom2box`
 - **Base N**: 100
 
@@ -1133,6 +1207,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> bottom2box by Question: Q_REGION
+
 - **Cut ID**: `CUT_19_Q_VALUE_bottom2box_BY_Q_REGION`
 - **Base N**: 100
 - **Warnings**:
@@ -1154,6 +1229,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> bottom2box by Segment: SEG_HIGH_INCOME
+
 - **Cut ID**: `CUT_19_Q_VALUE_bottom2box_BY_SEG_HIGH_INCOME`
 - **Base N**: 100
 - **Warnings**:
@@ -1169,6 +1245,7 @@ Errors Encountered: 0
 ---
 
 ## Q_VALUE -> bottom2box (Filtered)
+
 - **Cut ID**: `CUT_19_Q_VALUE_bottom2box_FILTERED_SEG_MALE_NORTH`
 - **Base N**: 2
 - **Warnings**:
@@ -1182,6 +1259,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> frequency
+
 - **Cut ID**: `CUT_20_Q_SUPPORT_SAT_frequency`
 - **Base N**: 100
 
@@ -1197,6 +1275,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> frequency by Question: Q_INCOME
+
 - **Cut ID**: `CUT_20_Q_SUPPORT_SAT_frequency_BY_Q_INCOME`
 - **Base N**: 100
 - **Warnings**:
@@ -1216,6 +1295,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> frequency by Segment: SEG_MALE_NORTH
+
 - **Cut ID**: `CUT_20_Q_SUPPORT_SAT_frequency_BY_SEG_MALE_NORTH`
 - **Base N**: 100
 - **Warnings**:
@@ -1231,6 +1311,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> frequency (Filtered)
+
 - **Cut ID**: `CUT_20_Q_SUPPORT_SAT_frequency_FILTERED_SEG_TECH_ACTIVE`
 - **Base N**: 51
 - **Warnings**:
@@ -1248,6 +1329,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> mean
+
 - **Cut ID**: `CUT_21_Q_SUPPORT_SAT_mean`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Support satisfaction mean score')
@@ -1260,6 +1342,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> mean by Question: Q_USAGE_FREQ
+
 - **Cut ID**: `CUT_21_Q_SUPPORT_SAT_mean_BY_Q_USAGE_FREQ`
 - **Base N**: 100
 - **Warnings**:
@@ -1279,6 +1362,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> mean by Segment: SEG_TECH_ACTIVE
+
 - **Cut ID**: `CUT_21_Q_SUPPORT_SAT_mean_BY_SEG_TECH_ACTIVE`
 - **Base N**: 100
 - **Warnings**:
@@ -1294,6 +1378,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> mean (Filtered)
+
 - **Cut ID**: `CUT_21_Q_SUPPORT_SAT_mean_FILTERED_SEG_NOT_LOW_INCOME`
 - **Base N**: 69
 - **Warnings**:
@@ -1307,6 +1392,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> top2box
+
 - **Cut ID**: `CUT_22_Q_SUPPORT_SAT_top2box`
 - **Base N**: 100
 
@@ -1318,6 +1404,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> top2box by Question: Q_TENURE
+
 - **Cut ID**: `CUT_22_Q_SUPPORT_SAT_top2box_BY_Q_TENURE`
 - **Base N**: 100
 - **Warnings**:
@@ -1335,6 +1422,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> top2box by Segment: SEG_NOT_LOW_INCOME
+
 - **Cut ID**: `CUT_22_Q_SUPPORT_SAT_top2box_BY_SEG_NOT_LOW_INCOME`
 - **Base N**: 100
 - **Warnings**:
@@ -1350,6 +1438,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> top2box (Filtered)
+
 - **Cut ID**: `CUT_22_Q_SUPPORT_SAT_top2box_FILTERED_SEG_OR_CONDITION`
 - **Base N**: 29
 - **Warnings**:
@@ -1363,6 +1452,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> bottom2box
+
 - **Cut ID**: `CUT_23_Q_SUPPORT_SAT_bottom2box`
 - **Base N**: 100
 
@@ -1374,6 +1464,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> bottom2box by Question: Q_PLAN
+
 - **Cut ID**: `CUT_23_Q_SUPPORT_SAT_bottom2box_BY_Q_PLAN`
 - **Base N**: 100
 - **Warnings**:
@@ -1393,6 +1484,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> bottom2box by Segment: SEG_OR_CONDITION
+
 - **Cut ID**: `CUT_23_Q_SUPPORT_SAT_bottom2box_BY_SEG_OR_CONDITION`
 - **Base N**: 100
 - **Warnings**:
@@ -1408,6 +1500,7 @@ Errors Encountered: 0
 ---
 
 ## Q_SUPPORT_SAT -> bottom2box (Filtered)
+
 - **Cut ID**: `CUT_23_Q_SUPPORT_SAT_bottom2box_FILTERED_SEG_YOUNG`
 - **Base N**: 29
 - **Warnings**:
@@ -1421,6 +1514,7 @@ Errors Encountered: 0
 ---
 
 ## Q_FEATURES_USED -> frequency
+
 - **Cut ID**: `CUT_24_Q_FEATURES_USED_frequency`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'How many people use each feature?')
@@ -1438,6 +1532,7 @@ Errors Encountered: 0
 ---
 
 ## Q_FEATURES_USED -> frequency by Question: Q_GENDER
+
 - **Cut ID**: `CUT_24_Q_FEATURES_USED_frequency_BY_Q_GENDER`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Frequency of features used by gender')
@@ -1458,6 +1553,7 @@ Errors Encountered: 0
 ---
 
 ## Q_FEATURES_USED -> frequency by Segment: SEG_YOUNG
+
 - **Cut ID**: `CUT_24_Q_FEATURES_USED_frequency_BY_SEG_YOUNG`
 - **Base N**: 100
 - **Warnings**:
@@ -1473,6 +1569,7 @@ Errors Encountered: 0
 ---
 
 ## Q_FEATURES_USED -> frequency (Filtered)
+
 - **Cut ID**: `CUT_24_Q_FEATURES_USED_frequency_FILTERED_SEG_HIGH_INCOME`
 - **Base N**: 45
 - **Warnings**:
@@ -1491,6 +1588,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> frequency
+
 - **Cut ID**: `CUT_25_Q_PURCHASE_INTENT_frequency`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Purchase intent distribution')
@@ -1507,6 +1605,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> frequency by Question: Q_REGION
+
 - **Cut ID**: `CUT_25_Q_PURCHASE_INTENT_frequency_BY_Q_REGION`
 - **Base N**: 100
 - **Warnings**:
@@ -1528,6 +1627,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> frequency by Segment: SEG_HIGH_INCOME
+
 - **Cut ID**: `CUT_25_Q_PURCHASE_INTENT_frequency_BY_SEG_HIGH_INCOME`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Break down purchase intent by the 'High Income' segment')
@@ -1544,6 +1644,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> frequency (Filtered)
+
 - **Cut ID**: `CUT_25_Q_PURCHASE_INTENT_frequency_FILTERED_SEG_MALE_NORTH`
 - **Base N**: 2
 - **Warnings**:
@@ -1558,6 +1659,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> mean
+
 - **Cut ID**: `CUT_26_Q_PURCHASE_INTENT_mean`
 - **Base N**: 100
 
@@ -1569,6 +1671,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> mean by Question: Q_INCOME
+
 - **Cut ID**: `CUT_26_Q_PURCHASE_INTENT_mean_BY_Q_INCOME`
 - **Base N**: 100
 - **Warnings**:
@@ -1588,6 +1691,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> mean by Segment: SEG_MALE_NORTH
+
 - **Cut ID**: `CUT_26_Q_PURCHASE_INTENT_mean_BY_SEG_MALE_NORTH`
 - **Base N**: 100
 - **Warnings**:
@@ -1603,6 +1707,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> mean (Filtered)
+
 - **Cut ID**: `CUT_26_Q_PURCHASE_INTENT_mean_FILTERED_SEG_TECH_ACTIVE`
 - **Base N**: 51
 - **Warnings**:
@@ -1616,6 +1721,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> top2box
+
 - **Cut ID**: `CUT_27_Q_PURCHASE_INTENT_top2box`
 - **Base N**: 100
 
@@ -1627,6 +1733,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> top2box by Question: Q_USAGE_FREQ
+
 - **Cut ID**: `CUT_27_Q_PURCHASE_INTENT_top2box_BY_Q_USAGE_FREQ`
 - **Base N**: 100
 - **Warnings**:
@@ -1646,6 +1753,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> top2box by Segment: SEG_TECH_ACTIVE
+
 - **Cut ID**: `CUT_27_Q_PURCHASE_INTENT_top2box_BY_SEG_TECH_ACTIVE`
 - **Base N**: 100
 - **Warnings**:
@@ -1661,6 +1769,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> top2box (Filtered)
+
 - **Cut ID**: `CUT_27_Q_PURCHASE_INTENT_top2box_FILTERED_SEG_NOT_LOW_INCOME`
 - **Base N**: 69
 - **Warnings**:
@@ -1674,6 +1783,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> bottom2box
+
 - **Cut ID**: `CUT_28_Q_PURCHASE_INTENT_bottom2box`
 - **Base N**: 100
 
@@ -1685,6 +1795,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> bottom2box by Question: Q_TENURE
+
 - **Cut ID**: `CUT_28_Q_PURCHASE_INTENT_bottom2box_BY_Q_TENURE`
 - **Base N**: 100
 - **Warnings**:
@@ -1702,6 +1813,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> bottom2box by Segment: SEG_NOT_LOW_INCOME
+
 - **Cut ID**: `CUT_28_Q_PURCHASE_INTENT_bottom2box_BY_SEG_NOT_LOW_INCOME`
 - **Base N**: 100
 - **Warnings**:
@@ -1717,6 +1829,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PURCHASE_INTENT -> bottom2box (Filtered)
+
 - **Cut ID**: `CUT_28_Q_PURCHASE_INTENT_bottom2box_FILTERED_SEG_OR_CONDITION`
 - **Base N**: 29
 - **Warnings**:
@@ -1730,6 +1843,7 @@ Errors Encountered: 0
 ---
 
 ## Q_USAGE_FREQ -> frequency
+
 - **Cut ID**: `CUT_29_Q_USAGE_FREQ_frequency`
 - **Base N**: 100
 
@@ -1744,6 +1858,7 @@ Errors Encountered: 0
 ---
 
 ## Q_USAGE_FREQ -> frequency by Question: Q_PLAN
+
 - **Cut ID**: `CUT_29_Q_USAGE_FREQ_frequency_BY_Q_PLAN`
 - **Base N**: 100
 - **Warnings**:
@@ -1763,6 +1878,7 @@ Errors Encountered: 0
 ---
 
 ## Q_USAGE_FREQ -> frequency by Segment: SEG_OR_CONDITION
+
 - **Cut ID**: `CUT_29_Q_USAGE_FREQ_frequency_BY_SEG_OR_CONDITION`
 - **Base N**: 100
 - **Warnings**:
@@ -1778,6 +1894,7 @@ Errors Encountered: 0
 ---
 
 ## Q_USAGE_FREQ -> frequency (Filtered)
+
 - **Cut ID**: `CUT_29_Q_USAGE_FREQ_frequency_FILTERED_SEG_YOUNG`
 - **Base N**: 29
 - **Warnings**:
@@ -1794,6 +1911,7 @@ Errors Encountered: 0
 ---
 
 ## Q_TENURE -> frequency
+
 - **Cut ID**: `CUT_30_Q_TENURE_frequency`
 - **Base N**: 100
 - **Golden Comparison**: ✅ PASS (Prompt: 'Tenure distribution among customers')
@@ -1808,6 +1926,7 @@ Errors Encountered: 0
 ---
 
 ## Q_TENURE -> frequency by Question: Q_GENDER
+
 - **Cut ID**: `CUT_30_Q_TENURE_frequency_BY_Q_GENDER`
 - **Base N**: 100
 - **Warnings**:
@@ -1827,6 +1946,7 @@ Errors Encountered: 0
 ---
 
 ## Q_TENURE -> frequency by Segment: SEG_YOUNG
+
 - **Cut ID**: `CUT_30_Q_TENURE_frequency_BY_SEG_YOUNG`
 - **Base N**: 100
 - **Warnings**:
@@ -1842,6 +1962,7 @@ Errors Encountered: 0
 ---
 
 ## Q_TENURE -> frequency (Filtered)
+
 - **Cut ID**: `CUT_30_Q_TENURE_frequency_FILTERED_SEG_HIGH_INCOME`
 - **Base N**: 45
 - **Warnings**:
@@ -1857,6 +1978,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PLAN -> frequency
+
 - **Cut ID**: `CUT_31_Q_PLAN_frequency`
 - **Base N**: 100
 
@@ -1871,6 +1993,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PLAN -> frequency by Question: Q_REGION
+
 - **Cut ID**: `CUT_31_Q_PLAN_frequency_BY_Q_REGION`
 - **Base N**: 100
 - **Warnings**:
@@ -1892,6 +2015,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PLAN -> frequency by Segment: SEG_HIGH_INCOME
+
 - **Cut ID**: `CUT_31_Q_PLAN_frequency_BY_SEG_HIGH_INCOME`
 - **Base N**: 100
 - **Warnings**:
@@ -1907,6 +2031,7 @@ Errors Encountered: 0
 ---
 
 ## Q_PLAN -> frequency (Filtered)
+
 - **Cut ID**: `CUT_31_Q_PLAN_frequency_FILTERED_SEG_MALE_NORTH`
 - **Base N**: 2
 - **Warnings**:
@@ -1918,4 +2043,3 @@ Errors Encountered: 0
 ```
 
 ---
-

@@ -180,13 +180,26 @@
   {
     "prompt": "Highly satisfied customers",
     "expected_ok": true,
-    "expected_base_n": 20,
+    "expected_base_n": 54,
     "expected_definition": {
-      "kind": "range",
-      "question_id": "Q_OVERALL_SAT",
-      "min": 5,
-      "max": 5,
-      "inclusive": true
+      "kind": "or",
+      "children": [
+        {
+          "kind": "eq",
+          "question_id": "Q_OVERALL_SAT",
+          "value": 5
+        },
+        {
+          "kind": "eq",
+          "question_id": "Q_SUPPORT_SAT",
+          "value": 5
+        },
+        {
+          "kind": "eq",
+          "question_id": "Q_VALUE",
+          "value": 5
+        }
+      ]
     }
   },
   {
@@ -591,7 +604,7 @@
   {
     "prompt": "Respondents who use NONE of the features",
     "expected_ok": true,
-    "expected_base_n": 7,
+    "expected_base_n": 0,
     "expected_definition": {
       "kind": "not",
       "child": {

@@ -1,7 +1,6 @@
 """Tests for metric computation functions."""
 
 import pandas as pd
-import pytest
 
 from dd_agent.contracts.questions import Option, Question, QuestionType
 from dd_agent.engine.metrics import (
@@ -21,7 +20,7 @@ class TestComputeNPS:
         """All 9s and 10s should give NPS of 100."""
         series = pd.Series([9, 10, 9, 10, 9, 10])
         result = compute_nps(series)
-        
+
         assert result["nps"] == 100.0
         assert result["promoters_count"] == 6
         assert result["detractors_count"] == 0
@@ -31,7 +30,7 @@ class TestComputeNPS:
         """All 0-6 should give NPS of -100."""
         series = pd.Series([0, 1, 2, 3, 4, 5, 6])
         result = compute_nps(series)
-        
+
         assert result["nps"] == -100.0
         assert result["promoters_count"] == 0
         assert result["detractors_count"] == 7
@@ -41,7 +40,7 @@ class TestComputeNPS:
         # 2 promoters (10, 9), 2 passives (8, 7), 2 detractors (6, 5)
         series = pd.Series([10, 9, 8, 7, 6, 5])
         result = compute_nps(series)
-        
+
         # (2/6 - 2/6) * 100 = 0
         assert result["nps"] == 0.0
         assert result["promoters_count"] == 2
@@ -53,7 +52,7 @@ class TestComputeNPS:
         """Empty series should return None NPS."""
         series = pd.Series([], dtype=float)
         result = compute_nps(series)
-        
+
         assert result["nps"] is None
         assert result["total"] == 0
 
@@ -61,7 +60,7 @@ class TestComputeNPS:
         """NaN values should be excluded."""
         series = pd.Series([10, 9, None, 5, None, 8])
         result = compute_nps(series)
-        
+
         assert result["total"] == 4  # Only 4 valid values
         assert result["promoters_count"] == 2  # 10, 9
 
@@ -73,7 +72,7 @@ class TestComputeMean:
         """Test basic mean calculation."""
         series = pd.Series([1, 2, 3, 4, 5])
         result = compute_mean(series)
-        
+
         assert result["mean"] == 3.0
         assert result["count"] == 5
         assert result["min"] == 1.0
@@ -83,7 +82,7 @@ class TestComputeMean:
         """NaN values should be excluded from mean."""
         series = pd.Series([1, 2, None, 4, 5])
         result = compute_mean(series)
-        
+
         assert result["mean"] == 3.0
         assert result["count"] == 4
 
@@ -100,7 +99,7 @@ class TestComputeTop2Box:
             type=QuestionType.likert_1_5,
         )
         result = compute_top2box(series, question)
-        
+
         # 4 values are 4 or 5 out of 8
         assert result["top2box_pct"] == 50.0
         assert result["top2box_count"] == 4
@@ -115,7 +114,7 @@ class TestComputeTop2Box:
             type=QuestionType.likert_1_7,
         )
         result = compute_top2box(series, question)
-        
+
         # 3 values are 6 or 7 out of 8
         assert result["top2box_pct"] == 37.5
         assert result["top2box_count"] == 3
@@ -124,7 +123,7 @@ class TestComputeTop2Box:
         """Test with custom top values."""
         series = pd.Series([1, 2, 3, 4, 5])
         result = compute_top2box(series, top_values=[3, 4, 5])
-        
+
         # 3 values are 3, 4, or 5 out of 5
         assert result["top2box_pct"] == 60.0
 
@@ -141,7 +140,7 @@ class TestComputeBottom2Box:
             type=QuestionType.likert_1_5,
         )
         result = compute_bottom2box(series, question)
-        
+
         # 4 values are 1 or 2 out of 8
         assert result["bottom2box_pct"] == 50.0
         assert result["bottom2box_count"] == 4
@@ -154,9 +153,9 @@ class TestComputeFrequency:
         """Test basic frequency distribution."""
         series = pd.Series(["A", "B", "A", "C", "A", "B"])
         result = compute_frequency(series)
-        
+
         assert len(result) == 3
-        
+
         # A appears 3 times (50%)
         a_row = result[result["value"] == "A"].iloc[0]
         assert a_row["count"] == 3
@@ -175,7 +174,7 @@ class TestComputeFrequency:
             ],
         )
         result = compute_frequency(series, question)
-        
+
         assert result[result["value"] == 1]["label"].iloc[0] == "Option One"
 
 
@@ -196,11 +195,11 @@ class TestComputeMultiChoiceFrequency:
             ],
         )
         result = compute_multi_choice_frequency(series, question)
-        
+
         # Check counts (A appears in 3 responses, B in 4, C in 2)
         assert result[result["value"] == "A"]["count"].iloc[0] == 3
         assert result[result["value"] == "B"]["count"].iloc[0] == 4
         assert result[result["value"] == "C"]["count"].iloc[0] == 2
-        
+
         # Percentages are of respondents (5 total)
         assert result[result["value"] == "B"]["percentage"].iloc[0] == 80.0  # 4/5

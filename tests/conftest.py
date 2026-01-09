@@ -8,7 +8,7 @@ import pytest
 
 from dd_agent.contracts.questions import Option, Question, QuestionType
 from dd_agent.contracts.specs import CutSpec, MetricSpec, SegmentSpec
-from dd_agent.contracts.filters import PredicateEq, PredicateRange
+from dd_agent.contracts.filters import PredicateRange
 
 
 @pytest.fixture
@@ -73,11 +73,11 @@ def sample_responses_df() -> pd.DataFrame:
     return pd.DataFrame({
         "Q_NPS": [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 9, 10, 8, 7],
         "Q_SATISFACTION": [5, 4, 4, 3, 3, 2, 1, 2, 1, 2, 1, 5, 5, 4, 3],
-        "Q_REGION": ["NORTH", "SOUTH", "EAST", "WEST", "NORTH", 
+        "Q_REGION": ["NORTH", "SOUTH", "EAST", "WEST", "NORTH",
                      "SOUTH", "EAST", "WEST", "NORTH", "SOUTH",
                      "EAST", "WEST", "NORTH", "SOUTH", "EAST"],
         "Q_AGE": [25, 35, 45, 28, 32, 41, 55, 23, 38, 47, 29, 33, 42, 27, 36],
-        "Q_FEATURES": ["A;B", "B;C", "A", "A;B;C", "B", 
+        "Q_FEATURES": ["A;B", "B;C", "A", "A;B;C", "B",
                        "C", "A;C", "B", "A;B", "C",
                        "A;B;C", "B;C", "A", "A;B", "C"],
     })
@@ -117,25 +117,25 @@ def demo_data_dir(tmp_path: Path, sample_questions: list[Question]) -> Path:
     """Create a temporary demo data directory."""
     data_dir = tmp_path / "data"
     data_dir.mkdir()
-    
+
     # Write questions
     questions_data = [q.model_dump() for q in sample_questions]
     with open(data_dir / "questions.json", "w") as f:
         json.dump(questions_data, f)
-    
+
     # Write responses
     df = pd.DataFrame({
         "Q_NPS": [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
         "Q_SATISFACTION": [5, 4, 4, 3, 3, 2, 1, 2, 1, 2],
-        "Q_REGION": ["NORTH", "SOUTH", "EAST", "WEST", "NORTH", 
+        "Q_REGION": ["NORTH", "SOUTH", "EAST", "WEST", "NORTH",
                      "SOUTH", "EAST", "WEST", "NORTH", "SOUTH"],
         "Q_AGE": [25, 35, 45, 28, 32, 41, 55, 23, 38, 47],
-        "Q_FEATURES": ["A;B", "B;C", "A", "A;B;C", "B", 
+        "Q_FEATURES": ["A;B", "B;C", "A", "A;B;C", "B",
                        "C", "A;C", "B", "A;B", "C"],
     })
     df.to_csv(data_dir / "responses.csv", index=False)
-    
+
     # Write scope
     (data_dir / "scope.md").write_text("# Test Scope\nThis is a test.")
-    
+
     return data_dir

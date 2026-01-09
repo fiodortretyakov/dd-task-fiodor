@@ -1,11 +1,9 @@
 """End-to-end tests with mock LLM backend."""
 
 import json
-from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pandas as pd
-import pytest
 
 from dd_agent.contracts.questions import Question
 from dd_agent.contracts.specs import CutSpec, MetricSpec, SegmentSpec
