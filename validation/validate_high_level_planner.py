@@ -53,27 +53,30 @@ def main():
             res = planner.run(ctx)
             if res.ok:
                 plan = res.data
-                intent_texts = " ".join([i.description.lower() for i in plan.intents])
-
-                # Check 1: At least 5 intents
-                if len(plan.intents) >= 5:
-                    scenario_passed += 1
+                if plan is None:
+                    details.append("Missing plan data")
                 else:
-                    details.append("Too few intents")
+                    intent_texts = " ".join([i.description.lower() for i in plan.intents])
 
-                # Checks 2-5: Specific keyword mentions from expectations
-                observed_expectations = 0
-                for keyword in expectations:
-                    if keyword.lower() in intent_texts:
-                        observed_expectations += 1
+                    # Check 1: At least 5 intents
+                    if len(plan.intents) >= 5:
+                        scenario_passed += 1
+                    else:
+                        details.append("Too few intents")
 
-                # We count each keyword check as an individual check to reach 50
-                # For reporting, let's group them or report them individually
-                # To get 50 checks: 10 scenarios * 5 keywords per scenario = 50 checks.
-                # Plus the "min intents" check makes it 60 checks total if we want.
+                    # Checks 2-5: Specific keyword mentions from expectations
+                    observed_expectations = 0
+                    for keyword in expectations:
+                        if keyword.lower() in intent_texts:
+                            observed_expectations += 1
 
-                scenario_passed += observed_expectations
-                details.append(f"{observed_expectations}/{len(expectations)} keywords found")
+                        # We count each keyword check as an individual check to reach 50
+                    # For reporting, let's group them or report them individually
+                    # To get 50 checks: 10 scenarios * 5 keywords per scenario = 50 checks.
+                    # Plus the "min intents" check makes it 60 checks total if we want.
+
+                    scenario_passed += observed_expectations
+                    details.append(f"{observed_expectations}/{len(expectations)} keywords found")
 
             else:
                 details.append("Planning failed")

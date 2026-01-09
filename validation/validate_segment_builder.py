@@ -93,11 +93,11 @@ def main():
                     reason = "Missing segment data"
                 else:
                     mask = build_mask(df, res.data.definition, questions_by_id)
-                actual_base_n = int(mask.sum())
-                if actual_base_n != expected_base_n:
-                    reason = f"Data mismatch (Base N: {actual_base_n}, Expected: {expected_base_n})"
-                else:
-                    status = "PASS"
+                    actual_base_n = int(mask.sum())
+                    if actual_base_n != expected_base_n:
+                        reason = f"Data mismatch (Base N: {actual_base_n}, Expected: {expected_base_n})"
+                    else:
+                        status = "PASS"
         except NotImplementedError:
             status = "CRASH"
             reason = "Not implemented"

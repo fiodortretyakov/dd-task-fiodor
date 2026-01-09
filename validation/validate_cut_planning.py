@@ -116,7 +116,7 @@ def main():
                     if not plan_match:
                         reason = f"Plan mismatch (Got {cut_spec.metric.type} on {cut_spec.metric.question_id})"
                     else:
-                            exec_res = executor.execute_cuts([cut_spec])
+                        exec_res = executor.execute_cuts([cut_spec])
                         if exec_res.errors:
                             reason = f"Execution error: {exec_res.errors[0]['error']}"
                         else:

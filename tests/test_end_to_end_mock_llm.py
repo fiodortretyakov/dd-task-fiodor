@@ -93,7 +93,7 @@ class TestExecutorEndToEnd:
         cut = CutSpec(
             cut_id="test_crosstab",
             metric=MetricSpec(type="mean", question_id="Q_SATISFACTION"),
-            dimensions=[{"kind": "question", "id": "Q_REGION"}],
+            dimensions=[{"kind": "question", "id": "Q_REGION"}],  # type: ignore
         )
 
         result = executor.execute_cuts([cut])
@@ -190,6 +190,7 @@ class TestMockLLMIntegration:
             result = planner.run(ctx)
 
             assert result.ok
+            assert result.data is not None
             assert result.data.cut_id == "mock_cut"
             assert result.data.metric.type == "nps"
 
@@ -222,6 +223,7 @@ class TestMockLLMIntegration:
             result = builder.run(ctx)
 
             assert result.ok
+            assert result.data is not None
             assert result.data.segment_id == "young_users"
 
 

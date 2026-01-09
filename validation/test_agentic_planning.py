@@ -1,3 +1,4 @@
+# pyright: reportArgumentType=false
 
 import json
 import random
@@ -48,10 +49,10 @@ def main():
     print(f"Loading questions from {questions_path}...")
     questions = load_questions(questions_path)
     questions_by_id = {q.question_id: q for q in questions}
-    
+
     print("Generating dummy data...")
     df = generate_dummy_data(questions)
-    
+
     segments = [
         SegmentSpec(
             segment_id="SEG_YOUNG",
@@ -96,7 +97,7 @@ def main():
 
     planner = CutPlanner()
     executor = Executor(df, questions_by_id, segments_by_id=segments_by_id)
-    
+
     # NL Requests to test full coverage:
     # 1. All Metric Types
     # 2. Both Dimension Kinds (Question, Segment)
@@ -108,21 +109,21 @@ def main():
         "Frequency of features used by gender",
         "Top 2 box for support satisfaction by plan type",
         "Bottom 2 box for ease of use by region",
-        
+
         # --- Segment Dimensions (The 'Split by' Case) ---
         "Compare overall satisfaction for regular 'Young Respondents' vs others",
         "Break down purchase intent by the 'High Income' segment",
-        
+
         # --- Filter Logic: Range, In, Eq ---
         "Average NPS for respondents aged 18 to 30",
         "Overall satisfaction for people in the North or South regions",
         "Mean age for Female respondents",
-        
+
         # --- Filter Logic: Logical Operators (And, Or, Not) ---
         "NPS for 'Males in the North'",
         "Frequency of plans for people who are NOT in the 'High Income' segment",
         "Mean satisfaction for users who are either Young Respondents OR have High Income",
-        
+
         # --- Multi-Choice Logic (ContainsAny) ---
         "Average support satisfaction for people who use the API feature",
         "Show the income distribution for 'Active Tech Users'"
@@ -132,42 +133,42 @@ def main():
         # --- Ambiguity ---
         "Show satisfaction",  # Ambiguous between Overall and Support
         "Breakdown by region", # No metric specified
-        
+
         # --- Nonsensical / Out of Scope ---
         "What is the capital of France?",
         "Show the stock price of Microsoft",
         "How is the weather?",
-        
+
         # --- Invalid Analyses (Math errors) ---
         "Calculate the mean of Region",      # Categorical cannot have mean
         "What is the average Gender?",       # Categorical cannot have mean
         "NPS score for Age",                 # Age is numeric, not NPS
-        
+
         # --- Empty Results / Out of Bounds ---
         "NPS for people older than 200",     # No respondents match
         "Satisfaction for respondents who live on Mars", # Invalid option value
-        
+
         # --- Multi-Choice Invalid ---
         "Average of features used"           # Mean on multi-choice
     ]
-    
+
     # Combined list for processing
     all_tests = [("Standard", requests), ("Edge Case", edge_cases)]
 
 
     md_output_path = "agentic_analysis_results.md"
     print(f"Executing agentic tests and exporting to {md_output_path}...")
-    
+
     with open(md_output_path, "w") as f:
         f.write("# Agentic Planning & Execution Results\n\n")
         f.write("This file validates both standard success paths and edge-case error handling.\n\n")
-        
+
         for section_name, test_requests in all_tests:
             f.write(f"# Section: {section_name}\n\n")
             for nl_request in test_requests:
                 print(f"Processing ({section_name}): \"{nl_request}\"")
                 f.write(f"## Request: \"{nl_request}\"\n")
-                
+
                 # 1. Plan the cut
                 ctx = ToolContext(
                     questions=questions,
@@ -177,9 +178,9 @@ def main():
                     prompt=nl_request,
                     responses_df=df
                 )
-                
+
                 plan_output = planner.run(ctx)
-                
+
                 if not plan_output.ok or plan_output.data is None:
                     f.write(f"### ❌ Planning Failed (Expected for some Edge Cases)\n")
                     f.write("Errors:\n")
@@ -190,25 +191,25 @@ def main():
                         f.write("- Unknown error (no cut produced)\n")
                     f.write("\n---\n\n")
                     continue
-                
+
                 cut_spec = plan_output.data
                 f.write(f"### ✅ Planning Succeeded\n")
 
                 f.write(f"- **Planned Cut ID**: `{cut_spec.cut_id}`\n")
                 f.write(f"- **Metric**: `{cut_spec.metric.type}` on `{cut_spec.metric.question_id}`\n")
-                
+
                 if cut_spec.dimensions:
                     dims = [f"{d.kind}: {d.id}" for d in cut_spec.dimensions]
                     f.write(f"- **Dimensions**: {', '.join(dims)}\n")
-                
+
                 if cut_spec.filter:
                     f.write(f"- **Filter Applied**: `{cut_spec.filter['kind'] if isinstance(cut_spec.filter, dict) else 'Complex'}`\n")
-                
+
                 # 2. Execute the cut
                 print(f"Executing planned cut: {cut_spec.cut_id}")
                 try:
                     exec_result = executor.execute_cuts([cut_spec])
-                    
+
                     if exec_result.errors:
                         f.write(f"### ❌ Execution Failed\n")
                         f.write(f"Error: {exec_result.errors[0]['error']}\n")
@@ -216,7 +217,7 @@ def main():
                         table = exec_result.tables[0]
                         f.write(f"### ✅ Execution Succeeded\n")
                         f.write(f"- **Base N**: {table.base_n}\n")
-                        
+
                         res_df = table.get_dataframe()
                         if res_df is not None:
                             f.write("\n```text\n")
@@ -227,7 +228,7 @@ def main():
                 except Exception as e:
                     f.write(f"### ❌ Execution Errored\n")
                     f.write(f"Exception: {str(e)}\n")
-                
+
                 f.write("\n---\n\n")
 
     print(f"Agentic tests completed. Results in {md_output_path}")

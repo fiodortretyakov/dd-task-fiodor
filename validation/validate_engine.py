@@ -1,3 +1,4 @@
+# pyright: reportArgumentType=false
 
 import json
 import random
@@ -76,12 +77,12 @@ def load_golden_data(path: Optional[str] = None) -> dict:
     try:
         with open(path, "r") as f:
             data = json.load(f)
-        
+
         golden_map = {}
         for entry in data:
             if not entry.get("expected_ok") or not entry.get("expected_plan"):
                 continue
-            
+
             plan = entry["expected_plan"]
             key = (
                 plan["metric_type"],
@@ -102,7 +103,7 @@ def find_best_golden_match(cut_spec, table, golden_entries):
     """
     is_filtered = cut_spec.filter is not None
     actual_val = get_primary_value(table)
-    
+
     # Priority 1: Direct Match (Metric + Question + Dim + Filter proxy)
     for entry in golden_entries:
         expected = entry["expected_results"]
@@ -110,7 +111,7 @@ def find_best_golden_match(cut_spec, table, golden_entries):
         # Unfiltered cuts ALWAYS have exactly Base N = 100.
         # Filtered cuts ALWAYS have Base N < 100.
         expected_is_filtered = expected["base_n"] < 100
-        
+
         if is_filtered == expected_is_filtered:
             # Check if this specific entry matches the calculated data
             base_match = (table.base_n == expected["base_n"])
@@ -119,10 +120,10 @@ def find_best_golden_match(cut_spec, table, golden_entries):
             if expected_val is not None:
                 if actual_val is None: val_match = False
                 else: val_match = abs(actual_val - expected_val) < 0.01
-            
+
             if base_match and val_match:
                 return entry
-            
+
     # Priority 2: If we are unfiltered, and there is an unfiltered golden entry, return it
     # even if values don't match (so we can report the failure properly).
     if not is_filtered:
@@ -130,7 +131,7 @@ def find_best_golden_match(cut_spec, table, golden_entries):
             if entry["expected_results"]["base_n"] == 100:
                 return entry
 
-    # If the only golden entries are filtered but our cut is not (or vice versa), 
+    # If the only golden entries are filtered but our cut is not (or vice versa),
     # it's a different analytical request. Do not compare.
     return None
 
@@ -152,11 +153,11 @@ def main():
     print(f"Loading questions from {questions_path}...")
     questions = load_questions(questions_path)
     questions_by_id = {q.question_id: q for q in questions}
-    
+
     print("Generating dummy data...")
     df = generate_dummy_data(questions)
     print(f"Generated {len(df)} rows.")
-    
+
     segments_by_id = {
         "SEG_YOUNG": SegmentSpec(
             segment_id="SEG_YOUNG",
@@ -213,7 +214,7 @@ def main():
     executor = Executor(df, questions_by_id, segments_by_id=segments_by_id)
     cuts = []
     dim_candidates = [q.question_id for q in questions if q.type == QuestionType.single_choice and q.question_id != "Q_RESP_ID"]
-    
+
     # User requested example
     cuts.append(CutSpec(
         cut_id="USER_REQ_AGE_BY_INCOME",
@@ -256,17 +257,17 @@ def main():
 
     print(f"Generated {len(cuts)} cuts. Executing...")
     result = executor.execute_cuts(cuts)
-    
+
     # --- Golden Comparison ---
     golden_map = load_golden_data()
     golden_matches = 0
     golden_comparisons = 0
-    
+
     passed_no_warnings = 0
     for t in result.tables:
         if not t.warnings:
             passed_no_warnings += 1
-        
+
         # Match against golden
         cut_spec = next((c for c in cuts if c.cut_id == t.cut_id), None)
         if cut_spec:
@@ -278,28 +279,28 @@ def main():
                     if best_match:
                         golden_comparisons += 1
                         expected = best_match["expected_results"]
-                        
+
                         base_match = (t.base_n == expected["base_n"])
                         actual_val = get_primary_value(t)
                         expected_val = expected["primary_value"]
-                        
+
                         val_match = True
                         if expected_val is not None:
                             if actual_val is None:
                                 val_match = False
                             else:
                                 val_match = abs(actual_val - expected_val) < 0.01
-                        
+
                         if base_match and val_match:
                             golden_matches += 1
 
     total_cuts = len(cuts)
     successful_runs = len(result.tables)
-    
+
     run_rate = (successful_runs / total_cuts) * 100 if total_cuts > 0 else 0
     warning_free_rate = (passed_no_warnings / total_cuts) * 100 if total_cuts > 0 else 0
     golden_rate = (golden_matches / golden_comparisons) * 100 if golden_comparisons > 0 else 0
-    
+
     print("\n" + "="*50)
     print("ANALYSIS EXECUTION SUMMARY")
     print("="*50)
@@ -311,26 +312,26 @@ def main():
         print(f"  (Compared {golden_comparisons} cuts against predefined golden data)")
     else:
         print("Golden Data Pass Rate:     N/A (No matching golden data found)")
-    
+
     print("-" * 50)
     pass_rate = golden_rate if golden_comparisons > 0 else warning_free_rate
     print(f"OVERALL PASS RATE:         {pass_rate:.1f}%")
-    
+
     if warning_free_rate < 100:
         warning_count = len([t for t in result.tables if t.warnings])
         print(f"\nNote: {warning_count} cuts generated warnings (likely low base size).")
         print(f"Thresholds: min_base={executor.min_base_size}, warn_base={executor.warn_base_size}")
         print(f"Total rows in dummy data: 100 (Seed: 42)")
     print("="*50 + "\n")
-    
+
     md_output_path = str(base_dir / "analysis_results.md")
     print(f"Exporting results to {md_output_path}...")
-    
+
     with open(md_output_path, "w") as f:
         f.write("# Analysis Results Summary\n\n")
         f.write(f"Total Cuts Executed: {len(result.tables)}\n")
         f.write(f"Errors Encountered: {len(result.errors)}\n\n")
-        
+
         for t in result.tables:
             cut_spec = next((c for c in cuts if c.cut_id == t.cut_id), None)
             dim_str = ""
@@ -338,11 +339,11 @@ def main():
                 dims = [f"{d.kind.title()}: {d.id}" for d in cut_spec.dimensions]
                 dim_str = f" by {', '.join(dims)}"
             filter_str = " (Filtered)" if cut_spec and cut_spec.filter else ""
-            
+
             f.write(f"## {t.question_id} -> {t.metric_type}{dim_str}{filter_str}\n")
             f.write(f"- **Cut ID**: `{t.cut_id}`\n")
             f.write(f"- **Base N**: {t.base_n}\n")
-            
+
             if cut_spec and not cut_spec.filter:
                 dim_ids = tuple(sorted([d.id for d in cut_spec.dimensions]))
                 key = (t.metric_type, t.question_id, dim_ids)
@@ -353,12 +354,12 @@ def main():
                         base_match = (t.base_n == expected["base_n"])
                         actual_val = get_primary_value(t)
                         expected_val = expected["primary_value"]
-                        
+
                         val_match = True
                         if expected_val is not None:
                             if actual_val is None: val_match = False
                             else: val_match = abs(actual_val - expected_val) < 0.01
-                        
+
                         match_status = "✅ PASS" if (base_match and val_match) else "❌ FAIL"
                         f.write(f"- **Golden Comparison**: {match_status} (Prompt: '{best_match['prompt']}')\n")
                         if not base_match:

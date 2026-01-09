@@ -312,10 +312,10 @@ def compute_multi_choice_frequency(
         label = None
         if question is not None:
             # Try both string and int lookup
-            label = question.get_option_label(value)
+            label = question.get_option_label(value)  # type: ignore
             if label is None:
                 try:
-                    label = question.get_option_label(int(value))
+                    label = question.get_option_label(int(value))  # type: ignore
                 except ValueError:
                     pass
         if label is None:

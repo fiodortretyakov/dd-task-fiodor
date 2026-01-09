@@ -3,6 +3,7 @@
 from pathlib import Path
 from typing import Any
 
+import pandas as pd
 import yaml
 
 from dd_agent.contracts.questions import Question
