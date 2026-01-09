@@ -1,11 +1,3 @@
-# Analysis Run Report
-
-**Run ID:** 2025-12-27T13-32-45Z_19e35b6f
-**Timestamp:** 2025-12-27T13:32:46.294559+00:00
-
-## Status: ❌ Failed
-
-## Cuts Executed: 0
-
-## Errors
-- tool_error: High-level planner failed: Error code: 400 - {'error': {'message': "Invalid schema for response_format 'HighLevelPlan': In context=('properties', 'children', 'items'), 'oneOf' is not permitted.", 'type': 'invalid_request_error', 'param': 'response_format', 'code': None}}
+version https://git-lfs.github.com/spec/v1
+oid sha256:56b6af89723a3e0777db01a3187819e06b75ae7e29ec9815f86a2d41f46e3357
+size 454

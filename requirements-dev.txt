@@ -1,0 +1,26 @@
+# Core dependencies (from pyproject.toml)
+openai>=1.0,<2
+pydantic>=2.0,<3
+pydantic-settings>=2.0,<3
+pandas>=2.0,<3
+typer>=0.9,<1
+python-dotenv>=1.0,<2
+rich>=13.0,<14
+pyyaml>=6.0,<7
+
+# Testing
+pytest>=7.0,<9
+pytest-cov>=4.0,<6
+
+# Development tools
+jupyterlab>=4.0
+jupyterlab-git
+ipykernel
+nbdime
+black
+ipython
+
+# Code quality
+pylint
+mypy
+ruff
