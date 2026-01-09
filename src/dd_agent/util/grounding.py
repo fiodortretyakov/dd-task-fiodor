@@ -1,9 +1,9 @@
 """Utilities for grounding natural language to question/option IDs."""
 
 from difflib import SequenceMatcher, get_close_matches
-from typing import Optional, TypeVar, Generic
+from typing import Optional, TypeVar
 
-from dd_agent.contracts.questions import Question, Option
+from dd_agent.contracts.questions import Question
 from dd_agent.util.interaction import resolve_ambiguity
 
 T = TypeVar("T")
