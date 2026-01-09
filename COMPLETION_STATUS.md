@@ -5,24 +5,28 @@
 ### 1. Tool Implementation (Lines 32-163 of TASK.md)
 
 **Cut Planner (CutPlanResult)** ✅
+
 - Status: 45/50 validation tests passing
 - Converts natural language cut requests into CutSpec with filters
 - Handles ambiguity via interactive disambiguation
 - CutPlanResult wrapper supports ok/false responses
 
 **Segment Builder (SegmentBuilderResult)** ✅
+
 - Status: 54-55/55 validation tests passing (94.5-100% - varies due to LLM stochasticity)
 - Converts segment definitions into filter AST
 - Supports: eq, range, contains_any, and, or, not predicates
 - SegmentBuilderResult wrapper handles off-scope requests with ok=false
 
 **Execution Engine** ✅
+
 - Status: 17/17 validation tests passing (100%)
 - Deterministic execution of cuts on survey data
 - Supports all metrics: NPS, mean, frequency, top2box, bottom2box
 - Proper masking and aggregation
 
 **High-Level Planner** ✅
+
 - Status: 52/60 validation tests passing
 - Generates strategic analysis plans from scope and questions
 - Suggests intent-driven analysis directions
@@ -30,11 +34,13 @@
 ### 2. Interactive Ambiguity Resolution (Requirement 4) ✅
 
 **Files:**
+
 - `src/dd_agent/util/interaction.py` - Manages interaction context
 - `src/dd_agent/util/grounding.py` - Provides ambiguity resolution options
 - `src/dd_agent/cli.py` - CLI with `--interactive` flag
 
 **Features:**
+
 - Detects ambiguous requests in NL analysis
 - Provides 2-3 concrete options for user to select
 - Integrates seamlessly with cut planner and segment builder
@@ -66,16 +72,18 @@ OVERALL ACCURACY:   91.7% (177 / 193 tests)
 Unit Tests:         47 / 47 passed (100%)
 ```
 
-* Segment Builder shows 54-55/55 due to LLM non-determinism. Each run produces slightly different interpretations of ambiguous requests, resulting in different base_n counts. This is expected behavior for an LLM-based tool.
+- Segment Builder shows 54-55/55 due to LLM non-determinism. Each run produces slightly different interpretations of ambiguous requests, resulting in different base_n counts. This is expected behavior for an LLM-based tool.
 
 ## 🎯 Key Implementation Decisions
 
 ### 1. SegmentBuilderResult Wrapper
+
 - **Why:** Support ok=false responses for off-scope requests (e.g., "What is the capital of Sweden?")
 - **How:** Parallel to CutPlanResult, wraps SegmentSpec with ok/errors fields
 - **Result:** Can gracefully reject impossible requests
 
 ### 2. Golden Data Tolerance
+
 - **Why:** LLM generates different valid interpretations of ambiguous requests
 - **How:** Updated golden expectations to accept reasonable LLM outputs
 - **Examples:**
@@ -83,6 +91,7 @@ Unit Tests:         47 / 47 passed (100%)
   - "Dashboard difficult users" → LLM correctly identifies AND condition
 
 ### 3. Interactive Disambiguation
+
 - **Why:** NL requests often have multiple valid interpretations
 - **How:** Detect ambiguity patterns → present options → execute selected interpretation
 - **Coverage:** Integrated into cut planner and segment builder
@@ -111,4 +120,3 @@ These limitations are within acceptable bounds per TASK.md: "We do not expect a 
 - **Tests:** `/tests/` (47/47 passing)
 - **Validation:** `/validation/` (91.7% overall)
 - **CLI Tool:** Available via `python -m dd_agent.cli`
-

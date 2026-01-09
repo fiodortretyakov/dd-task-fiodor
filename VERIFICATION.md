@@ -3,7 +3,9 @@
 ## Necessary Requirements
 
 ### 1) ✅ Fix at least one tool (baseline) - **COMPLETE**
+
 **Status**: Cut Planner working at 100%
+
 - **Requirement**: Implement/fix at least one LLM-backed tool to produce grounded structured objects
 - **Implementation**: Cut Planner (Option A)
   - Converts NL requests (e.g., "Show NPS by country") to valid CutSpec
@@ -16,9 +18,11 @@
   - All 50 test cases pass
 
 ### 2) ✅ Integrate segments into Pandas engine (core) - **COMPLETE**
+
 **Status**: Engine 100% with segment support
+
 - **Requirement**: Compile segment AST into masks; use as dimensions/filters; include base sizes
-- **Implementation**: 
+- **Implementation**:
   - `masks.py`: Compiles boolean filter expressions to numpy masks
   - `executor.py`: Applies segments as dimensions (splits into groups) and filters
   - Base sizes and dimension columns included in all outputs
@@ -29,20 +33,24 @@
   - Base sizes computed accurately
 
 ### 3) ✅ Run artifacts and traceability (core) - **COMPLETE**
+
 **Status**: Full artifact generation working
+
 - **Requirement**: Emit specs, traces, output tables, human-readable summary
 - **Implementation**: `RunStore` saves:
   - `metadata.json` - Run ID, timestamp, config
   - `inputs/` - Original request, dataset hash
   - `artifacts/` - Validated specs (JSON), execution traces
   - `report.md` - Human-readable markdown summary
-- **Verification**: 
+- **Verification**:
   - 9 existing runs with complete artifact structure
   - Latest run: `2026-01-09T10-23-42Z_83c90c61`
   - All directories and files present
 
 ### 4) ✅ AzureOpenAI integration (required) - **COMPLETE**
+
 **Status**: Azure OpenAI fully integrated
+
 - **Requirement**: Use AzureOpenAI with schema-first/structured outputs
 - **Implementation**:
   - `azure_client.py`: Wrapper with lazy initialization
@@ -60,24 +68,26 @@
 ## Optional Extensions (high-value)
 
 ### 1) ✅ Interactive ambiguity resolution (ideal extension) - **COMPLETE**
+
 **Status**: Interactive CLI with ambiguity resolution
+
 - **Requirement**: Pause on ambiguity; ask user to choose; resume with selection
 - **Implementation**:
   1. **`interaction.py`** - User-facing prompts:
      - `resolve_ambiguity()` - Shows candidates, gets user choice
      - `handle_off_scope_input()` - Detects greetings, help, off-scope
      - `show_guidance()` - Displays valid analysis examples
-  
+
   2. **`grounding.py`** - Semantic matching:
      - `find_matching_questions()` - Match NL to question IDs interactively
      - `find_matching_option()` - Match NL to option codes interactively
-  
+
   3. **CLI Enhancements**:
      - New `interactive` command for REPL mode
      - `--no-interactive` flag on `run` and `autoplan`
      - Off-scope detection (greetings, help requests)
      - Examples of valid requests shown to users
-  
+
   4. **Agent/Pipeline Integration**:
      - `interactive: bool = True` parameter in ToolContext, Agent, Pipeline
      - Propagates to all tool invocations
@@ -94,17 +104,20 @@
 ## Overall Test Results
 
 ### Unit Tests: **47/47 PASSED**
+
 ```
 tests/test_end_to_end_mock_llm.py ............... (12 tests)
 tests/test_metrics.py .......................... (18 tests)
 tests/test_validation.py ........................ (17 tests)
 ```
 
-### Validation Suites:
+### Validation Suites
+
 - **Cut Planner**: 50/50 (100%) ✅
 - **Engine**: 125/125 cuts, 17/17 golden (100%) ✅
 
-### Code Quality:
+### Code Quality
+
 - No errors found in Python analysis
 - Clean imports, proper type hints
 - Modular architecture with clear separation of concerns
@@ -113,12 +126,14 @@ tests/test_validation.py ........................ (17 tests)
 
 ## Product Interaction (from lines 63-73)
 
-### Requirements from Section:
+### Requirements from Section
+
 - ✅ Handle off-scope inputs gracefully (greetings, help)
 - ✅ Guide users toward valid requests (examples, guidance)
 - ✅ Handle ambiguity explicitly (ask clarifying questions)
 
-### Implementation:
+### Implementation
+
 - Off-scope detection: Recognizes "hello", "help", "what can you do"
 - User guidance: `show_guidance()` displays valid analysis patterns
 - Ambiguity resolution: Interactive `resolve_ambiguity()` with numbered choices
@@ -129,6 +144,7 @@ tests/test_validation.py ........................ (17 tests)
 ## Summary
 
 **All requirements through line 163 are COMPLETE and WORKING:**
+
 - ✅ Baseline tool: Cut Planner (100%)
 - ✅ Segment integration: Engine (100%)
 - ✅ Artifacts & traceability: RunStore (working)
