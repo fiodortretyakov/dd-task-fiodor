@@ -17,7 +17,7 @@
     "definition": {
       "kind": "eq",
       "question_id": "Q_INCOME",
-      "value": "High"
+      "value": "HIGH"
     },
     "intended_partition": false
   },
@@ -39,7 +39,7 @@
       "child": {
         "kind": "eq",
         "question_id": "Q_INCOME",
-        "value": "Low"
+        "value": "LOW"
       }
     },
     "intended_partition": false
@@ -53,12 +53,12 @@
         {
           "kind": "eq",
           "question_id": "Q_GENDER",
-          "value": "Male"
+          "value": "M"
         },
         {
           "kind": "eq",
           "question_id": "Q_REGION",
-          "value": "North"
+          "value": "NORTH"
         }
       ]
     },
