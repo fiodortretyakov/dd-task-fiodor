@@ -30,6 +30,7 @@ class Agent:
         responses_df: pd.DataFrame,
         scope: Optional[str] = None,
         data_dir: Optional[Path] = None,
+        interactive: bool = True,
     ):
         """Initialize the agent.
 
@@ -38,12 +39,14 @@ class Agent:
             responses_df: DataFrame with survey responses
             scope: Optional project scope document
             data_dir: Optional data directory path
+            interactive: Enable interactive ambiguity resolution (default: True)
         """
         self.questions = questions
         self.questions_by_id = {q.question_id: q for q in questions}
         self.responses_df = responses_df
         self.scope = scope
         self.data_dir = data_dir
+        self.interactive = interactive
 
         # Segments built during the session
         self.segments: list[SegmentSpec] = []
@@ -65,6 +68,7 @@ class Agent:
             prompt=prompt,
             responses_df=self.responses_df,
             data_dir=self.data_dir,
+            interactive=self.interactive,
         )
 
     def plan_analysis(self) -> ToolOutput:

@@ -82,12 +82,104 @@ def demo():
 
 
 @app.command()
+def interactive(
+    data: Path = typer.Option(..., "--data", "-d", help="Path to data directory"),
+):
+    """Interactive REPL for exploratory analysis.
+
+    Starts an interactive session where you can type analysis requests
+    and get immediate feedback. Ambiguities are resolved interactively.
+    """
+    init_default_logging()
+
+    from dd_agent.config import settings
+    from dd_agent.orchestrator.pipeline import Pipeline
+    from dd_agent.util.interaction import show_guidance
+
+    if not settings.is_configured:
+        console.print("[yellow]Warning: Azure OpenAI not configured.[/yellow]")
+        console.print("Please set environment variables or create a .env file.")
+        console.print("See .env.example for required configuration.")
+        raise typer.Exit(1)
+
+    console.print(Panel.fit(
+        "[bold blue]DD Analytics Agent - Interactive Mode[/bold blue]\n"
+        "Type your analysis requests. Type 'help' for guidance, 'quit' to exit.",
+        border_style="blue",
+    ))
+
+    try:
+        pipeline = Pipeline(data_dir=data, interactive=True)
+
+        while True:
+            try:
+                prompt = typer.prompt("\n[bold cyan]Analysis request[/bold cyan]")
+
+                if prompt.lower() in ("quit", "exit", "q"):
+                    console.print("[yellow]Goodbye![/yellow]")
+                    break
+
+                if not prompt.strip():
+                    continue
+
+                # Check for off-scope input
+                from dd_agent.util.interaction import handle_off_scope_input
+                if handle_off_scope_input(prompt):
+                    continue
+
+                # Run the request
+                console.print("[dim]Processing...[/dim]")
+                result = pipeline.agent.plan_cut(prompt)
+
+                if result.ok and result.data:
+                    console.print(f"[green]✅ Cut spec generated[/green]")
+                    console.print(f"  Metric: {result.data.metric}")
+                    console.print(f"  Dimensions: {result.data.dimensions}")
+
+                    # Try to execute
+                    exec_result = pipeline.agent.execute_cuts([result.data])
+                    if exec_result.tables:
+                        table = exec_result.tables[0]
+                        console.print(f"[cyan]Base N: {table.base_n}[/cyan]")
+                        console.print(f"Result: {table.result_data}")
+                    else:
+                        console.print("[red]❌ Execution failed[/red]")
+                        if exec_result.errors:
+                            for error in exec_result.errors:
+                                console.print(f"  - {error}")
+                else:
+                    console.print("[red]❌ Failed to generate cut spec[/red]")
+                    if result.errors:
+                        for error in result.errors:
+                            console.print(f"  - {error}")
+
+            except Exception as e:
+                console.print(f"[red]Error: {e}[/red]")
+
+    except KeyboardInterrupt:
+        console.print("\n[yellow]Interrupted by user[/yellow]")
+        raise typer.Exit(0)
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        raise typer.Exit(1)
+
+
+@app.command()
 def run(
     data: Path = typer.Option(..., "--data", "-d", help="Path to data directory"),
     prompt: str = typer.Option(..., "--prompt", "-p", help="Analysis request"),
+    no_interactive: bool = typer.Option(
+        False, "--no-interactive", help="Disable interactive ambiguity resolution"
+    ),
 ):
     """Run a single analysis request."""
     init_default_logging()
+
+    from dd_agent.util.interaction import handle_off_scope_input
+
+    # Check for off-scope input
+    if handle_off_scope_input(prompt):
+        raise typer.Exit(0)
 
     console.print(Panel.fit(
         f"[bold blue]DD Analytics Agent[/bold blue]\n"
@@ -104,7 +196,7 @@ def run(
     from dd_agent.orchestrator.pipeline import Pipeline
 
     try:
-        pipeline = Pipeline(data_dir=data)
+        pipeline = Pipeline(data_dir=data, interactive=not no_interactive)
         result = pipeline.run_single(prompt)
 
         if result.success:
@@ -135,6 +227,9 @@ def autoplan(
         None, "--scope", "-s", help="Path to scope.md file"
     ),
     max_cuts: int = typer.Option(20, "--max-cuts", "-m", help="Maximum cuts to execute"),
+    no_interactive: bool = typer.Option(
+        False, "--no-interactive", help="Disable interactive ambiguity resolution"
+    ),
 ):
     """Generate and execute a full analysis plan."""
     init_default_logging()
@@ -154,7 +249,7 @@ def autoplan(
     from dd_agent.orchestrator.pipeline import Pipeline
 
     try:
-        pipeline = Pipeline(data_dir=data)
+        pipeline = Pipeline(data_dir=data, interactive=not no_interactive)
         result = pipeline.run_autoplan(max_cuts=max_cuts)
 
         if result.success:

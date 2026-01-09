@@ -23,6 +23,7 @@ class ToolContext:
     - Segment definitions
     - Optional scope/prompt
     - Responses DataFrame (when needed)
+    - Interactive mode for ambiguity resolution
     """
 
     questions: list[Question]
@@ -33,6 +34,7 @@ class ToolContext:
     prompt: Optional[str] = None
     responses_df: Optional[pd.DataFrame] = None
     data_dir: Optional[Path] = None
+    interactive: bool = True
 
     def __post_init__(self):
         """Build lookup dictionaries if not provided."""
@@ -52,6 +54,7 @@ class ToolContext:
             prompt=prompt,
             responses_df=self.responses_df,
             data_dir=self.data_dir,
+            interactive=self.interactive,
         )
 
     def with_segments(self, segments: list[SegmentSpec]) -> "ToolContext":
@@ -65,6 +68,7 @@ class ToolContext:
             prompt=self.prompt,
             responses_df=self.responses_df,
             data_dir=self.data_dir,
+            interactive=self.interactive,
         )
 
     def get_questions_summary(self) -> str:

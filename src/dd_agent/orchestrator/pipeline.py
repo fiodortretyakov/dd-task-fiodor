@@ -45,15 +45,18 @@ class Pipeline:
         self,
         data_dir: Path,
         runs_dir: Optional[Path] = None,
+        interactive: bool = True,
     ):
         """Initialize the pipeline.
 
         Args:
             data_dir: Directory containing questions.json, responses.csv, scope.md
             runs_dir: Directory for saving run artifacts (defaults to data_dir/runs)
+            interactive: Enable interactive ambiguity resolution (default: True)
         """
         self.data_dir = Path(data_dir)
         self.runs_dir = runs_dir or self.data_dir / "runs"
+        self.interactive = interactive
 
         # Load data
         self.questions = self._load_questions()
@@ -66,6 +69,7 @@ class Pipeline:
             responses_df=self.responses_df,
             scope=self.scope,
             data_dir=self.data_dir,
+            interactive=self.interactive,
         )
 
     def _load_questions(self) -> list[Question]:
