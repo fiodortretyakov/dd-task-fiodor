@@ -38,7 +38,7 @@ print(f"Found: {question.question_id} - {question.label}")
 
 ## Five-Stage Matching Pipeline
 
-```
+```text
 User Input
     ↓
 1. Exact ID Match     (Q_INCOME == Q_INCOME)
@@ -67,7 +67,7 @@ Result (or No Match)
 
 When a match fails:
 
-```
+```text
 Term: 'Tenure' [✗ NOT FOUND]
 Similar candidates:
   - [0.45] Q_AGE: What is your age?

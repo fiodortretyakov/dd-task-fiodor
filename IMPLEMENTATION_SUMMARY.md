@@ -47,21 +47,25 @@
 ## Key Improvements
 
 ### 1. Matching Algorithm
+
 - **Before**: Simple exact ID, prefix, substring matching
 - **After**: 5-stage pipeline with fuzzy matching
 - **Improvement**: Handles typos, variations, partial matches
 
 ### 2. Error Messages
+
 - **Before**: Generic "Request is ambiguous"
 - **After**: Clear context, list of candidates, suggestions
 - **Improvement**: Users understand why request failed
 
 ### 3. Diagnostics
+
 - **Before**: No diagnostic tools
 - **After**: Comprehensive analysis with success metrics
 - **Improvement**: Can debug and monitor grounding quality
 
 ### 4. Code Quality
+
 - **Before**: Basic implementation
 - **After**: Full type hints, docstrings, error handling
 - **Improvement**: Maintainable and extensible
@@ -70,7 +74,7 @@
 
 ### Validation Suite Performance
 
-```
+```text
 Cut Planning:         50/50 PASS ✓
 Segment Builder:      54/55 PASS ✓ (1 data mismatch unrelated to grounding)
 Execution Engine:     17/17 PASS ✓
@@ -82,7 +86,7 @@ OVERALL:              91.7% (177/193 passed)
 
 ### Grounding Demo Results
 
-```
+```text
 Test 1: Exact match        ✓ PASS
 Test 2: Partial match      ✓ PASS
 Test 3: Prefix match       ✓ PASS

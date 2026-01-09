@@ -83,7 +83,7 @@ When multiple candidates match:
 - Provides a way to skip/cancel the action
 - Example output:
 
-  ```
+  ```text
   ⚠️  Ambiguity detected
 
   Your mention of 'Plan' matches multiple Questions.

@@ -49,7 +49,7 @@ A multi-stage fuzzy matching system with comprehensive diagnostics:
 
 #### Matching Pipeline (5 Stages)
 
-```
+```text
 User Input: "Income"
     ↓
 Stage 1: Exact ID Match (q_income == Q_INCOME)
