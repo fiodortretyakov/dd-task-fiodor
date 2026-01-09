@@ -1,12 +1,27 @@
 """Segment builder tool for converting NL definitions to SegmentSpecs."""
 
 from pathlib import Path
+from typing import Any, Optional
+
+from pydantic import BaseModel, Field
 
 from dd_agent.contracts.specs import SegmentSpec
 from dd_agent.contracts.tool_output import ToolOutput, err
 from dd_agent.contracts.validate import validate_segment_spec
 from dd_agent.llm.structured import build_messages, chat_structured_pydantic
 from dd_agent.tools.base import Tool, ToolContext
+
+
+class SegmentBuilderResult(BaseModel):
+    """Result of the segment builder tool."""
+
+    ok: bool = Field(..., description="Whether building succeeded")
+    segment: Optional[SegmentSpec] = Field(
+        default=None, description="The built segment specification"
+    )
+    errors: list[dict[str, Any]] = Field(
+        default_factory=list, description="Any errors from the LLM"
+    )
 
 
 class SegmentBuilder(Tool):
@@ -48,29 +63,49 @@ class SegmentBuilder(Tool):
 
         # Call LLM with structured output
         messages = build_messages(system_prompt=system_prompt, user_content=user_content)
-        segment_spec, trace = chat_structured_pydantic(
-            messages=messages,
-            model=SegmentSpec,
-        )
 
-        # Validate the segment spec against questions catalog
-        errors = validate_segment_spec(segment_spec, ctx.questions_by_id)
+        try:
+            result, trace = chat_structured_pydantic(
+                messages=messages,
+                model=SegmentBuilderResult,
+            )
+        except Exception as e:
+            return ToolOutput.failure(
+                errors=[err("llm_error", f"LLM call failed: {str(e)}")]
+            )
 
-        # Check if LLM returned errors (when errors exist in the response)
-        if hasattr(segment_spec, "__pydantic_extra__") and segment_spec.__pydantic_extra__:
-            llm_errors = segment_spec.__pydantic_extra__.get("errors", [])
-            if llm_errors:
-                # Convert dict errors to ToolMessage objects
-                for err_dict in llm_errors:
-                    code = err_dict.get("code", "llm_error")
-                    message = err_dict.get("message", "Unknown error")
-                    context = err_dict.get("context") or {}
-                    errors.append(err(code, message, **context))
+        # If the LLM indicated failure
+        if not result.ok:
+            llm_errors = []
+            if result.errors:
+                for error in result.errors:
+                    if isinstance(error, dict):
+                        llm_errors.append(err(
+                            error.get("code", "llm_error"),
+                            error.get("message", "Unknown error"),
+                            **error.get("context", {})
+                        ))
+                    else:
+                        llm_errors.append(error)
+
+            return ToolOutput.failure(
+                errors=llm_errors or [err("unmappable", "Request could not be mapped to available questions")],
+                trace=trace
+            )
+
+        # Validate the segment spec
+        if not result.segment:
+            return ToolOutput.failure(
+                errors=[err("missing_segment", "LLM did not provide a segment specification")]
+            )
+
+        # Validate against questions catalog
+        errors = validate_segment_spec(result.segment, ctx.questions_by_id)
 
         if errors:
             return ToolOutput.failure(errors=errors, trace=trace)
 
-        return ToolOutput.success(data=segment_spec, trace=trace)
+        return ToolOutput.success(data=result.segment, trace=trace)
 
     def _build_user_content(self, ctx: ToolContext) -> str:
         """Build the user message content with questions and segment description."""
