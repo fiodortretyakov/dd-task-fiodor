@@ -230,7 +230,7 @@ result = find_matching_questions("Income", questions)
 print(f"Found: {result.question_id} - {result.label}")
 ```
 
-### Error Handling
+### Handling Ambiguity
 
 ```python
 from dd_agent.util.interaction import AmbiguityError

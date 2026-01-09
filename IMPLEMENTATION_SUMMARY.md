@@ -113,6 +113,7 @@ No changes required in these tools - they automatically benefit from the improve
 ## Usage Examples
 
 ### Basic Grounding
+
 ```python
 from dd_agent.util.grounding import find_matching_questions
 
@@ -121,6 +122,7 @@ question = find_matching_questions("Income", questions)
 ```
 
 ### Diagnostic Analysis
+
 ```python
 from dd_agent.util.grounding_diagnostics import GroundingDiagnostics
 
@@ -133,6 +135,7 @@ print(report)
 ```
 
 ### Error Handling
+
 ```python
 from dd_agent.util.interaction import AmbiguityError
 

@@ -386,7 +386,7 @@ pytest tests/ -v --include-statistics
 - Cohen, J. (1988). Statistical Power Analysis for the Behavioral Sciences
 - Field, A. (2013). Discovering Statistics Using IBM SPSS Statistics
 - Cumming, G. (2012). Understanding the New Statistics
-- scipy.stats documentation: https://docs.scipy.org/doc/scipy/reference/stats.html
+- [scipy.stats documentation](https://docs.scipy.org/doc/scipy/reference/stats.html)
 
 ## Version History
 

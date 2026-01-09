@@ -91,7 +91,7 @@ Interactive demonstration showing:
 | Grounding Core | - | All stages | ✓ |
 | **Overall** | **116** | **113** | **97.4%** |
 
-### Documentation
+### Grounding Documentation
 
 1. **explanation.md** (~350 lines)
    - Complete implementation walkthrough
