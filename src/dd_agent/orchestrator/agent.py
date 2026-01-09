@@ -76,10 +76,15 @@ class Agent:
         Returns:
             ToolOutput with HighLevelPlan or errors
         """
-        # TODO: Implement orchestration for high-level planning
-        # 1. Use high_level_planner tool
-        # 2. Add any suggested segments to the current session
-        raise NotImplementedError("Candidates must implement plan_analysis")
+        ctx = self._get_context()
+        result = self.high_level_planner.run(ctx)
+
+        # If successful, add any suggested segments to the session
+        if result.ok and result.data is not None:
+            for segment in result.data.suggested_segments:
+                self.add_segment(segment)
+
+        return result
 
     def plan_cut(self, request: str) -> ToolOutput[CutSpec]:
         """Plan a single cut from a natural language request.
@@ -90,8 +95,8 @@ class Agent:
         Returns:
             ToolOutput with CutSpec or errors
         """
-        # TODO: Implement orchestration for cut planning
-        raise NotImplementedError("Candidates must implement plan_cut")
+        ctx = self._get_context(prompt=request)
+        return self.cut_planner.run(ctx)
 
     def build_segment(self, definition: str) -> ToolOutput[SegmentSpec]:
         """Build a segment from a natural language definition.
@@ -102,8 +107,8 @@ class Agent:
         Returns:
             ToolOutput with SegmentSpec or errors
         """
-        # TODO: Implement orchestration for segment building
-        raise NotImplementedError("Candidates must implement build_segment")
+        ctx = self._get_context(prompt=definition)
+        return self.segment_builder.run(ctx)
 
     def add_segment(self, segment: SegmentSpec) -> None:
         """Add a segment to the session.
@@ -125,8 +130,12 @@ class Agent:
         Returns:
             ExecutionResult with tables and any errors
         """
-        # TODO: Initialize the Executor and call execute_cuts
-        raise NotImplementedError("Candidates must implement execute_cuts")
+        executor = Executor(
+            df=self.responses_df,
+            questions_by_id=self.questions_by_id,
+            segments_by_id=self.segments_by_id,
+        )
+        return executor.execute_cuts(cuts)
 
     def execute_single_cut(self, cut: CutSpec) -> ExecutionResult:
         """Execute a single cut specification.

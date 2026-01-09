@@ -275,6 +275,7 @@ Errors Encountered: 0
 ## Q_INCOME -> frequency
 - **Cut ID**: `CUT_5_Q_INCOME_frequency`
 - **Base N**: 100
+- **Golden Comparison**: ✅ PASS (Prompt: 'Plan frequency for the 'Excluded Low Income' segment')
 
 ```text
    value               label  count  percentage
