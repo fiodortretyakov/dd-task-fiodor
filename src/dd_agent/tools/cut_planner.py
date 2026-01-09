@@ -96,7 +96,7 @@ class CutPlanner(Tool):
                         ))
                     else:
                         llm_errors.append(error)
-            
+
             return ToolOutput.failure(
                 errors=llm_errors or [err("ambiguous", "Request is ambiguous")],
                 trace={
