@@ -264,9 +264,9 @@ class Executor:
         result_by_group: dict[str, Any] = {}
         base_sizes: dict[str, int] = {}
 
-        if isinstance(groups, pd.core.groupby.DataFrameGroupBy):
+        if isinstance(groups, pd.api.typing.DataFrameGroupBy):
             for group_val, group_df in groups:
-                series = group_df[col_name]
+                series: pd.Series[Any] = group_df[col_name]
                 base_n = int(series.notna().sum())
                 base_sizes[str(group_val)] = base_n
 
@@ -284,7 +284,7 @@ class Executor:
         else:
             # Dict-based groups (for segments)
             for group_val, group_df in groups.items():
-                series = group_df[col_name]
+                series: pd.Series[Any] = group_df[col_name]
                 base_n = int(series.notna().sum())
                 base_sizes[group_val] = base_n
 
