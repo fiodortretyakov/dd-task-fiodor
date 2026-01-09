@@ -187,9 +187,9 @@ class SurveyWeights:
             Weighted mean
         """
         if weights is None:
-            return np.mean(values)
+            return float(np.mean(values))
 
-        return np.average(values, weights=weights)
+        return float(np.average(values, weights=weights))
 
     @staticmethod
     def calculate_weighted_variance(
@@ -207,7 +207,7 @@ class SurveyWeights:
             Weighted variance
         """
         if weights is None:
-            return np.var(values)
+            return float(np.var(values))
 
         mean = np.average(values, weights=weights)
         variance = np.average((values - mean) ** 2, weights=weights)
@@ -229,6 +229,6 @@ class SurveyWeights:
             Weighted proportion
         """
         if weights is None:
-            return np.mean(successes)
+            return float(np.mean(successes))
 
         return np.average(successes, weights=weights)
