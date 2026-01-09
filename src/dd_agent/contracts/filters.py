@@ -27,12 +27,15 @@ class PredicateIn(BaseModel):
 
 
 class PredicateRange(BaseModel):
-    """Range predicate: question value is within a numeric range."""
+    """Range predicate: question value is within a numeric range.
+
+    Either min or max can be None to represent unbounded ranges (e.g., 50+ or <30).
+    """
 
     kind: Literal["range"] = "range"
     question_id: str = Field(..., description="The question to filter on")
-    min: float | int = Field(..., description="Minimum value")
-    max: float | int = Field(..., description="Maximum value")
+    min: float | int | None = Field(default=None, description="Minimum value (None for unbounded)")
+    max: float | int | None = Field(default=None, description="Maximum value (None for unbounded)")
     inclusive: bool = Field(default=True, description="Whether bounds are inclusive")
 
 

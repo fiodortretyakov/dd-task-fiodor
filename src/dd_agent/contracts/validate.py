@@ -237,8 +237,8 @@ def _validate_predicate_range(
             )
         )
 
-    # Validate range bounds
-    if pred.min > pred.max:
+    # Validate range bounds (only if both are specified)
+    if pred.min is not None and pred.max is not None and pred.min > pred.max:
         errors.append(
             err(
                 "invalid_range",

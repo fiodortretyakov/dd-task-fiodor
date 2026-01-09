@@ -72,13 +72,13 @@ Errors Encountered: 0
 
 ## Q_RESP_ID -> mean (Filtered)
 - **Cut ID**: `CUT_1_Q_RESP_ID_mean_FILTERED_SEG_MALE_NORTH`
-- **Base N**: 36
+- **Base N**: 2
 - **Warnings**:
-  - Base size (36) is below recommended threshold (100). Interpret results with caution.
+  - Base size (2) is below minimum threshold (30). Results may not be statistically reliable.
 
 ```text
-   mean      std  min   max  count
-0  53.0  28.6616  1.0  98.0     36
+   mean      std   min   max  count
+0  47.5  45.9619  15.0  80.0      2
 ```
 
 ---
@@ -119,13 +119,13 @@ Errors Encountered: 0
 - **Cut ID**: `CUT_2_Q_AGE_mean_BY_SEG_MALE_NORTH`
 - **Base N**: 100
 - **Warnings**:
-  - [SEG_MALE_NORTH] Base size (36) is below recommended threshold (100). Interpret results with caution.
-  - [Not_SEG_MALE_NORTH] Base size (64) is below recommended threshold (100). Interpret results with caution.
+  - [SEG_MALE_NORTH] Base size (2) is below minimum threshold (30). Results may not be statistically reliable.
+  - [Not_SEG_MALE_NORTH] Base size (98) is below recommended threshold (100). Interpret results with caution.
 
 ```text
         dimension               value   metric  base_n
-0  SEG_MALE_NORTH      SEG_MALE_NORTH  58.5833      36
-1  SEG_MALE_NORTH  Not_SEG_MALE_NORTH  52.3438      64
+0  SEG_MALE_NORTH      SEG_MALE_NORTH  76.5000       2
+1  SEG_MALE_NORTH  Not_SEG_MALE_NORTH  54.1429      98
 ```
 
 ---
@@ -445,13 +445,13 @@ Errors Encountered: 0
 
 ## Q_NPS -> nps (Filtered)
 - **Cut ID**: `CUT_7_Q_NPS_nps_FILTERED_SEG_MALE_NORTH`
-- **Base N**: 36
+- **Base N**: 2
 - **Warnings**:
-  - Base size (36) is below recommended threshold (100). Interpret results with caution.
+  - Base size (2) is below minimum threshold (30). Results may not be statistically reliable.
 
 ```text
      nps  promoters_count  promoters_pct  passives_count  passives_pct  detractors_count  detractors_pct  total
-0 -72.22                3           8.33               4         11.11                29           80.56     36
+0 -100.0                0            0.0               0           0.0                 2           100.0      2
 ```
 
 ---
@@ -494,13 +494,13 @@ Errors Encountered: 0
 - **Cut ID**: `CUT_8_Q_OVERALL_SAT_frequency_BY_SEG_MALE_NORTH`
 - **Base N**: 100
 - **Warnings**:
-  - [SEG_MALE_NORTH] Base size (36) is below recommended threshold (100). Interpret results with caution.
-  - [Not_SEG_MALE_NORTH] Base size (64) is below recommended threshold (100). Interpret results with caution.
+  - [SEG_MALE_NORTH] Base size (2) is below minimum threshold (30). Results may not be statistically reliable.
+  - [Not_SEG_MALE_NORTH] Base size (98) is below recommended threshold (100). Interpret results with caution.
 
 ```text
-        dimension               value                                                                                                                                                                                                                                                                                                                                                                      metric  base_n
-0  SEG_MALE_NORTH      SEG_MALE_NORTH   [{'value': 1, 'label': 'Very Dissatisfied', 'count': 6, 'percentage': 16.67}, {'value': 2, 'label': 'Dissatisfied', 'count': 5, 'percentage': 13.89}, {'value': 3, 'label': 'Neutral', 'count': 11, 'percentage': 30.56}, {'value': 4, 'label': 'Satisfied', 'count': 10, 'percentage': 27.78}, {'value': 5, 'label': 'Very Satisfied', 'count': 4, 'percentage': 11.11}]      36
-1  SEG_MALE_NORTH  Not_SEG_MALE_NORTH  [{'value': 1, 'label': 'Very Dissatisfied', 'count': 7, 'percentage': 10.94}, {'value': 2, 'label': 'Dissatisfied', 'count': 13, 'percentage': 20.31}, {'value': 3, 'label': 'Neutral', 'count': 10, 'percentage': 15.62}, {'value': 4, 'label': 'Satisfied', 'count': 18, 'percentage': 28.12}, {'value': 5, 'label': 'Very Satisfied', 'count': 16, 'percentage': 25.0}]      64
+        dimension               value                                                                                                                                                                                                                                                                                                                                                                        metric  base_n
+0  SEG_MALE_NORTH      SEG_MALE_NORTH                                                                                                                                                                                                                                        [{'value': 3, 'label': 'Neutral', 'count': 1, 'percentage': 50.0}, {'value': 4, 'label': 'Satisfied', 'count': 1, 'percentage': 50.0}]       2
+1  SEG_MALE_NORTH  Not_SEG_MALE_NORTH  [{'value': 1, 'label': 'Very Dissatisfied', 'count': 13, 'percentage': 13.27}, {'value': 2, 'label': 'Dissatisfied', 'count': 18, 'percentage': 18.37}, {'value': 3, 'label': 'Neutral', 'count': 20, 'percentage': 20.41}, {'value': 4, 'label': 'Satisfied', 'count': 27, 'percentage': 27.55}, {'value': 5, 'label': 'Very Satisfied', 'count': 20, 'percentage': 20.41}]      98
 ```
 
 ---
@@ -810,13 +810,13 @@ Errors Encountered: 0
 
 ## Q_EASE_OF_USE -> mean (Filtered)
 - **Cut ID**: `CUT_13_Q_EASE_OF_USE_mean_FILTERED_SEG_MALE_NORTH`
-- **Base N**: 36
+- **Base N**: 2
 - **Warnings**:
-  - Base size (36) is below recommended threshold (100). Interpret results with caution.
+  - Base size (2) is below minimum threshold (30). Results may not be statistically reliable.
 
 ```text
-     mean     std  min  max  count
-0  3.0556  1.5482  1.0  5.0     36
+   mean  std  min  max  count
+0   1.0  0.0  1.0  1.0      2
 ```
 
 ---
@@ -855,13 +855,13 @@ Errors Encountered: 0
 - **Cut ID**: `CUT_14_Q_EASE_OF_USE_top2box_BY_SEG_MALE_NORTH`
 - **Base N**: 100
 - **Warnings**:
-  - [SEG_MALE_NORTH] Base size (36) is below recommended threshold (100). Interpret results with caution.
-  - [Not_SEG_MALE_NORTH] Base size (64) is below recommended threshold (100). Interpret results with caution.
+  - [SEG_MALE_NORTH] Base size (2) is below minimum threshold (30). Results may not be statistically reliable.
+  - [Not_SEG_MALE_NORTH] Base size (98) is below recommended threshold (100). Interpret results with caution.
 
 ```text
         dimension               value  metric  base_n
-0  SEG_MALE_NORTH      SEG_MALE_NORTH   44.44      36
-1  SEG_MALE_NORTH  Not_SEG_MALE_NORTH   42.19      64
+0  SEG_MALE_NORTH      SEG_MALE_NORTH    0.00       2
+1  SEG_MALE_NORTH  Not_SEG_MALE_NORTH   43.88      98
 ```
 
 ---
@@ -1169,13 +1169,13 @@ Errors Encountered: 0
 
 ## Q_VALUE -> bottom2box (Filtered)
 - **Cut ID**: `CUT_19_Q_VALUE_bottom2box_FILTERED_SEG_MALE_NORTH`
-- **Base N**: 36
+- **Base N**: 2
 - **Warnings**:
-  - Base size (36) is below recommended threshold (100). Interpret results with caution.
+  - Base size (2) is below minimum threshold (30). Results may not be statistically reliable.
 
 ```text
    bottom2box_pct  bottom2box_count  total bottom_values
-0           33.33                12     36        [1, 2]
+0            50.0                 1      2        [1, 2]
 ```
 
 ---
@@ -1218,13 +1218,13 @@ Errors Encountered: 0
 - **Cut ID**: `CUT_20_Q_SUPPORT_SAT_frequency_BY_SEG_MALE_NORTH`
 - **Base N**: 100
 - **Warnings**:
-  - [SEG_MALE_NORTH] Base size (36) is below recommended threshold (100). Interpret results with caution.
-  - [Not_SEG_MALE_NORTH] Base size (64) is below recommended threshold (100). Interpret results with caution.
+  - [SEG_MALE_NORTH] Base size (2) is below minimum threshold (30). Results may not be statistically reliable.
+  - [Not_SEG_MALE_NORTH] Base size (98) is below recommended threshold (100). Interpret results with caution.
 
 ```text
         dimension               value                                                                                                                                                                                                                                                                                                                                                                        metric  base_n
-0  SEG_MALE_NORTH      SEG_MALE_NORTH     [{'value': 1, 'label': 'Very Dissatisfied', 'count': 11, 'percentage': 30.56}, {'value': 2, 'label': 'Dissatisfied', 'count': 4, 'percentage': 11.11}, {'value': 3, 'label': 'Neutral', 'count': 5, 'percentage': 13.89}, {'value': 4, 'label': 'Satisfied', 'count': 6, 'percentage': 16.67}, {'value': 5, 'label': 'Very Satisfied', 'count': 10, 'percentage': 27.78}]      36
-1  SEG_MALE_NORTH  Not_SEG_MALE_NORTH  [{'value': 1, 'label': 'Very Dissatisfied', 'count': 12, 'percentage': 18.75}, {'value': 2, 'label': 'Dissatisfied', 'count': 12, 'percentage': 18.75}, {'value': 3, 'label': 'Neutral', 'count': 11, 'percentage': 17.19}, {'value': 4, 'label': 'Satisfied', 'count': 14, 'percentage': 21.88}, {'value': 5, 'label': 'Very Satisfied', 'count': 15, 'percentage': 23.44}]      64
+0  SEG_MALE_NORTH      SEG_MALE_NORTH                                                                                                                                                                                                                                   [{'value': 2, 'label': 'Dissatisfied', 'count': 1, 'percentage': 50.0}, {'value': 4, 'label': 'Satisfied', 'count': 1, 'percentage': 50.0}]       2
+1  SEG_MALE_NORTH  Not_SEG_MALE_NORTH  [{'value': 1, 'label': 'Very Dissatisfied', 'count': 23, 'percentage': 23.47}, {'value': 2, 'label': 'Dissatisfied', 'count': 15, 'percentage': 15.31}, {'value': 3, 'label': 'Neutral', 'count': 16, 'percentage': 16.33}, {'value': 4, 'label': 'Satisfied', 'count': 19, 'percentage': 19.39}, {'value': 5, 'label': 'Very Satisfied', 'count': 25, 'percentage': 25.51}]      98
 ```
 
 ---
@@ -1544,17 +1544,14 @@ Errors Encountered: 0
 
 ## Q_PURCHASE_INTENT -> frequency (Filtered)
 - **Cut ID**: `CUT_25_Q_PURCHASE_INTENT_frequency_FILTERED_SEG_MALE_NORTH`
-- **Base N**: 36
+- **Base N**: 2
 - **Warnings**:
-  - Base size (36) is below recommended threshold (100). Interpret results with caution.
+  - Base size (2) is below minimum threshold (30). Results may not be statistically reliable.
 
 ```text
-   value          label  count  percentage
-0      1  Very Unlikely      4       11.11
-1      2       Unlikely     11       30.56
-2      3        Neutral      7       19.44
-3      4         Likely      5       13.89
-4      5    Very Likely      9       25.00
+   value    label  count  percentage
+0      3  Neutral      1        50.0
+1      4   Likely      1        50.0
 ```
 
 ---
@@ -1593,13 +1590,13 @@ Errors Encountered: 0
 - **Cut ID**: `CUT_26_Q_PURCHASE_INTENT_mean_BY_SEG_MALE_NORTH`
 - **Base N**: 100
 - **Warnings**:
-  - [SEG_MALE_NORTH] Base size (36) is below recommended threshold (100). Interpret results with caution.
-  - [Not_SEG_MALE_NORTH] Base size (64) is below recommended threshold (100). Interpret results with caution.
+  - [SEG_MALE_NORTH] Base size (2) is below minimum threshold (30). Results may not be statistically reliable.
+  - [Not_SEG_MALE_NORTH] Base size (98) is below recommended threshold (100). Interpret results with caution.
 
 ```text
         dimension               value  metric  base_n
-0  SEG_MALE_NORTH      SEG_MALE_NORTH  3.1111      36
-1  SEG_MALE_NORTH  Not_SEG_MALE_NORTH  3.0312      64
+0  SEG_MALE_NORTH      SEG_MALE_NORTH   3.500       2
+1  SEG_MALE_NORTH  Not_SEG_MALE_NORTH   3.051      98
 ```
 
 ---
@@ -1910,16 +1907,13 @@ Errors Encountered: 0
 
 ## Q_PLAN -> frequency (Filtered)
 - **Cut ID**: `CUT_31_Q_PLAN_frequency_FILTERED_SEG_MALE_NORTH`
-- **Base N**: 36
+- **Base N**: 2
 - **Warnings**:
-  - Base size (36) is below recommended threshold (100). Interpret results with caution.
+  - Base size (2) is below minimum threshold (30). Results may not be statistically reliable.
 
 ```text
-   value         label  count  percentage
-0  BASIC         Basic     12       33.33
-1   FREE          Free      9       25.00
-2    ENT    Enterprise      9       25.00
-3    PRO  Professional      6       16.67
+   value  label  count  percentage
+0  BASIC  Basic      2       100.0
 ```
 
 ---

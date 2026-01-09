@@ -115,17 +115,31 @@ def _eval_predicate_range(
     pred: PredicateRange,
     questions_by_id: dict[str, Question],
 ) -> pd.Series:
-    """Evaluate range predicate."""
+    """Evaluate range predicate. Supports unbounded ranges (min or max can be None)."""
     col = _get_column_name(pred.question_id, questions_by_id)
     if col not in df.columns:
         return pd.Series(False, index=df.index)
 
     series = pd.to_numeric(df[col], errors="coerce")
 
-    if pred.inclusive:
-        return (series >= pred.min) & (series <= pred.max)
-    else:
-        return (series > pred.min) & (series < pred.max)
+    # Start with all valid (non-null) values
+    result = series.notna()
+
+    # Apply min bound if specified
+    if pred.min is not None:
+        if pred.inclusive:
+            result = result & (series >= pred.min)
+        else:
+            result = result & (series > pred.min)
+
+    # Apply max bound if specified
+    if pred.max is not None:
+        if pred.inclusive:
+            result = result & (series <= pred.max)
+        else:
+            result = result & (series < pred.max)
+
+    return result
 
 
 def _eval_predicate_contains_any(
@@ -167,7 +181,7 @@ def _eval_and(
 
     result = build_mask(df, expr.children[0], questions_by_id)
     for child in expr.children[1:]:
-        result = result | build_mask(df, child, questions_by_id)
+        result = result & build_mask(df, child, questions_by_id)
     return result
 
 
