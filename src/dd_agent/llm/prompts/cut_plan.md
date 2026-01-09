@@ -152,6 +152,63 @@ If the request is ambiguous and you cannot confidently produce a specification:
 }
 ```
 
+### Request: "NPS score for 'Males in the North'"
+**Key**: AND filter with exact uppercase codes M and NORTH
+```json
+{
+  "ok": true,
+  "cut": {
+    "cut_id": "cut_007",
+    "metric": {"type": "nps", "question_id": "Q_NPS", "params": {}},
+    "dimensions": [],
+    "filter": {
+      "kind": "and",
+      "children": [
+        {"kind": "eq", "question_id": "Q_GENDER", "value": "M"},
+        {"kind": "eq", "question_id": "Q_REGION", "value": "NORTH"}
+      ]
+    }
+  },
+  "resolution_map": {"NPS": "Q_NPS", "Males": "Q_GENDER=M", "North": "Q_REGION=NORTH"}
+}
+```
+
+### Request: "Check NPS for respondents who use 'Reporting' but live in the 'South'"
+**Key**: AND filter, multi-choice uses contains_any, exact codes REPORT and SOUTH
+```json
+{
+  "ok": true,
+  "cut": {
+    "cut_id": "cut_008",
+    "metric": {"type": "nps", "question_id": "Q_NPS", "params": {}},
+    "dimensions": [],
+    "filter": {
+      "kind": "and",
+      "children": [
+        {"kind": "contains_any", "question_id": "Q_FEATURES_USED", "values": ["REPORT"]},
+        {"kind": "eq", "question_id": "Q_REGION", "value": "SOUTH"}
+      ]
+    }
+  },
+  "resolution_map": {"NPS": "Q_NPS", "Reporting": "Q_FEATURES_USED contains REPORT", "South": "Q_REGION=SOUTH"}
+}
+```
+
+### Request: "Show the income distribution for 'Active Tech Users'"
+**Key**: Use segment as dimension when available
+```json
+{
+  "ok": true,
+  "cut": {
+    "cut_id": "cut_009",
+    "metric": {"type": "frequency", "question_id": "Q_INCOME", "params": {}},
+    "dimensions": [{"kind": "segment", "id": "SEG_TECH_ACTIVE"}],
+    "filter": null
+  },
+  "resolution_map": {"income distribution": "Q_INCOME", "Active Tech Users": "SEG_TECH_ACTIVE"}
+}
+```
+
 ## Metric Type Selection Guidelines
 
 - **frequency**: Use for "distribution", "breakdown", "how many", "count", "across" (cross-tab)
@@ -162,8 +219,28 @@ If the request is ambiguous and you cannot confidently produce a specification:
 
 ## Filter Construction Rules
 
-1. **Match exact option codes** from the question definition (case-sensitive)
+1. **CRITICAL: Match exact option codes** from the question definition - they are CASE-SENSITIVE
+   - Use "WEST" not "West" or "west"
+   - Use "MONTHLY" not "Monthly"
+   - Use "DAILY" not "Daily"
+   - Use "M" not "Male"
+   - Use "HIGH" not "High"
 2. **Multiple conditions**: Use "and" for multiple filters (e.g., "West AND Monthly")
 3. **OR logic**: Use "or" for either/or conditions (e.g., "Young OR High Income")
 4. **NOT logic**: Use "not" with child expression (e.g., "NOT Very Satisfied")
 5. **Numeric ranges**: Use "range" with min/max for age ranges or numeric filters
+6. **Multi-choice contains**: Use "contains_any" for multi-choice questions with array of values
+
+## CRITICAL: Option Code Examples
+
+When you see these natural language phrases, use these EXACT codes:
+- "West region" → `Q_REGION = "WEST"` (NOT "West")
+- "Monthly users" → `Q_USAGE_FREQ = "MONTHLY"` (NOT "Monthly")
+- "Daily users" → `Q_USAGE_FREQ = "DAILY"` (NOT "Daily")
+- "Males" → `Q_GENDER = "M"` (NOT "Male")
+- "North" → `Q_REGION = "NORTH"` (NOT "North")
+- "South" → `Q_REGION = "SOUTH"` (NOT "South")
+- "High Income" → `Q_INCOME = "HIGH"` (NOT "High")
+- "Low Income" → `Q_INCOME = "LOW"` (NOT "Low")
+- "API feature" → `Q_FEATURES_USED contains_any ["API"]` (NOT "Api")
+- "Reporting" → `Q_FEATURES_USED contains_any ["REPORT"]` (NOT "Reporting")
