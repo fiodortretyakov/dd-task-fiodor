@@ -68,8 +68,26 @@ class Executor:
         self._segment_masks: dict[str, pd.Series] = {}
 
     def materialize_segments(self) -> dict[str, int]:
-        """Pre-compute masks for all segments."""
-        return {sid: 0 for sid in self.segments_by_id}
+        """Pre-compute masks for all segments and return base sizes.
+
+        Returns:
+            Dict mapping segment_id to base size (count of respondents in segment)
+        """
+        from dd_agent.engine.masks import build_mask
+
+        segment_bases = {}
+
+        for segment_id, segment_spec in self.segments_by_id.items():
+            # Build the boolean mask for this segment
+            mask = build_mask(self.df, segment_spec.definition, self.questions_by_id)
+
+            # Store the mask for later use
+            self._segment_masks[segment_id] = mask
+
+            # Calculate base size (number of True values in mask)
+            segment_bases[segment_id] = int(mask.sum())
+
+        return segment_bases
 
     def execute_cuts(self, cuts: list[CutSpec]) -> ExecutionResult:
         """Execute all cuts and return results.
@@ -190,13 +208,13 @@ class Executor:
             base_n=base_n,
             warnings=warnings,
         )
-        
+
         # Set the internal dataframe representation
         if metric_type == "frequency" and "distribution" in result_data:
             result.set_dataframe(pd.DataFrame(result_data["distribution"]))
         else:
             result.set_dataframe(pd.DataFrame([result_data]))
-            
+
         return result
 
 
@@ -232,10 +250,14 @@ class Executor:
                 raise ValueError(f"Dimension column '{dim_col}' not found")
             groups = df.groupby(dim_col)
         else:
-            # Segment dimension
+            # Segment dimension - split data into segment vs non-segment
+            if dim.id not in self._segment_masks:
+                raise ValueError(f"Segment '{dim.id}' not materialized")
+
+            segment_mask = self._segment_masks[dim.id]
             groups = {
-                f"{dim.id}": df,
-                f"Not {dim.id}": df,
+                dim.id: df[segment_mask],
+                f"Not_{dim.id}": df[~segment_mask],
             }
 
         # Compute metric for each group
@@ -292,7 +314,7 @@ class Executor:
             dimensions=[f"{dim.kind}:{dim.id}"],
             warnings=warnings,
         )
-        
+
         # Set the internal dataframe representation
         # For cross-tabs, we can flatten this into a more useful format
         df_rows = []
@@ -305,7 +327,7 @@ class Executor:
             }
             df_rows.append(row)
         result.set_dataframe(pd.DataFrame(df_rows))
-        
+
         return result
 
 
