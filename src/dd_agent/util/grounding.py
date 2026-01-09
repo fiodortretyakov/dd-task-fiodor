@@ -1,10 +1,12 @@
 """Utilities for grounding natural language to question/option IDs."""
 
 from difflib import SequenceMatcher, get_close_matches
-from typing import Optional
+from typing import Optional, TypeVar, Generic
 
-from dd_agent.contracts.questions import Question
+from dd_agent.contracts.questions import Question, Option
 from dd_agent.util.interaction import resolve_ambiguity
+
+T = TypeVar("T")
 
 
 def _similarity_ratio(a: str, b: str) -> float:
@@ -14,9 +16,9 @@ def _similarity_ratio(a: str, b: str) -> float:
 
 def _find_close_matches(
     search_term: str,
-    candidates: list[tuple[str, object]],
+    candidates: list[tuple[str, T]],
     threshold: float = 0.6,
-) -> list[tuple[float, str, object]]:
+) -> list[tuple[float, str, T]]:
     """
     Find close matches using fuzzy matching with multiple strategies.
 
