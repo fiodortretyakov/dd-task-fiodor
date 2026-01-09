@@ -1,5 +1,5 @@
 {
-  "python.defaultInterpreterPath": "/bin/python3",
+  "python.defaultInterpreterPath": "/home/codespace/.python/current/bin/python3.12",
   "python.analysis.typeCheckingMode": "basic",
   "python.analysis.autoImportCompletions": true,
   "python.testing.pytestEnabled": true,
