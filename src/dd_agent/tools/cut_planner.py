@@ -84,8 +84,21 @@ class CutPlanner(Tool):
 
         # If the LLM indicated ambiguity or failure
         if not result.ok:
+            # Convert LLM errors (dicts) to ToolMessage objects
+            llm_errors = []
+            if result.errors:
+                for error in result.errors:
+                    if isinstance(error, dict):
+                        llm_errors.append(err(
+                            error.get("code", "llm_error"),
+                            error.get("message", "Unknown error"),
+                            **error.get("context", {})
+                        ))
+                    else:
+                        llm_errors.append(error)
+            
             return ToolOutput.failure(
-                errors=result.errors or [err("ambiguous", "Request is ambiguous")],
+                errors=llm_errors or [err("ambiguous", "Request is ambiguous")],
                 trace={
                     "llm": llm_trace,
                     "ambiguity_options": result.ambiguity_options,
