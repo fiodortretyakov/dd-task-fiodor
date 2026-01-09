@@ -350,7 +350,7 @@ Ready for validation:
 ### Documentation Coverage
 
 | Aspect | Status |
-|--------|--------|
+| --- | --- |
 | API documentation | ✅ Complete |
 | Integration guide | ✅ Complete |
 | Quick reference | ✅ Complete |
