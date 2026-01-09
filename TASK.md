@@ -178,7 +178,7 @@ You may build additional user-facing demonstrations beyond the CLI (absolutely n
 
 ---
 
-# Deliverables
+## Deliverables
 
 A GitHub repository or zipfile containing:
 
@@ -204,7 +204,7 @@ A GitHub repository or zipfile containing:
 
 ---
 
-# Assessment Criteria
+## Assessment Criteria
 
 | Area                         | Criteria                                                                                     |
 | ---------------------------- | -------------------------------------------------------------------------------------------- |
@@ -216,8 +216,8 @@ A GitHub repository or zipfile containing:
 | Debugging ability            | Did you identify and fix meaningful bugs? Are fixes well-scoped and explained?               |
 | Use of validators            | Do you use validators effectively as a guide and describe gaps where not fully passing?      |
 | Explanation & roadmap        | Do you clearly explain what you did and what you'd improve with more time?                   |
-| Interaction quality          | Does the system handle off-scope prompts and ambiguity in a user-friendly, safe way? |
-| Extensions                   | Ambiguity resolution flow, additional tools, better grounding, etc.                   |
+| Interaction quality          | Does the system handle off-scope prompts and ambiguity in a user-friendly, safe way?         |
+| Extensions                   | Ambiguity resolution flow, additional tools, better grounding, etc.                          |
 
 ---
 
