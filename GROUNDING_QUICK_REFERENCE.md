@@ -164,7 +164,7 @@ Example scores:
 ## Performance
 
 | Metric | Value |
-|--------|-------|
+| --- | --- |
 | Time per search | <5ms |
 | Matching success | 83-90% |
 | False positives | <2% |

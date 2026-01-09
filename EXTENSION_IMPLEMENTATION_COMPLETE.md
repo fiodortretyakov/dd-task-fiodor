@@ -84,7 +84,7 @@ Interactive demonstration showing:
 ### Test Results
 
 | Component | Tests | Passing | Rate |
-|-----------|-------|---------|------|
+| --- | --- | --- | --- |
 | Cut Planning | 50 | 50 | 100% |
 | Segment Building | 55 | 54 | 98.2% |
 | E2E Integration | 11 | 9 | 81.8% |
@@ -331,7 +331,7 @@ Ready for validation:
 ### Code Changes
 
 | Item | Count |
-|------|-------|
+| --- | --- |
 | New Python modules | 5 |
 | New documentation files | 7 |
 | Modified existing modules | 3 |
@@ -341,7 +341,7 @@ Ready for validation:
 ### Testing Coverage
 
 | Component | Status |
-|-----------|--------|
+| --- | --- |
 | Grounding | ✅ Comprehensive |
 | Statistics | ✅ Ready for validation |
 | Integration | ✅ Documented |

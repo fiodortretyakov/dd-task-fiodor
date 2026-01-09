@@ -187,7 +187,7 @@ except AmbiguityError as e:
 ## Code Statistics
 
 | Component | Files | Lines | Status |
-|-----------|-------|-------|--------|
+| --- | --- | --- | --- |
 | Grounding module | 1 modified | ~220 | Enhanced |
 | Diagnostics module | 1 new | ~130 | New |
 | Demo script | 1 new | ~75 | New |
