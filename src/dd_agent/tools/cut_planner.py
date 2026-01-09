@@ -60,10 +60,78 @@ class CutPlanner(Tool):
                 errors=[err("missing_prompt", "No analysis request provided")]
             )
 
-        # TODO: Implement tool logic
-        raise NotImplementedError("Candidates must implement the CutPlanner logic")
+        # Build the prompt with context
+        user_content = self._build_user_content(ctx)
+
+        # Load the system prompt
+        from pathlib import Path
+        prompt_path = Path(__file__).parent.parent / "llm" / "prompts" / "cut_plan.md"
+        system_prompt = prompt_path.read_text()
+
+        # Build messages
+        messages = build_messages(system_prompt=system_prompt, user_content=user_content)
+
+        # Call LLM with structured output
+        try:
+            result, llm_trace = chat_structured_pydantic(
+                messages=messages,
+                model=CutPlanResult
+            )
+        except Exception as e:
+            return ToolOutput.failure(
+                errors=[err("llm_error", f"LLM call failed: {str(e)}")]
+            )
+
+        # If the LLM indicated ambiguity or failure
+        if not result.ok:
+            return ToolOutput.failure(
+                errors=result.errors or [err("ambiguous", "Request is ambiguous")],
+                trace={
+                    "llm": llm_trace,
+                    "ambiguity_options": result.ambiguity_options,
+                    "resolution_map": result.resolution_map,
+                }
+            )
+
+        # Validate the cut spec
+        if not result.cut:
+            return ToolOutput.failure(
+                errors=[err("missing_cut", "LLM did not provide a cut specification")]
+            )
+
+        # Validate against the question catalog and segments
+        validation_errors = validate_cut_spec(
+            cut=result.cut,
+            questions_by_id=ctx.questions_by_id,
+            segments_by_id=ctx.segments_by_id
+        )
+
+        if validation_errors:
+            return ToolOutput.failure(
+                errors=validation_errors,
+                trace={
+                    "llm": llm_trace,
+                    "resolution_map": result.resolution_map,
+                }
+            )
+
+        # Success!
+        return ToolOutput.success(
+            data=result.cut,
+            trace={
+                "llm": llm_trace,
+                "resolution_map": result.resolution_map,
+            }
+        )
 
     def _build_user_content(self, ctx: ToolContext) -> str:
         """Build the user message content."""
-        # TODO: Implement context formatting
-        return ""
+        parts = [
+            f"## Analysis Request\n{ctx.prompt}\n",
+            f"## Available Questions\n{ctx.get_questions_summary()}\n",
+        ]
+
+        if ctx.segments:
+            parts.append(f"## Available Segments\n{ctx.get_segments_summary()}\n")
+
+        return "\n".join(parts)
